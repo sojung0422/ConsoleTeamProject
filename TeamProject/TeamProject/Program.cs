@@ -75,8 +75,8 @@ namespace TeamProject
             WriteLine();
             WriteLine($"Lv.{player.Level}");
             WriteLine($"{player.Name}({player.Job})");
-            WriteLine($"공격력 :{player.Atk} + {atk}");
-            WriteLine($"방어력 : {player.Def} + {armor}");
+            WriteLine($"공격력 :{player.Damage} + {atk}");
+            WriteLine($"방어력 : {player.Defense} + {armor}");
 
             WriteLine($"체력 : {player.Hp}");
             WriteLine($"Gold : {player.Gold} G");
