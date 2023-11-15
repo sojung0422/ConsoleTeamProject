@@ -21,6 +21,10 @@ namespace TeamProject
             GearInfo = info;
         }
 
+        // [박상원]
+        // 장비 슬롯이 비어있는 경우, 빈 아이템 생성
+        public static Item Empty = new(0, string.Empty, string.Empty, 0, string.Empty);
+
         public void GearEquip()
         {
             GearIsEquip = true;
