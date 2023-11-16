@@ -34,7 +34,7 @@ namespace TeamProject
             Parent = _parent;
             MaxPad = 4;
             //onAdded += item => MaxPad = Math.Max(MaxPad, Encoding.Default.GetBytes(item.GearName).Length);
-            //onRemoved += item => { /* parent의 equipment에서 item을 unequip하게 만드는 이벤트 */ };
+            //onRemoved += item => { /* MaxPad 갱신 */ };
             //event를 이용해서 아이템이 삽입/삭제될 때마다 player data를 저장하게 만들 수도 있음.
         }
 
@@ -46,14 +46,11 @@ namespace TeamProject
                 items.Add(item);
                 item.OnAdd(Parent);
             }
-            else
+            else if (res.StackCount.HasValue)
             {
                 // 개수를 쌓을 수 있는 아이템이라면
-                if (res as ConsumeItem != null)
-                {
-                    // 인벤토리에 있는 소모품의 stackCnt에 item의 stackCnt를 더함
-                    res.OnAdd(Parent, item);
-                }
+                // 인벤토리에 있는 소모품의 stackCnt에 item의 stackCnt를 더함
+                res.OnAdd(Parent, item);
             }
             onAdded?.Invoke(item);
         }
