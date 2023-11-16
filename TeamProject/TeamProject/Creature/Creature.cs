@@ -26,5 +26,13 @@ namespace TeamProject {
         #endregion
 
         protected float hp;
+
+        public virtual void Attack(Creature creature) { }
+        
+        public virtual void OnDamaged(float damage) { }
+
+        public virtual bool IsDead() {
+            return false;
+        }
     }
 }

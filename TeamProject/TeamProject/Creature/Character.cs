@@ -32,6 +32,23 @@ namespace TeamProject {
 
             Hp = HpMax;
         }
+        public override void Attack(Creature creature)
+        {
+            Console.WriteLine($"{Name}이 {creature.Name}을 공격");
+            creature.OnDamaged(DefaultDamage);
+        }
+
+        public override void OnDamaged(float damage)
+        {
+            int finalDamage = Math.Clamp((int)damage - (int)DefaultDefense/2, 0, (int)DefaultDefense);
+            Console.WriteLine($"{Name}이 {finalDamage}입음");
+            Hp -= finalDamage;
+        }
+        public override bool IsDead()
+        {
+            if (hp <= 0) return false;
+            return true;
+        }
 
         private float hpMaxModifier;
         private float damageModifier;
