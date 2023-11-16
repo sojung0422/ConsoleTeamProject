@@ -11,6 +11,7 @@ namespace TeamProject
         public string Description { get; protected set; }
         public int Price { get; protected set; }
 
+
         /// <summary>
         /// StackCount.HasValue가 null이라면 쌓을 수 없는 아이템
         /// </summary>
@@ -39,6 +40,7 @@ namespace TeamProject
 
         public void Use(Character owner) => OnUsed?.Invoke(owner);
         public void OnAdd(Character owner, Item duplicatedItem = null) => OnAdded?.Invoke(owner, duplicatedItem);
+
         public void OnRemove(Character owner) => OnRemoved?.Invoke(owner);
     }
 }
