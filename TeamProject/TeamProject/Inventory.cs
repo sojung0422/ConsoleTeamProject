@@ -54,7 +54,7 @@ namespace TeamProject
             for (int i = 0; i < items.Count; i++)
             {
                 //현재 이름으로 비교하지만 추후에 Item마다 고유번호를 추가하거나 하는 식으로도 비교 가능
-                if (items[i].GearName == item.GearName)
+                if (items[i].Name == item.Name)
                     return true;
             }
             return false;
