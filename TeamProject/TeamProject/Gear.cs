@@ -15,11 +15,11 @@ namespace TeamProject
 
         public Gear(int index, string name, string type, int state, string info, bool GearIsEquip = false)
         {
-            Index = index;
-            ItemName = name;
+            ID = index;
+            Name = name;
             GearType = type;
             GearState = state;
-            ItemInfo = info;
+            Description = info;
         }
 
         public static Gear Empty = new(0, string.Empty, string.Empty, 0, string.Empty);
@@ -37,18 +37,18 @@ namespace TeamProject
 
         public void Display()
         {
-            WriteLine($"- {ItemName} | {GearType} + {GearState} | {ItemInfo}");
+            WriteLine($"- {Name} | {GearType} + {GearState} | {Description}");
         }
 
         public void DisplayEquip()
         {
             if (this.GearIsEquip == true)
             {
-                WriteLine($"{ItemName}. [E] {ItemName} | {GearType} + {GearState} | {ItemInfo}");
+                WriteLine($"{Name}. [E] {Name} | {GearType} + {GearState} | {Description}");
             }
             else
             {
-                WriteLine($"{ItemName}. {ItemName} | {GearType} + {GearState} | {ItemInfo}");
+                WriteLine($"{Name}. {Name} | {GearType} + {GearState} | {Description}");
             }
         }
     }

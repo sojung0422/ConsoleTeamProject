@@ -12,7 +12,7 @@ public class Equipment
     private Dictionary<EquipSlot, Gear> equipped = new();
     
     // 아이템의 이름이 빈 문자열인 경우 => true
-    private bool IsEmptyItem(Gear gear) => string.IsNullOrEmpty(gear.ItemName);
+    private bool IsEmptyItem(Gear gear) => string.IsNullOrEmpty(gear.Name);
 
     public Equipment()
     {
