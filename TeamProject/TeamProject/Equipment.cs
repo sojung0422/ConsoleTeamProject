@@ -9,10 +9,10 @@ public enum EquipSlot
 
 public class Equipment
 {
-    private Dictionary<EquipSlot, Item> equipped = new();
+    private Dictionary<EquipSlot, Gear> equipped = new();
     
     // 아이템의 이름이 빈 문자열인 경우 => true
-    private bool IsEmptyItem(Item item) => string.IsNullOrEmpty(item.GearName);
+    private bool IsEmptyItem(Gear gear) => string.IsNullOrEmpty(gear.ItemName);
 
     public Equipment()
     {
@@ -21,11 +21,11 @@ public class Equipment
         foreach (var slot in slots)
         {
             if (equipped.GetValueOrDefault(slot) != null) continue;
-            equipped[slot] = Item.Empty;
+            equipped[slot] = Gear.Empty;
         }
     }
 
-    public void Equip(EquipSlot slot, Item itemEquip)
+    public void Equip(EquipSlot slot, Gear itemEquip)
     {
         equipped.TryGetValue(slot, out var item);
 
@@ -47,6 +47,6 @@ public class Equipment
 
     public void Unequip(EquipSlot slot)
     {
-        equipped[slot] = Item.Empty;
+        equipped[slot] = Gear.Empty;
     }
 }
