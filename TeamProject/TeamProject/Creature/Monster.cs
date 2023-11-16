@@ -38,6 +38,7 @@ namespace TeamProject {
         {
             int finalDamage = Math.Clamp((int)damage - (int)DefaultDefense / 2, 0, (int)DefaultDefense);
             Console.WriteLine($"{Name}이 {finalDamage}의 데미지를 입음");
+            Console.WriteLine();
             Hp -= finalDamage;
         }
         public override bool IsDead()

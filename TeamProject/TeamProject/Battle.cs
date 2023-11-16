@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,13 +57,14 @@ namespace TeamProject
                 Console.WriteLine();
                 Console.WriteLine($"{++turnCount}번째 턴");
                 PrintBattleState();
+
                 // player 턴
                 Console.WriteLine();
                 //Console.WriteLine("0. hp포션사용");
                 Console.WriteLine("공격할 몬스터를 선택해주세요.");
 
                 int monsterNum = -1;
-                string input = Console.ReadLine();
+                var input = Console.ReadLine();
                 int.TryParse(input, out monsterNum);
 
                 // 입력 값 예외처리
@@ -73,10 +75,7 @@ namespace TeamProject
                     Console.WriteLine("공격할 몬스터를 다시 입력해주세요.");
                     input = Console.ReadLine();
                 }
-
-                Console.WriteLine();
                 Player.Attack(Monsters[monsterNum - 1]);
-                Console.WriteLine();
                 Thread.Sleep(1000);
 
                 if (CheckAllMonstersDead())
@@ -84,11 +83,10 @@ namespace TeamProject
 
                 // monster 턴
                 Monsters[(turnCount - 1) % MonsterCount].Attack(Player);
-                Console.WriteLine();
                 Thread.Sleep(1000);
 
                 Console.WriteLine("다음 턴으로 : n\n던전 나가기 : o");
-                string inputStr = Console.ReadLine();  
+                var inputStr = Console.ReadLine();  
                 while(inputStr != "n" && inputStr != "o")
                 {
                     Console.WriteLine("다음 턴으로 : n\n던전 나가기 : o");
@@ -121,7 +119,7 @@ namespace TeamProject
                 var monster = Monsters[i];
                 if (monster.IsDead())
                 {
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
                     Console.WriteLine($"{i + 1}. {monster.Name} Dead");
                     Console.ResetColor();
                 }
@@ -143,7 +141,32 @@ namespace TeamProject
         public void BattleEnd(Creature creature)
         {
             // TODO: 전투 종료
-            Console.Write("전투 종료");
+            if(creature is Monster)
+            {
+                // 던전 클리어
+                Console.WriteLine();
+                Console.WriteLine("던전 클리어 !");
+
+                /* 클리어 보상(아이템, 골드, 레벨업 등)
+
+
+                */
+
+            }
+            else
+            {
+                // 던전 클리어 실패
+                Console.WriteLine();
+                Console.WriteLine("던전 클리어 실패 !");
+
+                /* 실패 보상(아이템, 골드, 레벨업 등)
+
+
+                */
+            }
+
+            Console.WriteLine("아무 키나 입력하여 던전 나가기");
+            Console.ReadLine();
         }
     }
 }
