@@ -9,7 +9,15 @@ namespace TeamProject
     public class Inventory
     {
         List<Item> items;
-        public Creature parent;
+        /// <summary>
+        /// 이 인벤토리의 주인인 Character 클래스를 가리킵니다.
+        /// </summary>
+        public Character Parent { get; }
+        /// <summary>
+        /// 인벤토리 내부의 아이템 개수를 반환합니다.<br/>
+        /// return items.Count
+        /// </summary>
+        public int Count { get => items.Count; }
 
         Action<Item>? onAdded;
         Action<Item>? onRemoved;
@@ -19,10 +27,10 @@ namespace TeamProject
         /// 콘솔에서 테이블 크기를 결정하기 위해 사용합니다.
         /// </summary>
         public int MaxPad { get; private set; }
-        public Inventory(Creature _parent)
+        public Inventory(Character _parent)
         {
             items = new();
-            parent = _parent;
+            Parent = _parent;
             MaxPad = 4;
             //onAdded += item => MaxPad = Math.Max(MaxPad, Encoding.Default.GetBytes(item.GearName).Length);
             //onRemoved += item => { /* parent의 equipment에서 item을 unequip하게 만드는 이벤트 */ };
@@ -71,6 +79,17 @@ namespace TeamProject
                     break;
                 case ItemOrderMode.PriceDesc:
                     break;
+            }
+        }
+
+        //List처럼 인덱싱.. ex) player.Inventory[0]
+        public Item this[int idx]
+        {
+            get
+            {
+                if (idx < 0 || idx >= items.Count)
+                    throw new ArgumentOutOfRangeException(nameof(idx));
+                return items[idx];
             }
         }
 
