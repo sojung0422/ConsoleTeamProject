@@ -23,6 +23,7 @@ namespace TeamProject {
                 else hp = value;
             }
         }
+        public Inventory Inventory { get; }
 
         public Character(string name, string job, int level, int damage, int defense, int hp, int gold, float critical, float avoid) // 오태
         {
@@ -35,11 +36,13 @@ namespace TeamProject {
             DefaultCritical = critical;
             DefaultAvoid = avoid;
             Gold = gold;
+            Inventory = new Inventory(this);
 
             Hp = HpMax;
         }
         public override void Attack(Creature creature) // 오태
         {
+            Console.WriteLine();
             Console.WriteLine($"{Name}이 {creature.Name}을 공격");
 
             if (RandomChance(creature.DefaultAvoid)) // 상대방이 회피 했을때
@@ -63,6 +66,7 @@ namespace TeamProject {
         {
             int finalDamage = Math.Clamp((int)damage - (int)DefaultDefense / 2, 0, (int)DefaultDefense);
             Console.WriteLine($"{Name}이 {finalDamage}의 데미지를 입음");
+            Console.WriteLine();
             Hp -= finalDamage;
         }
 
