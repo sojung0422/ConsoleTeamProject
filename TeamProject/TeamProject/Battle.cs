@@ -32,15 +32,15 @@ namespace TeamProject
                 switch (random.Next(0, 3))
                 {
                     case 0:
-                        monster = new Monster("Slime", 10, 10, 2, 0);
+                        monster = new Monster("Slime", 10, 10, 2, 0, 0.2f, 0.2f);
                         Monsters.Add(monster);
                         break;
                     case 1:
-                        monster = new Monster("Troll", 20, 20, 3, 0);
+                        monster = new Monster("Troll", 20, 20, 3, 0, 0.3f, 0.3f);
                         Monsters.Add(monster);
                         break;
                     case 2:
-                        monster = new Monster("Hellhound", 30, 30, 5, 0);
+                        monster = new Monster("Hellhound", 30, 30, 5, 0, 0.2f, 0.2f);
                         Monsters.Add(monster);
                         break;
                 }

@@ -14,7 +14,7 @@ namespace TeamProject
             InvenGears.Add(gear0);
             InvenGears.Add(gear1);
 
-            player = new Character("규라니", "전사", 1, 10, 5, 100, 1500);
+            player = new Character("규라니", "전사", 1, 10, 5, 100, 1500, 0.2f, 0.2f);
 
             MainTitle();
 
