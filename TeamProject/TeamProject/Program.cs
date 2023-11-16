@@ -3,7 +3,7 @@ namespace TeamProject
 {
     internal class Program
     {
-        private static Character player;
+        public static Character player;
         public static List<Gear> InvenGears = new List<Gear>();
       
         private static int inputKey;
