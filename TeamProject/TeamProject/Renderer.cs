@@ -69,6 +69,19 @@ namespace TeamProject {
             return line;
         }
 
+        public static void PrintOptions(int line, List<ActionOption> options, bool fromZero = true) {
+            for (int i = 0; i < options.Count; i++) {
+                ActionOption option = options[i];
+                Console.SetCursorPosition(printMargin, line);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(fromZero ? i : i + 1);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write(". ");
+                Console.Write(option.Description);
+                line++;
+            }
+        }
+
         #endregion
 
         #region Border

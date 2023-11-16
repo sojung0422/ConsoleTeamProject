@@ -16,8 +16,10 @@ namespace TeamProject
 
             player = new Character("규라니", "전사", 1, 10, 5, 100, 1500);
 
-            MainTitle();
-
+            //MainTitle();
+            Renderer.Initialize();
+            Managers.Scene.Initialize();
+            Managers.Scene.EnterScene<TitleScene>();
             //test
         }
 
