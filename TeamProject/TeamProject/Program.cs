@@ -3,13 +3,14 @@ namespace TeamProject
 {
     internal class Program
     {
-        public static Character player;
-        public static List<Item> InvenGears = new List<Item>();
+        private static Character player;
+        public static List<Gear> InvenGears = new List<Gear>();
+      
         private static int inputKey;
         static void Main(string[] args)
         {
-            Item gear0 = new Item(1, "천 옷", "방어력", 2, "평상시에 입는 옷이다.");
-            Item gear1 = new Item(2, "녹슨 검", "공격력", 5, "흔하게 볼 수 있는 검이다.");
+            Gear gear0 = new Gear(1, "천 옷", "방어력", 2, "평상시에 입는 옷이다.");
+            Gear gear1 = new Gear(2, "녹슨 검", "공격력", 5, "흔하게 볼 수 있는 검이다.");
 
             InvenGears.Add(gear0);
             InvenGears.Add(gear1);
@@ -52,7 +53,7 @@ namespace TeamProject
             }
         }
 
-        static void DisPlayMyState(List<Item> gear)
+        static void DisPlayMyState(List<Gear> gear)
         {
             Clear();
 
@@ -129,7 +130,7 @@ namespace TeamProject
             }
         }
 
-        static void DisplayEquipControl(List<Item> gear)
+        static void DisplayEquipControl(List<Gear> gear)
         {
 
             Clear();

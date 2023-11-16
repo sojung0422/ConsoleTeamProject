@@ -3,53 +3,28 @@ namespace TeamProject
 {
     public class Item
     {
-        public int GearIndex { get; set; }
-        public string GearName { get; set; }
-        public string GearType { get; set; }
-        public int GearState { get; set; }
-        public string GearInfo { get; set; }
+        /// <summary>
+        /// 아이템을 식별할 고유 번호 <br/>
+        /// </summary>
+        public int ID { get; protected set; }
+        public string Name { get; protected set; }
+        public string Description { get; protected set; }
+        public int Price { get; protected set; }
 
-        public bool GearIsEquip { get; set; }
+        //아이템이 사용될 때 호출될 이벤트
+        //장비라면 장착, 소모품이라면 사용되고 stack cnt -1
+        event Action<Character>? OnUsed;
 
+        //아이템이 인벤토리에 추가될 때 호출될 이벤트
+        //소모품의 경우 인벤토리에 같은 아이템이 있다면 새로운 칸에 들어가는게 아니라, 그 칸의 stack cnt를 +1 해야합니다.
+        event Action<Character>? OnAdded;
 
-        public Item(int index, string name, string type, int state, string info, bool GearIsEquip = false)
-        {
-            GearIndex = index;
-            GearName = name;
-            GearType = type;
-            GearState = state;
-            GearInfo = info;
-        }
+        //아이템이 인벤토리에서 삭제될 떄 호출될 이벤트
+        //만약 장착중인 장비아이템이 삭제된다면, 장착해제도 같이 진행해야합니다.
+        event Action<Character>? OnRemoved;
 
-        // [박상원]
-        // 장비 슬롯이 비어있는 경우, 빈 아이템 생성
-        public static Item Empty = new(0, string.Empty, string.Empty, 0, string.Empty);
-
-        public void GearEquip()
-        {
-            GearIsEquip = true;
-        }
-
-        public void GearUnEquip()
-        {
-            GearIsEquip = false;
-        }
-
-        public void Display()
-        {
-            WriteLine($"- {GearName} | {GearType} + {GearState} | {GearInfo}");
-        }
-
-        public void DisplayEquip()
-        {
-            if (this.GearIsEquip == true)
-            {
-                WriteLine($"{GearIndex}. [E] {GearName} | {GearType} + {GearState} | {GearInfo}");
-            }
-            else
-            {
-                WriteLine($"{GearIndex}. {GearName} | {GearType} + {GearState} | {GearInfo}");
-            }
-        }
+        public void Use(Character owner) => OnUsed?.Invoke(owner);
+        public void OnAdd(Character owner) => OnAdded?.Invoke(owner);
+        public void OnRemove(Character owner) => OnRemoved?.Invoke(owner);
     }
 }
