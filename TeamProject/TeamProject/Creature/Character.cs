@@ -51,14 +51,11 @@ namespace TeamProject {
                 // 일정 확률로 치명타 적용
                 if (RandomChance(DefaultCritical))
                 {
-                    float criticalDamage = DefaultDamage * 2; // 기본 데미지의 2배
+                    float criticalDamage = DefaultDamage * 1.5f; // 기본 데미지의 1.5배
                     Console.WriteLine("치명타 발생!");
                     creature.OnDamaged(criticalDamage);
                 }
-                else
-                {
-                    creature.OnDamaged(DefaultDamage); // 기본 공격
-                }
+                else creature.OnDamaged(DefaultDamage); // 기본 공격
             }
         }
 
@@ -69,6 +66,7 @@ namespace TeamProject {
             Hp -= finalDamage;
         }
 
+        //확률에 따라 발생하는 메서드
         private bool RandomChance(float probability) // 오태
         {
             Random random = new Random();
