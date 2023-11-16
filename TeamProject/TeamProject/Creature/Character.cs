@@ -41,13 +41,13 @@ namespace TeamProject {
         public override void OnDamaged(float damage)
         {
             int finalDamage = Math.Clamp((int)damage - (int)DefaultDefense/2, 0, (int)DefaultDefense);
-            Console.WriteLine($"{Name}이 {finalDamage}입음");
+            Console.WriteLine($"{Name}이 {finalDamage}의 데미지를 입음");
             Hp -= finalDamage;
         }
         public override bool IsDead()
         {
-            if (hp <= 0) return false;
-            return true;
+            if (hp <= 0) return true;
+            return false;
         }
 
         private float hpMaxModifier;

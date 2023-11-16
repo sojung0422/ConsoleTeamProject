@@ -49,35 +49,54 @@ namespace TeamProject
 
         public void BattleStart()
         {
+            int turnCount = 0;
             while (!Player.IsDead() && !CheckAllMonstersDead())
             {
+                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine($"{++turnCount}번째 턴");
                 PrintBattleState();
                 // player 턴
                 Console.WriteLine();
                 //Console.WriteLine("0. hp포션사용");
                 Console.WriteLine("공격할 몬스터를 선택해주세요.");
-                int monsterNum = 0;
+
+                int monsterNum = -1;
+                string input = Console.ReadLine();
+                int.TryParse(input, out monsterNum);
 
                 // 입력 값 예외처리
-                while (int.TryParse(Console.ReadLine(), out monsterNum) ||
-                    monsterNum < 1 ||
+                while (monsterNum < 1 ||
                     monsterNum > MonsterCount ||
-                    Monsters[monsterNum].IsDead())
+                    Monsters[monsterNum - 1].IsDead())
                 {
                     Console.WriteLine("공격할 몬스터를 다시 입력해주세요.");
+                    input = Console.ReadLine();
                 }
-                Console.Clear();
-                Player.Attack(Monsters[monsterNum]);
-                PrintBattleState();
+
+                Console.WriteLine();
+                Player.Attack(Monsters[monsterNum - 1]);
+                Console.WriteLine();
                 Thread.Sleep(1000);
 
                 if (CheckAllMonstersDead())
                     break;
 
                 // monster 턴
-                Monsters[monsterNum].Attack(Player);
-                PrintBattleState();
+                Monsters[(turnCount - 1) % MonsterCount].Attack(Player);
+                Console.WriteLine();
                 Thread.Sleep(1000);
+
+                Console.WriteLine("다음 턴으로 : n\n던전 나가기 : o");
+                string inputStr = Console.ReadLine();  
+                while(inputStr != "n" && inputStr != "o")
+                {
+                    Console.WriteLine("다음 턴으로 : n\n던전 나가기 : o");
+                    inputStr = Console.ReadLine();
+                }
+
+                if (inputStr == "o")
+                    break;
             }
 
             // 전투 종료
@@ -85,7 +104,7 @@ namespace TeamProject
             {
                 OnCreatureDead?.Invoke(Monsters[0]);
             }
-            else
+            else if(Player.IsDead())
             {
                 OnCreatureDead?.Invoke(Player);
             }
@@ -94,8 +113,7 @@ namespace TeamProject
 
         public void PrintBattleState()
         {
-            Console.SetCursorPosition(0, 0);
-            Console.WriteLine();
+            Console.WriteLine("------------------------------");
             Console.WriteLine($"{Player.Name}의 Hp : {Player.Hp}");
             Console.WriteLine("------------------------------");
             for (int i = 0; i < Monsters.Count; i++)
@@ -114,7 +132,7 @@ namespace TeamProject
 
         public bool CheckAllMonstersDead()
         {
-            foreach(var monster in Monsters)
+            foreach (var monster in Monsters)
             {
                 if (!monster.IsDead())
                     return false;
@@ -124,6 +142,7 @@ namespace TeamProject
 
         public void BattleEnd(Creature creature)
         {
+            // TODO: 전투 종료
             Console.Write("전투 종료");
         }
     }
