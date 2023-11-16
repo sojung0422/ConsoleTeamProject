@@ -20,6 +20,7 @@ namespace TeamProject {
                 else hp = value;
             }
         }
+        public Inventory Inventory { get; }
 
         public Character(string name, string job, int level, int damage, int defense, int hp, int gold) {
             Name = name;
@@ -29,6 +30,7 @@ namespace TeamProject {
             DefaultDefense = defense;
             DefaultHpMax = hp;
             Gold = gold;
+            Inventory = new Inventory(this);
 
             Hp = HpMax;
         }
