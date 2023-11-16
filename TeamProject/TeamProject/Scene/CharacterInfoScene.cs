@@ -36,8 +36,6 @@ namespace TeamProject {
             Renderer.Print(9, $"체 력 : {Program.player.DefaultHpMax}");
             Renderer.Print(10, $"Gold : {Program.player.Gold} G");
 
-            // ==========================
-
             Renderer.PrintOptions(12, Options, true);
         }
     }
