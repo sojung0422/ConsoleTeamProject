@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Console;
@@ -13,18 +14,17 @@ namespace TeamProject
         public int GearState { get; set; }
         public bool GearIsEquip { get; set; }
 
-        public Gear(int index, string name, string type, int state, string info, bool GearIsEquip = false)
+
+        public Gear(int id, string name, string description, int price, string type, int state, bool isEquip = false) : base(id, name, description, price)
         {
-            ID = index;
-            Name = name;
             GearType = type;
             GearState = state;
-            Description = info;
+            GearIsEquip = isEquip;
         }
-
         // [박상원]
         // 장비 슬롯이 비어있는 경우, 빈 아이템 생성
-        public static Gear Empty = new(0, string.Empty, string.Empty, 0, string.Empty);
+        public static Gear Empty = new(-1, string.Empty, string.Empty, 0, string.Empty, 0);
+
 
 
         public void GearEquip()

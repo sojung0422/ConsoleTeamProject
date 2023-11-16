@@ -11,20 +11,36 @@ namespace TeamProject
         public string Description { get; protected set; }
         public int Price { get; protected set; }
 
+
+        /// <summary>
+        /// StackCount.HasValue가 null이라면 쌓을 수 없는 아이템
+        /// </summary>
+        public int? StackCount { get; protected set; }
+
+        public Item(int id, string name, string description, int price, int? stackCount = null)
+        {
+            ID = id;
+            Name = name;
+            Description = description;
+            Price = price;
+            StackCount = stackCount;
+        }
+
         //아이템이 사용될 때 호출될 이벤트
         //장비라면 장착, 소모품이라면 사용되고 stack cnt -1
-        event Action<Character>? OnUsed;
+        protected event Action<Character>? OnUsed;
 
         //아이템이 인벤토리에 추가될 때 호출될 이벤트
         //소모품의 경우 인벤토리에 같은 아이템이 있다면 새로운 칸에 들어가는게 아니라, 그 칸의 stack cnt를 +1 해야합니다.
-        event Action<Character>? OnAdded;
+        protected event Action<Character, Item>? OnAdded;
 
         //아이템이 인벤토리에서 삭제될 떄 호출될 이벤트
         //만약 장착중인 장비아이템이 삭제된다면, 장착해제도 같이 진행해야합니다.
-        event Action<Character>? OnRemoved;
+        protected event Action<Character>? OnRemoved;
 
         public void Use(Character owner) => OnUsed?.Invoke(owner);
-        public void OnAdd(Character owner) => OnAdded?.Invoke(owner);
+        public void OnAdd(Character owner, Item duplicatedItem = null) => OnAdded?.Invoke(owner, duplicatedItem);
+
         public void OnRemove(Character owner) => OnRemoved?.Invoke(owner);
     }
 }

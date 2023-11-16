@@ -12,7 +12,8 @@ namespace TeamProject
         /// <summary>
         /// 이 인벤토리의 주인인 Character 클래스를 가리킵니다.
         /// </summary>
-        public Character Parent { get; }
+        public Character Parent { get; } //추후에 상점이나 몬스터도 인벤토리를 가질 수 있음.
+
         /// <summary>
         /// 인벤토리 내부의 아이템 개수를 반환합니다.<br/>
         /// return items.Count
@@ -33,30 +34,60 @@ namespace TeamProject
             Parent = _parent;
             MaxPad = 4;
             //onAdded += item => MaxPad = Math.Max(MaxPad, Encoding.Default.GetBytes(item.GearName).Length);
-            //onRemoved += item => { /* parent의 equipment에서 item을 unequip하게 만드는 이벤트 */ };
+            //onRemoved += item => { /* MaxPad 갱신 */ };
             //event를 이용해서 아이템이 삽입/삭제될 때마다 player data를 저장하게 만들 수도 있음.
         }
 
         public void Add(Item item)
         {
-            items.Add(item);
+            if (!HasSameItem(item, out Item res))
+            {
+                // 중복되는 아이템이 없는 경우만 add
+                items.Add(item);
+                item.OnAdd(Parent);
+            }
+            else if (res.StackCount.HasValue)
+            {
+                // 개수를 쌓을 수 있는 아이템이라면
+                // 인벤토리에 있는 소모품의 stackCnt에 item의 stackCnt를 더함
+                res.OnAdd(Parent, item);
+            }
             onAdded?.Invoke(item);
         }
 
         public void Remove(Item item)
         {
             items.Remove(item);
+            item.OnRemove(Parent);
             onRemoved?.Invoke(item);
         }
 
-        public bool HasSameItem(Item item)
+        /// <summary>
+        /// 인벤토리에 같은 아이템이 있는지 찾습니다.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool HasSameItem(Item item) => HasSameItem(item, out _);
+
+        /// <summary>
+        /// 인벤토리에 같은 아이템이 있는지 찾습니다. <br/>
+        /// 중복되는 아이템이 있다면 out 매개변수로 반환합니다.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="res"> item과 같은 아이템의 객체입니다.</param>
+        /// <returns></returns>
+        public bool HasSameItem(Item item, out Item res)
         {
             for (int i = 0; i < items.Count; i++)
             {
-                //현재 이름으로 비교하지만 추후에 Item마다 고유번호를 추가하거나 하는 식으로도 비교 가능
-                if (items[i].Name == item.Name)
+
+                if (items[i].ID == item.ID)
+                {
+                    res = items[i];
                     return true;
+                }
             }
+            res = null;
             return false;
         }
 

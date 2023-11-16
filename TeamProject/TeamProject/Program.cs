@@ -3,18 +3,18 @@ namespace TeamProject
 {
     internal class Program
     {
+
         public static Character player;
         public static List<Gear> InvenGears = new List<Gear>();
-      
         private static int inputKey;
         static void Main(string[] args)
         {
-            Gear gear0 = new Gear(1, "천 옷", "방어력", 2, "평상시에 입는 옷이다.");
-            Gear gear1 = new Gear(2, "녹슨 검", "공격력", 5, "흔하게 볼 수 있는 검이다.");
+            //Gear gear0 = new Gear(1, "천 옷", "방어력", 2, "평상시에 입는 옷이다.");
+            //Gear gear1 = new Gear(2, "녹슨 검", "공격력", 5, "흔하게 볼 수 있는 검이다.");
 
-            InvenGears.Add(gear0);
-            InvenGears.Add(gear1);
-          
+            //InvenGears.Add(gear0);
+            //InvenGears.Add(gear1);
+
             // [박상원] 캐릭터 생성을 위해 주석처리 
             //player = new Character("규라니", "전사", 1, 10, 5, 100, 1500);
 
