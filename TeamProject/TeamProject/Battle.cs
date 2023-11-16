@@ -51,6 +51,7 @@ namespace TeamProject
         public void BattleStart()
         {
             int turnCount = 0;
+            int monsterAttackTurn = 0;
             while (!Player.IsDead() && !CheckAllMonstersDead())
             {
                 Console.Clear();
@@ -82,7 +83,9 @@ namespace TeamProject
                     break;
 
                 // monster 턴
-                Monsters[(turnCount - 1) % MonsterCount].Attack(Player);
+                while (Monsters[monsterAttackTurn % MonsterCount].IsDead())
+                    monsterAttackTurn++;
+                Monsters[(monsterAttackTurn++) % MonsterCount].Attack(Player);
                 Thread.Sleep(1000);
 
                 Console.WriteLine("다음 턴으로 : n\n던전 나가기 : o");
