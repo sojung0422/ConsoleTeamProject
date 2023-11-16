@@ -116,7 +116,7 @@ namespace TeamProject {
 
         #region Utilities
 
-        private static int GetPrintingLength(string line) => line.Sum(c => IsKorean(c) ? 2 : 1);
+        public static int GetPrintingLength(string line) => line.Sum(c => IsKorean(c) ? 2 : 1);
         private static bool IsKorean(char c) => '가' <= c && c <= '힣';
 
         #endregion

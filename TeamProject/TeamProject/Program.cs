@@ -3,7 +3,7 @@ namespace TeamProject
 {
     internal class Program
     {
-        private static Character player;
+        public static Character player;
         public static List<Item> InvenGears = new List<Item>();
         private static int inputKey;
         static void Main(string[] args)
@@ -14,12 +14,14 @@ namespace TeamProject
             InvenGears.Add(gear0);
             InvenGears.Add(gear1);
 
-            player = new Character("규라니", "전사", 1, 10, 5, 100, 1500);
+            // [박상원] 캐릭터 생성을 위해 주석처리 
+            //player = new Character("규라니", "전사", 1, 10, 5, 100, 1500);
 
             //MainTitle();
             Renderer.Initialize();                          // 세진
             Managers.Scene.Initialize();                    // 세진
-            Managers.Scene.EnterScene<TitleScene>();        // 세진
+            //Managers.Scene.EnterScene<TitleScene>();        // 세진
+            Managers.Scene.EnterScene<CreateCharacterScene>();        // 박상원
             //test
         }
 
