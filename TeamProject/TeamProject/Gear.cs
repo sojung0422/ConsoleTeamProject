@@ -11,13 +11,19 @@ public enum GearType
 public class Gear : Item
 {
     public GearType GearType { get; set; }
-    public int GearState { get; set; }
+    public float Atk { get; set; }    // 공격력
+    public float Def { get; set; }    // 방어력
+    public float Crit { get; set; }   // 치명타
+    public float Dodge { get; set; }    // 회피율
     public bool IsEquip { get; set; }
 
-    public Gear(int id, string name, string description, int price, GearType gearType, int state, ItemType itemType = ItemType.Gear, bool isEquip = false) : base(id, name, description, price, itemType)
+    public Gear(int id, string name, string description, int price, GearType gearType, float atk, float def, float crit, float dodge, ItemType itemType = ItemType.Gear, bool isEquip = false) : base(id, name, description, price, itemType)
     {
         GearType = gearType;
-        GearState = state;
+        Atk = atk;
+        Def = def;
+        Crit = crit;
+        Dodge = dodge;
         IsEquip = isEquip;
     }
 
@@ -29,6 +35,6 @@ public class Gear : Item
 
     // [박상원]
     // 장비 슬롯이 비어있는 경우, 빈 아이템 생성
-    public static Gear Empty = new(-1, string.Empty, string.Empty, 0, GearType.None, 0);
+    public static Gear Empty = new(-1, string.Empty, string.Empty, 0, GearType.None, 0, 0, 0, 0, 0);
     public override Item DeepCopy() => new Gear(this);
 }

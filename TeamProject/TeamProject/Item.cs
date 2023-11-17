@@ -8,7 +8,6 @@ namespace TeamProject
         ConsumeItem,
     }
 
-
     public class Item
     {
         /// <summary>
