@@ -9,10 +9,10 @@ namespace TeamProject {
 
         // =================================================================================================================================================
         private static readonly int printMargin = 2;                                // 벽에 붙어서 출력되지 않기 위해 주는 Margin. (벽의 길이 = 1)
-        private static readonly ConsoleColor bgColor = ConsoleColor.DarkGray;       // 콘솔 기본 백그라운드 컬러.
+        private static readonly ConsoleColor bgColor = ConsoleColor.Black;       // 콘솔 기본 백그라운드 컬러.
         private static readonly ConsoleColor textColor = ConsoleColor.Yellow;       // 콘솔 기본 텍스트 컬러.
         private static readonly ConsoleColor highlightColor = ConsoleColor.Green;   // 콘솔 기본 하이라이트 컬러.
-                                                                                    // =================================================================================================================================================
+        // =================================================================================================================================================
 
         #region Fields
 
@@ -22,7 +22,7 @@ namespace TeamProject {
         private static int height;      // 화면 크기.
 
         #endregion
-
+        
         public static void Initialize() {
             Console.Title = "GameName";
             Console.ForegroundColor = textColor;

@@ -168,8 +168,8 @@ public class CreateCharacterScene : Scene
             (int)selectPlayer.DefaultDefense,
             (int)selectPlayer.DefaultHpMax,
             selectPlayer.Gold,
-            0.0f,
-            0.0f
+            selectPlayer.Critical,
+            selectPlayer.Avoid
         );
         Game.player.Inventory.Add(new Item(1, "Test01", "Test01아이템임니다", 10));
         Game.player.Inventory.Add(new Item(2, "Test02", "Test02아이템임니다", 10));

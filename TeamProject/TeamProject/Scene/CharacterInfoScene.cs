@@ -34,9 +34,11 @@ namespace TeamProject {
             Renderer.Print(7, $"공격력 : {Game.player.DefaultDamage}");
             Renderer.Print(8, $"방어력 : {Game.player.DefaultDefense}");
             Renderer.Print(9, $"체 력 : {Game.player.DefaultHpMax}");
-            Renderer.Print(10, $"Gold : {Game.player.Gold} G");
+            Renderer.Print(10, $"크리티컬 확률 : {Game.player.Critical * 100}%");
+            Renderer.Print(11, $"회피율 : {Game.player.Avoid*100}%");
+            Renderer.Print(12, $"Gold : {Game.player.Gold} G");
 
-            Renderer.PrintOptions(12, Options, true);
+            Renderer.PrintOptions(14, Options, true);
         }
     }
 }
