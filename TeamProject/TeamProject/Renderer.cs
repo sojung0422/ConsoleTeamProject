@@ -101,20 +101,20 @@ namespace TeamProject {
         #endregion
 
         #region Inventory
-        public static int DrawItemList(int startRow, List<Item> items, List<ItemTableFormatter> formatterList, Inventory inventory = null) {
+        public static int DrawItemList(int startRow, List<Item> items, List<ItemTableFormatter> formatterList) {
             // #1. 그리기 준비.
             int row = startRow;
 
             // #2. 상위 행 그리기.
-            string s0 = "|";
-            string s1 = "|";
+            string title = "|";
+            string horizontal = "|";
             for (int i = 0; i < formatterList.Count; i++) {
                 ItemTableFormatter formatter = formatterList[i];
-                s0 += $"{formatter.GetString()}|";
-                s1 += $"{formatter.GetString(index: -1)}|";
+                title += $"{formatter.GetTitle()}|";
+                horizontal += $"{formatter.GetString()}|";
             }
-            Print(row++, s0);
-            Print(row++, s1);
+            Print(row++, title);
+            Print(row++, horizontal);
 
             // #3. 본문 행 그리기.
             for (int i = 0; i < items.Count; i++) {
@@ -122,9 +122,9 @@ namespace TeamProject {
                 string content = "|";
                 for (int j = 0; j < formatterList.Count; j++) {
                     ItemTableFormatter formatter = formatterList[j];
-                    if (formatter.key == "Index") content += $"{formatter.GetString(index: i + 1)}|";
-                    else if (formatter.key == "Equip") content += $"{formatter.GetString(item, inventory: inventory)}|";
-                    else content += $"{formatter.GetString(item)}|";
+                    if (formatter.key == "Index") content += $"{formatter.GetString(i + 1)}|";          // 아이템 번호 출력.
+                    else if (formatter.key == "Equip") content += $"{formatter.GetString(false)}|";     // 장착 여부 출력.    // TODO:: 장착 여부를 확인할 수 없어 일단 false로 두었습니다.
+                    else content += $"{formatter.GetString(item)}|";                                    // 아이템 정보 출력.
                 }
                 Print(row++, content);
             }
@@ -187,25 +187,19 @@ namespace TeamProject {
         public string key;
         public string description;
         public int length;
-        public Func<Item, string> dataSelector;
+        public Func<Item, string>? dataSelector;
 
-        public ItemTableFormatter(string key, string description, int length, Func<Item, string> dataSelector) {
+        public ItemTableFormatter(string key, string description, int length, Func<Item, string>? dataSelector) {
             this.key = key;
             this.description = description;
             this.length = length;
             this.dataSelector = dataSelector;
         }
 
-        public string GetString(Item item = null, int index = -2, Inventory inventory = null) {
-            if (index == -1) return Renderer.GetInventoryElementString(length, "=", false);
-            else if (index >= 0) return Renderer.GetInventoryElementString(length, index.ToString(), false);
-            if (inventory != null && item != null) {
-                // TODO:: 장착 여부 확인해야 함.
-                //return Renderer.GetInventoryElementString(length, inventory.IsEquipped(item) ? "[E]" : "", false);
-                return Renderer.GetInventoryElementString(length, "", false);
-            }
-            if (item == null) return Renderer.GetInventoryElementString(length, description, true);
-            return Renderer.GetInventoryElementString(length, dataSelector(item), false);
-        }
+        public string GetTitle() => Renderer.GetInventoryElementString(length, description, true);
+        public string GetString() => Renderer.GetInventoryElementString(length, "=", false);
+        public string GetString(int index) => Renderer.GetInventoryElementString(length, index.ToString(), false);
+        public string GetString(bool isEquipped) => Renderer.GetInventoryElementString(length, isEquipped ? "[E]" : "", false);
+        public string GetString(Item item) => Renderer.GetInventoryElementString(length, dataSelector(item), false);
     }
 }
