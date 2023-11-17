@@ -171,11 +171,17 @@ public class CreateCharacterScene : Scene
             selectPlayer.Avoid
         );
 
-        // 게임 클래스에 저장된 아이템 등록
+        //게임 클래스에 저장된 아이템 등록
         for (int i = 0; i < Game.Items.Length; i++)
         {
             Game.Player.Inventory.Add(Game.Items[i]);
         }
+
+        // [우진영] 상점에서 아이템이 잘 구매되는지 확인하기 위해
+        // 기본 아이템만 넣어놨습니다.
+        //Game.Player.Inventory.Add(Game.Items[0]);
+        //Game.Player.Inventory.Add(Game.Items[1]);
+        //Game.Player.Inventory.Add(Game.Items[2]);
     }
 
     private bool ManageInput()

@@ -16,11 +16,17 @@ namespace TeamProject
             OnAdded += MergeItem;
         }
 
+        public ConsumeItem(ConsumeItem reference) : base(reference) 
+        {
+            OnAdded += MergeItem;
+        }
+
         public void MergeItem(Character onwer, Item duplicatedItem)
         {
             // 중복된 아이템이 있을 경우 duplicatedItem로 받아옵니다.
             // duplicatedItem이 null이 아니라면 두 아이템의 개수를 합칩니다.
             StackCount += duplicatedItem is ConsumeItem consume ? consume.StackCount : 0;
         }
+        public override Item DeepCopy() => new ConsumeItem(this);
     }
 }

@@ -34,9 +34,9 @@ namespace TeamProject {
 
             List<ItemTableFormatter> formatters = new() {
                 Renderer.ItemTableFormatters["Index"],
-                Renderer.ItemTableFormatters["ItemType"],
-                Renderer.ItemTableFormatters["Equip"],
+                new ItemTableFormatter("", "개수", 5, i => (i.StackCount.HasValue ? i.StackCount.Value : 1).ToString()), // [우진영] 상점 테스트 용...
                 Renderer.ItemTableFormatters["Name"],
+                Renderer.ItemTableFormatters["ItemType"],
                 Renderer.ItemTableFormatters["Desc"],
             };
             row = Renderer.DrawItemList(++row, Game.Player.Inventory.Items, formatters);

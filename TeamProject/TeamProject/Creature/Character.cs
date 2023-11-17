@@ -12,7 +12,7 @@ namespace TeamProject {
         public float Defense => DefaultDefense + defenseModifier;
         public float MpMax => DefaultMpMax + mpMaxModifier;
         public float Critical => DefaultCritical + criticalModifier;
-        public float Avoid => DefaultCritical + avoidModifier;
+        public float Avoid => DefaultAvoid + avoidModifier;
 
         public int NextLevelExp;
         public int TotalExp;
@@ -27,6 +27,7 @@ namespace TeamProject {
             }
         }
         public Inventory Inventory { get; }
+        public Equipment Equipment { get; }
 
         public Character(string name, string job, int level, int damage, int defense, int hp, int gold, float critical, float avoid)
         {
@@ -39,11 +40,14 @@ namespace TeamProject {
             DefaultCritical = critical;
             DefaultAvoid = avoid;
             Gold = gold;
+            
             Inventory = new Inventory(this);
+            Equipment = new Equipment();
             NextLevelExp = 100;
             TotalExp = 0;
             Hp = HpMax;
         }
+
         public override void Attack(Creature creature)
         {
             Console.WriteLine();
