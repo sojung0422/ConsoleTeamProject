@@ -11,13 +11,19 @@ namespace TeamProject {
         public override void EnterScene() {
             // #1. 선택지 설정.
             Options.Clear();
-            // ...
+            Options.Add(Managers.Scene.GetOption("Back"));
 
             DrawScene();
         }
 
         public override void NextScene() {
-
+            while (true) {
+                DrawScene();
+                if (!int.TryParse(Console.ReadLine(), out int index)) continue;
+                if (index < 0 || Options.Count < index) continue;
+                Options[index].Execute();
+                break;
+            }
         }
 
         protected override void DrawScene() {
@@ -25,6 +31,15 @@ namespace TeamProject {
             int row = 4;
             row = Renderer.Print(row, "이 곳은 인벤토리");
             row = Renderer.Print(row, "인벤토리 정보를 보여줍니다.");
+
+            List<ItemTableFormatter> formatters = new() {
+                Renderer.ItemTableFormatters["Index"],
+                Renderer.ItemTableFormatters["Equip"],
+                Renderer.ItemTableFormatters["Name"],
+                Renderer.ItemTableFormatters["Desc"],
+            };
+            row = Renderer.DrawItemList(++row, Program.player.Inventory.Items, formatters, Program.player.Inventory);
+
             Renderer.PrintOptions(++row, Options, true);
         }
 

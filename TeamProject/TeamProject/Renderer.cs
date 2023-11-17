@@ -16,6 +16,8 @@ namespace TeamProject {
 
         #region Fields
 
+        public static Dictionary<string, ItemTableFormatter> ItemTableFormatters = new();
+
         private static int width;       // 화면 크기.
         private static int height;      // 화면 크기.
 
@@ -27,6 +29,14 @@ namespace TeamProject {
             Console.BackgroundColor = bgColor;
             Console.Clear();
             Console.OutputEncoding = Encoding.UTF8;
+
+            ItemTableFormatters["Index"] = new("Index", "", 2, null);
+            ItemTableFormatters["Equip"] = new("Equip", "", 3, null);
+            ItemTableFormatters["Name"] = new("Name", "이름", 20, i => i.Name);
+            //ItemTableFormatters["Effect"] = new("Effect", "효과", 15, i => i.Effect);
+            ItemTableFormatters["Desc"] = new("Desc", "설명", 50, i => i.Description);
+            ItemTableFormatters["Cost"] = new("Cost", "비용", 10, i => i.Price.ToString());
+            ItemTableFormatters["SellCost"] = new("SellCost", "비용", 10, i => (i.Price * 0.85f).ToString());
         }
 
         #region Print
@@ -84,6 +94,51 @@ namespace TeamProject {
 
         #endregion
 
+        #region Inventory
+        public static int DrawItemList(int startRow, List<Item> items, List<ItemTableFormatter> formatterList, Inventory inventory = null) {
+            // #1. 그리기 준비.
+            int row = startRow;
+
+            // #2. 상위 행 그리기.
+            string s0 = "|";
+            string s1 = "|";
+            for (int i = 0; i < formatterList.Count; i++) {
+                ItemTableFormatter formatter = formatterList[i];
+                s0 += $"{formatter.GetString()}|";
+                s1 += $"{formatter.GetString(index: -1)}|";
+            }
+            Print(row++, s0);
+            Print(row++, s1);
+
+            // #3. 본문 행 그리기.
+            for (int i = 0; i < items.Count; i++) {
+                Item item = items[i];
+                string content = "|";
+                for (int j = 0; j < formatterList.Count; j++) {
+                    ItemTableFormatter formatter = formatterList[j];
+                    if (formatter.key == "Index") content += $"{formatter.GetString(index: i + 1)}|";
+                    else if (formatter.key == "Equip") content += $"{formatter.GetString(item, inventory: inventory)}|";
+                    else content += $"{formatter.GetString(item)}|";
+                }
+                Print(row++, content);
+            }
+            return row;
+        }
+        public static string GetInventoryElementString(int maxLength, string data, bool isTitle = false) {
+            int dataLength = GetPrintingLength(data);
+            if (data == "=") return new string('=', maxLength);
+            StringBuilder builder = new();
+            int spaceCount = maxLength - dataLength;
+            int margin = isTitle ? 2 : 1;
+            int leftCount = Math.Clamp(spaceCount / 2, 0, margin);
+            builder.Append(' ', leftCount);
+            builder.Append(data);
+            builder.Append(' ', spaceCount - leftCount);
+            return builder.ToString();
+        }
+
+        #endregion
+
         #region Border
 
         public static void DrawBorder(string title = "") {
@@ -120,5 +175,31 @@ namespace TeamProject {
         private static bool IsKorean(char c) => '가' <= c && c <= '힣';
 
         #endregion
+    }
+
+    public class ItemTableFormatter {
+        public string key;
+        public string description;
+        public int length;
+        public Func<Item, string> dataSelector;
+
+        public ItemTableFormatter(string key, string description, int length, Func<Item, string> dataSelector) {
+            this.key = key;
+            this.description = description;
+            this.length = length;
+            this.dataSelector = dataSelector;
+        }
+
+        public string GetString(Item item = null, int index = -2, Inventory inventory = null) {
+            if (index == -1) return Renderer.GetInventoryElementString(length, "=", false);
+            else if (index >= 0) return Renderer.GetInventoryElementString(length, index.ToString(), false);
+            if (inventory != null && item != null) {
+                // TODO:: 장착 여부 확인해야 함.
+                //return Renderer.GetInventoryElementString(length, inventory.IsEquipped(item) ? "[E]" : "", false);
+                return Renderer.GetInventoryElementString(length, "", false);
+            }
+            if (item == null) return Renderer.GetInventoryElementString(length, description, true);
+            return Renderer.GetInventoryElementString(length, dataSelector(item), false);
+        }
     }
 }
