@@ -3,6 +3,8 @@
 public class Game
 {
     public static Character Player { get; set; }
+    public static Monster Monster { get; set; }
+
     public static Stage Stage = new Stage();
 
     public static Character[] Characters =
@@ -10,6 +12,13 @@ public class Game
         new Character("", "전사", 1, 10, 5, 100, 1500, 0.1f, 0.1f),
         new Character("", "마법사", 1, 6, 2, 80, 3000, 0.2f, 0.2f),
         new Character("", "도적", 1, 8, 4, 90, 5000, 0.3f, 0.3f)
+    };
+    // 오태
+    public static Monster[] Monsters =
+    {
+        new Monster("슬라임", 10, 10, 2, 0, 0.2f, 0.2f),
+        new Monster("트롤", 20, 20, 3, 0, 0.3f, 0.3f),
+        new Monster("헬하운드", 30, 30, 5, 0, 0.2f, 0.2f)
     };
 
     public static Item[] Items =

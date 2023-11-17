@@ -11,8 +11,8 @@ namespace TeamProject {
         public float Damage => DefaultDamage + damageModifier;
         public float Defense => DefaultDefense + defenseModifier;
         public float MpMax => DefaultMpMax + mpMaxModifier;
-        public float Critical => DefaultCritical + criticalModifier; // 오태
-        public float Avoid => DefaultCritical + avoidModifier; // 오태
+        public float Critical => DefaultCritical + criticalModifier;
+        public float Avoid => DefaultCritical + avoidModifier;
 
         public int Gold { get; protected set; }
         public override float Hp {
@@ -25,7 +25,7 @@ namespace TeamProject {
         }
         public Inventory Inventory { get; }
 
-        public Character(string name, string job, int level, int damage, int defense, int hp, int gold, float critical, float avoid) // 오태
+        public Character(string name, string job, int level, int damage, int defense, int hp, int gold, float critical, float avoid)
         {
             Name = name;
             Job = job;
@@ -40,7 +40,7 @@ namespace TeamProject {
 
             Hp = HpMax;
         }
-        public override void Attack(Creature creature) // 오태
+        public override void Attack(Creature creature)
         {
             Console.WriteLine();
             Console.WriteLine($"{Name}이 {creature.Name}을 공격");
@@ -72,7 +72,7 @@ namespace TeamProject {
         }
 
         //확률에 따라 발생하는 메서드
-        private bool RandomChance(float probability) // 오태
+        private bool RandomChance(float probability)
         {
             Random random = new Random();
             float randomValue = (float)random.NextDouble(); // 0.0에서 1.0 사이의 난수
@@ -90,7 +90,7 @@ namespace TeamProject {
         private float damageModifier;
         private float defenseModifier;
         private float mpMaxModifier;
-        private float criticalModifier; // 오태
-        private float avoidModifier; // 오태
+        private float criticalModifier;
+        private float avoidModifier;
     }
 }

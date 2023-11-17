@@ -18,19 +18,19 @@ namespace TeamProject {
                 else hp = value;
             }
         }
-        public Monster(string name, float hp, float damage, float defense, float mp, float critical, float avoid) // 오태
+        public Monster(string name, float hp, float damage, float defense, float mp, float critical, float avoid)
         {
             Name = name;
             Hp = hp;
             DefaultHpMax = hp;
             DefaultDamage = damage;
             DefaultDefense = defense;
-            DefaultCritical = critical; // 오태
-            DefaultAvoid = avoid; // 오태
+            DefaultCritical = critical;
+            DefaultAvoid = avoid;
             DefaultMpMax = mp;
         }
 
-        public override void Attack(Creature creature) // 오태
+        public override void Attack(Creature creature)
         {
             Console.WriteLine($"{Name}이 {creature.Name}을 공격");
 
@@ -61,7 +61,7 @@ namespace TeamProject {
         }
 
         //확률에 따라 발생하는 메서드
-        private bool RandomChance(float probability) // 오태
+        private bool RandomChance(float probability)
         {
             Random random = new Random();
             float randomValue = (float)random.NextDouble(); // 0.0에서 1.0 사이의 난수
