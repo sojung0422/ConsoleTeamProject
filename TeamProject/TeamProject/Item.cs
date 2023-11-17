@@ -34,6 +34,16 @@ namespace TeamProject
             StackCount = stackCount;
         }
 
+        public Item(Item reference)
+        {
+            ID = reference.ID;
+            Name = reference.Name;
+            Description = reference.Description;
+            Price = reference.Price;
+            Type = reference.Type;
+            StackCount = reference.StackCount;
+        }
+
         //아이템이 사용될 때 호출될 이벤트
         //장비라면 장착, 소모품이라면 사용되고 stack cnt -1
         protected event Action<Character>? OnUsed;
@@ -48,7 +58,7 @@ namespace TeamProject
 
         public void Use(Character owner) => OnUsed?.Invoke(owner);
         public void OnAdd(Character owner, Item duplicatedItem = null) => OnAdded?.Invoke(owner, duplicatedItem);
-
         public void OnRemove(Character owner) => OnRemoved?.Invoke(owner);
+        public virtual Item DeepCopy() => new Item(this);
     }
 }

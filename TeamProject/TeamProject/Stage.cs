@@ -19,6 +19,11 @@ namespace TeamProject
             MonsterMinCount = 1;
             MonsterMaxCount = 4;
         }
+        public Monster GetRandomMonster() // 오태
+        {
+            Random random = new Random();
+            return Game.Monsters[random.Next(0, Game.Monsters.Length)];
+        }
 
         public List<Creature> MonsterSpawn()
         {
@@ -31,8 +36,10 @@ namespace TeamProject
             // 몬스터 생성
             for(int i = 0; i < MonsterCount; i++)
             {
-                Creature monster;
-                switch (random.Next(0, 3))
+                Creature monster = GetRandomMonster();
+                Monsters.Add(monster);
+                //Creature monster;
+                /*switch (random.Next(0, 3))
                 {
                     case 0:
                         monster = new Monster("Slime", 10, 10, 2, 0, 0.2f, 0.2f);
@@ -46,7 +53,7 @@ namespace TeamProject
                         monster = new Monster("Hellhound", 30, 30, 5, 0, 0.2f, 0.2f);
                         Monsters.Add(monster);
                         break;
-                }
+                }*/
             }
             return Monsters;
         }

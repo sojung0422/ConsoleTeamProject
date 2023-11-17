@@ -27,7 +27,14 @@ public class Gear : Item
         IsEquip = isEquip;
     }
 
+    public Gear(Gear reference) : base(reference) {
+        GearType = reference.GearType;
+        GearState = reference.GearState;
+        IsEquip = reference.IsEquip;
+    }
+
     // [박상원]
     // 장비 슬롯이 비어있는 경우, 빈 아이템 생성
     public static Gear Empty = new(-1, string.Empty, string.Empty, 0, GearType.None, 0, 0, 0, 0, 0);
+    public override Item DeepCopy() => new Gear(this);
 }

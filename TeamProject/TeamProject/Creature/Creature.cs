@@ -13,8 +13,9 @@ namespace TeamProject {
         public float DefaultDamage { get; set; }
         public float DefaultDefense { get; set; }
         public float DefaultMpMax { get; protected set; }
-        public float DefaultCritical { get; set; } //오태
-        public float DefaultAvoid { get; set; } //오태
+        public float DefaultCritical { get; set; }
+        public float DefaultAvoid { get; set; }
+        
         // 현재 정보: 게임 중 변할 수 있는 정보입니다.
         public int Level { get; protected set; }
         public virtual float Hp {
