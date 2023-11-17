@@ -75,6 +75,7 @@ namespace TeamProject
                 {
                     Console.WriteLine("공격할 몬스터를 다시 입력해주세요.");
                     input = Console.ReadLine();
+                    int.TryParse(input, out monsterNum);
                 }
                 Player.Attack(Monsters[monsterNum - 1]);
                 Thread.Sleep(1000);
@@ -97,7 +98,7 @@ namespace TeamProject
                 }
 
                 if (inputStr == "o")
-                    break;
+                    return;
             }
 
             // 전투 종료
@@ -124,7 +125,7 @@ namespace TeamProject
                 {
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                     Console.WriteLine($"{i + 1}. {monster.Name} Dead");
-                    Console.ResetColor();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                 }
                 else
                     Console.WriteLine($"{i + 1}. {monster.Name} Hp : {monster.Hp}");
@@ -170,6 +171,7 @@ namespace TeamProject
 
             Console.WriteLine("아무 키나 입력하여 던전 나가기");
             Console.ReadLine();
+            return;
         }
     }
 }

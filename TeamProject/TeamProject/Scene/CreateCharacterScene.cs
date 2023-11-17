@@ -167,8 +167,8 @@ public class CreateCharacterScene : Scene
             (int)selectPlayer.DefaultDefense,
             (int)selectPlayer.DefaultHpMax,
             selectPlayer.Gold,
-            0.0f,
-            0.0f
+            selectPlayer.Critical,
+            selectPlayer.Avoid
         );
 
         // 게임 클래스에 저장된 아이템 등록

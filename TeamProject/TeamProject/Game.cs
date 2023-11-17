@@ -18,7 +18,7 @@ public class Game
         new Gear(3, "사슬 갑옷", "철사 고리를 엮어 만든 ", 2000, "방어구", 12),
         new ConsumeItem(4, "체력 포션", "체력을 회복하는 물약", 1500, 1),
     };
-
+  
     /// <summary>
     /// 게임 시작
     /// </summary>
