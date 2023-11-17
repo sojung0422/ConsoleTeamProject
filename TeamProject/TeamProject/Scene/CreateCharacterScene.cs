@@ -9,12 +9,7 @@ public class CreateCharacterScene : Scene
         Exit
     }
 
-    private Character[] players =
-    {
-        new Character("", "전사", 1, 10, 5, 100, 1500),
-        new Character("", "마법사", 1, 6, 2, 80, 3000),
-        new Character("", "도적", 1, 8, 4, 90, 5000)
-    };
+   
     private Character selectPlayer;
 
     public override string Title { get; protected set; } = "캐릭터 선택창";
@@ -153,7 +148,7 @@ public class CreateCharacterScene : Scene
         }
 
         // 직업 결정
-        selectPlayer = players[idx];
+        selectPlayer = Game.characters[idx];
         NextStep();
     }
 
@@ -166,13 +161,15 @@ public class CreateCharacterScene : Scene
     {
         Game.player = new Character
         (
-            createName, 
-            selectPlayer.Job, 
-            selectPlayer.Level, 
+            createName,
+            selectPlayer.Job,
+            selectPlayer.Level,
             (int)selectPlayer.DefaultDamage,
             (int)selectPlayer.DefaultDefense,
             (int)selectPlayer.DefaultHpMax,
-            selectPlayer.Gold
+            selectPlayer.Gold,
+            0.0f,
+            0.0f
         );
         Game.player.Inventory.Add(new Item(1, "Test01", "Test01아이템임니다", 10));
         Game.player.Inventory.Add(new Item(2, "Test02", "Test02아이템임니다", 10));
