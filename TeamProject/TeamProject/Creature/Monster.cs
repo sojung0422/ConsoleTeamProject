@@ -37,6 +37,7 @@ namespace TeamProject {
             if (RandomChance(creature.DefaultAvoid)) // 상대방이 회피 했을때
             {
                 Console.WriteLine($"{creature.Name}가 회피했습니다!");
+                Console.WriteLine();
             }
             else // 공격에 성공 했을 때
             {
@@ -53,7 +54,7 @@ namespace TeamProject {
 
         public override void OnDamaged(float damage)
         {
-            int finalDamage = Math.Clamp((int)damage - (int)DefaultDefense / 2, 0, (int)DefaultDefense);
+            int finalDamage = Math.Clamp((int)damage - (int)DefaultDefense / 2, 0, (int)Hp);
             Console.WriteLine($"{Name}이 {finalDamage}의 데미지를 입음");
             Console.WriteLine();
             Hp -= finalDamage;
