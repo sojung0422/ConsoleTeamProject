@@ -24,7 +24,7 @@ public class SceneManager {
         Options.Add("Inventory", new("Inventory", "인벤토리", () => EnterScene<InventoryInfoScene>()));
         Options.Add("Equipment", new("Equipment", "장비관리", () => EnterScene<EquipmentScene>()));
         Options.Add("Shop", new("Shop", "상점", null));
-        Options.Add("Dungeon", new("Dungeon", "던전입구", null));
+        Options.Add("Dungeon", new("Dungeon", "던전입구", () => EnterScene<BattleScene>()));
         Options.Add("Rest", new("Rest", "휴식하기", null));
     }
 
