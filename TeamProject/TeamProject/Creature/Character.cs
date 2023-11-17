@@ -14,6 +14,9 @@ namespace TeamProject {
         public float Critical => DefaultCritical + criticalModifier;
         public float Avoid => DefaultCritical + avoidModifier;
 
+        public int NextLevelExp;
+        public int TotalExp;
+
         public int Gold { get; protected set; }
         public override float Hp {
             get => hp;
@@ -37,7 +40,8 @@ namespace TeamProject {
             DefaultAvoid = avoid;
             Gold = gold;
             Inventory = new Inventory(this);
-
+            NextLevelExp = 100;
+            TotalExp = 0;
             Hp = HpMax;
         }
         public override void Attack(Creature creature)
@@ -84,6 +88,34 @@ namespace TeamProject {
         {
             if (hp <= 0) return true;
             return false;
+        }
+
+        public void ChangeExp(int expAmount)
+        {
+            int levelsToAdvance = 0;
+            TotalExp += expAmount;
+            while(TotalExp >= NextLevelExp)
+            {
+                TotalExp -= NextLevelExp;
+                levelsToAdvance++;
+                NextLevelExp += 50;
+            }
+            LevelUp(levelsToAdvance);
+        }
+
+        public void LevelUp(int levelsToAdvance)
+        {
+            if (levelsToAdvance == 0)
+                return;
+            Level += levelsToAdvance;
+            // 임시 -> 레벨업당 공1, 방어0.5 증가
+            DefaultDamage += 1.0f * levelsToAdvance;
+            DefaultDefense += 0.5f * levelsToAdvance;
+
+            // 출력
+            Console.WriteLine($"레벨 {Level- levelsToAdvance} -> {Level}");
+            Console.WriteLine($"공격력 {Damage - 1.0f * levelsToAdvance} -> {Damage}");
+            Console.WriteLine($"방어력 {Defense - 0.5f * levelsToAdvance} -> {Defense}");
         }
 
         private float hpMaxModifier;

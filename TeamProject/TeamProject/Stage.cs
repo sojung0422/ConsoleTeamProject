@@ -60,8 +60,14 @@ namespace TeamProject
 
         public void Reward()
         {
-            // 스테이지별 보상
-            Console.WriteLine("보상 지급");
+            // 스테이지 보상
+            //아이템
+
+            //경험치 : 스테이지*20
+            int expReward = StageLevel * 100;
+            Game.Player.ChangeExp(expReward);
+
+            // 스테이지 1 증가
             StageLevel++;
         }
     }
