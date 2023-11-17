@@ -9,7 +9,7 @@ namespace TeamProject
 {
     public class BattleScene : Scene
     {
-        public override string Title { get; protected set; } = "던전";
+        public override string Title { get; protected set; } = "던 전";
         public override void EnterScene()
         {
             Options.Clear();
@@ -23,8 +23,8 @@ namespace TeamProject
         }
         protected override void DrawScene()
         {
-            Battle battle = new Battle(Game.Player);
-            battle.BattleStart();
+                Battle battle = new Battle(Game.Player);
+                battle.BattleStart();
         }
     }
 }
