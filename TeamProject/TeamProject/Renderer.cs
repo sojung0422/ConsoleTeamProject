@@ -34,8 +34,8 @@ namespace TeamProject {
             ItemTableFormatters["Equip"] = new("Equip", "", 3, null);
             ItemTableFormatters["Name"] = new("Name", "이름", 20, i => i.Name);
             ItemTableFormatters["ItemType"] = new("ItemType", "타입", 15, i => {
-                if (i is Gear gear) return gear.GearType.ToString();
-                else return i.Type.ToString();
+                if (i is Gear gear) return gear.GearType.String();
+                else return i.Type.String();
             });
             //ItemTableFormatters["Effect"] = new("Effect", "효과", 15, i => i.Effect);
             ItemTableFormatters["Desc"] = new("Desc", "설명", 50, i => i.Description);
