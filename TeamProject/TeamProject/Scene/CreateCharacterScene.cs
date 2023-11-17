@@ -2,17 +2,16 @@
 
 public class CreateCharacterScene : Scene
 {
+    public override string Title { get; protected set; } = "캐릭터 선택창";
+
     private enum CreateStep
     {
         Name,
         Job,
         Exit
     }
-
    
     private Character selectPlayer;
-
-    public override string Title { get; protected set; } = "캐릭터 선택창";
 
     private CreateStep step = CreateStep.Name;
     private string createName = string.Empty;
@@ -148,7 +147,7 @@ public class CreateCharacterScene : Scene
         }
 
         // 직업 결정
-        selectPlayer = Game.characters[idx];
+        selectPlayer = Game.Characters[idx];
         NextStep();
     }
 
@@ -159,7 +158,7 @@ public class CreateCharacterScene : Scene
     /// </summary>
     private void CreateCharacter()
     {
-        Game.player = new Character
+        Game.Player = new Character
         (
             createName,
             selectPlayer.Job,
@@ -171,8 +170,12 @@ public class CreateCharacterScene : Scene
             0.0f,
             0.0f
         );
-        Game.player.Inventory.Add(new Item(1, "Test01", "Test01아이템임니다", 10));
-        Game.player.Inventory.Add(new Item(2, "Test02", "Test02아이템임니다", 10));
+
+        // 게임 클래스에 저장된 아이템 등록
+        for (int i = 0; i < Game.Items.Length; i++)
+        {
+            Game.Player.Inventory.Add(Game.Items[i]);
+        }
     }
 
     private bool ManageInput()

@@ -79,15 +79,21 @@ namespace TeamProject {
             return line;
         }
 
-        public static void PrintOptions(int line, List<ActionOption> options, bool fromZero = true) {
+        public static void PrintOptions(int line, List<ActionOption> options, bool fromZero = true, int selectionLine = 0) {
             for (int i = 0; i < options.Count; i++) {
                 ActionOption option = options[i];
                 Console.SetCursorPosition(printMargin, line);
-                Console.ForegroundColor = ConsoleColor.Green;
+
+                // [박상원] 선택된 옵션인 경우 초록색 글씨로 표현
+                if (selectionLine == i)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+
                 Console.Write(fromZero ? i : i + 1);
-                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write(". ");
                 Console.Write(option.Description);
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 line++;
             }
         }
