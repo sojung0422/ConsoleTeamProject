@@ -17,11 +17,11 @@ namespace TeamProject {
         }
 
         public override void NextScene() {
-            while (true) {
-                DrawScene();
-                if (!int.TryParse(Console.ReadLine(), out int index)) continue;
-                if (index < 0 || Options.Count < index) continue;
-                Options[index].Execute();
+            while (true)
+            {
+                var key = Console.ReadKey(true);
+                if (key.Key != ConsoleKey.Escape) continue;
+                Options[0].Execute();
                 break;
             }
         }
@@ -34,6 +34,7 @@ namespace TeamProject {
 
             List<ItemTableFormatter> formatters = new() {
                 Renderer.ItemTableFormatters["Index"],
+                Renderer.ItemTableFormatters["ItemType"],
                 Renderer.ItemTableFormatters["Equip"],
                 Renderer.ItemTableFormatters["Name"],
                 Renderer.ItemTableFormatters["Desc"],
@@ -41,6 +42,7 @@ namespace TeamProject {
             row = Renderer.DrawItemList(++row, Game.Player.Inventory.Items, formatters);
 
             Renderer.PrintOptions(++row, Options, true);
+            Renderer.PrintKeyGuide("[ESC : 뒤로가기]");
         }
 
 

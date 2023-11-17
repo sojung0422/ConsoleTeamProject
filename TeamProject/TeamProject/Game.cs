@@ -3,6 +3,7 @@
 public class Game
 {
     public static Character Player { get; set; }
+    public static Stage Stage = new Stage();
 
     public static Character[] Characters =
     {
@@ -13,11 +14,14 @@ public class Game
 
     public static Item[] Items =
     {
-        new Gear(1, "철제 검", "공격에 사용되는 무기", 1500, "무기", 12),
-        new Gear(2, "원형 방패", "적의 공격을 방어하는 방패", 1000, "방어구", 12),
-        new Gear(3, "사슬 갑옷", "철사 고리를 엮어 만든 ", 2000, "방어구", 12),
-        new ConsumeItem(4, "체력 포션", "체력을 회복하는 물약", 150, 1),
-        new ConsumeItem(5, "마나 포션", "마나를 회복하는 물약", 150, 1),
+        new Gear(1, "철제 검", "공격에 사용되는 무기", 1500, GearType.Weapon, 12),
+        new Gear(2, "원형 방패", "적의 공격을 방어하는 방패", 1000, GearType.Shield, 6),
+        new Gear(3, "사슬 갑옷", "철사 고리를 엮어 만든 갑옷", 2000, GearType.Armor, 4),
+        new Gear(4, "다이아몬드 검", "더 쎈 무기", 3000, GearType.Weapon, 24),
+        new Gear(5, "다이아몬드 방패", "더 단단한 방패", 2000, GearType.Shield, 12),
+        new Gear(6, "다이아몬드 갑옷", "딴딴 갑옷 ", 4000, GearType.Armor, 8),
+        new ConsumeItem(7, "체력 포션", "체력을 회복하는 물약", 150, 1),
+        new ConsumeItem(8, "마나 포션", "마나를 회복하는 물약", 150, 1),
     };
   
     /// <summary>
