@@ -102,6 +102,7 @@ public class EquipmentScene : Scene
             OnEquipCommand(commands);
         }
 
+        // TODO: 깔끔히 do-while 탈출을 못한 추후 최적화를 위해 수정이 필요할수도..
         return true;
     }
 
