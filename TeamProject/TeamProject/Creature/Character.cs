@@ -12,7 +12,7 @@ namespace TeamProject {
         public float Defense => DefaultDefense + defenseModifier;
         public float MpMax => DefaultMpMax + mpMaxModifier;
         public float Critical => DefaultCritical + criticalModifier;
-        public float Avoid => DefaultCritical + avoidModifier;
+        public float Avoid => DefaultAvoid + avoidModifier;
 
         public int Gold { get; protected set; }
         public override float Hp {
