@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeamProject {
     public class InventoryInfoScene : Scene {
-        public override string Title { get; protected set; } = "인벤토리";
+        public override string Title { get; protected set; } = "인 벤 토 리";
 
         public override void EnterScene() {
             // #1. 선택지 설정.
@@ -38,7 +38,7 @@ namespace TeamProject {
                 Renderer.ItemTableFormatters["Name"],
                 Renderer.ItemTableFormatters["Desc"],
             };
-            row = Renderer.DrawItemList(++row, Game.player.Inventory.Items, formatters, Game.player.Inventory);
+            row = Renderer.DrawItemList(++row, Game.Player.Inventory.Items, formatters, Game.Player.Inventory);
 
             Renderer.PrintOptions(++row, Options, true);
         }
