@@ -23,7 +23,7 @@ namespace TeamProject
         }
         protected override void DrawScene()
         {
-            Battle battle = new Battle(Game.player);
+            Battle battle = new Battle(Game.Player);
             battle.BattleStart();
         }
     }
