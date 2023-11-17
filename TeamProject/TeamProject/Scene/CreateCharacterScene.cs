@@ -164,7 +164,7 @@ public class CreateCharacterScene : Scene
     /// </summary>
     private void CreateCharacter()
     {
-        Program.player = new Character
+        Game.player = new Character
         (
             createName, 
             selectPlayer.Job, 
@@ -174,6 +174,8 @@ public class CreateCharacterScene : Scene
             (int)selectPlayer.DefaultHpMax,
             selectPlayer.Gold
         );
+        Game.player.Inventory.Add(new Item(1, "Test01", "Test01아이템임니다", 10));
+        Game.player.Inventory.Add(new Item(2, "Test02", "Test02아이템임니다", 10));
     }
 
     private bool ManageInput()
