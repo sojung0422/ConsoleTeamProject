@@ -174,6 +174,8 @@ public class CreateCharacterScene : Scene
             (int)selectPlayer.DefaultHpMax,
             selectPlayer.Gold
         );
+        Program.player.Inventory.Add(new Item(1, "Test01", "Test01아이템임니다", 10));
+        Program.player.Inventory.Add(new Item(2, "Test02", "Test02아이템임니다", 10));
     }
 
     private bool ManageInput()

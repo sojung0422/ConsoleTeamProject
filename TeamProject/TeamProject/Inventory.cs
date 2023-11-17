@@ -9,6 +9,7 @@ namespace TeamProject
     public class Inventory
     {
         List<Item> items;
+        public List<Item> Items => items;
         /// <summary>
         /// 이 인벤토리의 주인인 Character 클래스를 가리킵니다.
         /// </summary>
