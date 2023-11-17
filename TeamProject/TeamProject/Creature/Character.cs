@@ -66,7 +66,7 @@ namespace TeamProject {
         public override void OnDamaged(float damage)
         {
             int finalDamage = Math.Clamp((int)damage - (int)DefaultDefense / 2, 0, (int)Hp);
-            Console.WriteLine($"{Name}이 {finalDamage}의 데미지를 입음");
+            Console.WriteLine($"{finalDamage}의 데미지를 입음");
             Console.WriteLine();
             Hp -= finalDamage;
         }

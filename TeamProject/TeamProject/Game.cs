@@ -3,6 +3,7 @@
 public class Game
 {
     public static Character Player { get; set; }
+    public static Stage Stage = new Stage();
 
     public static Character[] Characters =
     {
