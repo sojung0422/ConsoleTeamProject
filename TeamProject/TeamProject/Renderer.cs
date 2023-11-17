@@ -33,6 +33,10 @@ namespace TeamProject {
             ItemTableFormatters["Index"] = new("Index", "", 2, null);
             ItemTableFormatters["Equip"] = new("Equip", "", 3, null);
             ItemTableFormatters["Name"] = new("Name", "이름", 20, i => i.Name);
+            ItemTableFormatters["ItemType"] = new("ItemType", "타입", 15, i => {
+                if (i is Gear gear) return gear.GearType.String();
+                else return i.Type.String();
+            });
             //ItemTableFormatters["Effect"] = new("Effect", "효과", 15, i => i.Effect);
             ItemTableFormatters["Desc"] = new("Desc", "설명", 50, i => i.Description);
             ItemTableFormatters["Cost"] = new("Cost", "비용", 10, i => i.Price.ToString());
@@ -90,12 +94,21 @@ namespace TeamProject {
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
 
-                Console.Write(fromZero ? i : i + 1);
-                Console.Write(". ");
+                //Console.Write(fromZero ? i : i + 1);
+                //Console.Write(". ");
                 Console.Write(option.Description);
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 line++;
             }
+        }
+
+        /// <summary>
+        /// 키 조작 설명문 고정 위치의 출력
+        /// </summary>
+        /// <param name="keyGuide">출력할 설명문</param>
+        public static void PrintKeyGuide(string keyGuide)
+        {
+            Print(height - 2, keyGuide);
         }
 
         #endregion

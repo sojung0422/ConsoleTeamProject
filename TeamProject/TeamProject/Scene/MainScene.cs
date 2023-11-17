@@ -25,10 +25,11 @@ public class MainScene : Scene {
     {
         do
         {
-            DrawScene();
+            Renderer.PrintOptions(6, Options, true, selectionIdx);
         }
         while (ManageInput());
 
+        // 세진님의 조작 처리 기능
         //while (true) {
         //    DrawScene();
         //    if (!int.TryParse(Console.ReadLine(), out int index)) continue;
@@ -43,6 +44,7 @@ public class MainScene : Scene {
         Renderer.Print(3, "스파르타 마을에 오신 여러분 환영합니다.");
         Renderer.Print(4, "이 곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.");
         Renderer.PrintOptions(6, Options, true, selectionIdx);
+        Renderer.PrintKeyGuide("[방향키 ↑ ↓: 선택지 이동] [Enter: 선택]");
     }
 
     // ================ 키 조작 관련 추가  ================ //

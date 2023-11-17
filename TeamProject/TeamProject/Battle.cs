@@ -66,9 +66,8 @@ namespace TeamProject
                 // player 턴
                 Console.WriteLine();
                 //Console.WriteLine("0. hp포션사용");
-                Console.WriteLine("던전 포기 : q");
                 Console.WriteLine("공격할 몬스터를 선택해주세요.");
-
+                Renderer.PrintKeyGuide("[도망가기 : Q]");
 
                 int monsterNum = -1;
                 var input = Console.ReadLine();
