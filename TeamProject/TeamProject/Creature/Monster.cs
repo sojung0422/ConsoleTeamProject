@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace TeamProject {
-    public class Monster : Creature {
+    public class Monster : Creature 
+    {
         //public string 처치보상;
         public override float Hp
         {
@@ -29,6 +30,18 @@ namespace TeamProject {
             DefaultAvoid = avoid;
             DefaultMpMax = mp;
         }
+        public Monster(Monster other) // 새로운 몬스터 인스턴스를 생성하기 위한 복사 생성자 추가
+        {
+            Name = other.Name;
+            Hp = other.Hp;
+            DefaultHpMax = other.DefaultHpMax;
+            DefaultDamage = other.DefaultDamage;
+            DefaultDefense = other.DefaultDefense;
+            DefaultCritical = other.DefaultCritical;
+            DefaultAvoid = other.DefaultAvoid;
+            DefaultMpMax = other.DefaultMpMax;
+        }
+
 
         public override void Attack(Creature creature)
         {
