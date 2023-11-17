@@ -14,12 +14,12 @@ public class Game
 
     public static Item[] Items =
     {
-        new Gear(1, "철제 검", "공격에 사용되는 무기", 1500, GearType.Weapon, 12),
-        new Gear(2, "원형 방패", "적의 공격을 방어하는 방패", 1000, GearType.Shield, 6),
-        new Gear(3, "사슬 갑옷", "철사 고리를 엮어 만든 갑옷", 2000, GearType.Armor, 4),
-        new Gear(4, "다이아몬드 검", "더 쎈 무기", 3000, GearType.Weapon, 24),
-        new Gear(5, "다이아몬드 방패", "더 단단한 방패", 2000, GearType.Shield, 12),
-        new Gear(6, "다이아몬드 갑옷", "딴딴 갑옷 ", 4000, GearType.Armor, 8),
+        new Gear(1, "철제 검", "공격에 사용되는 무기", 1500, GearType.Weapon, 12, 0, 0, 0),
+        new Gear(2, "원형 방패", "적의 공격을 방어하는 방패", 1000, GearType.Shield, 0, 6, 0, 0),
+        new Gear(3, "사슬 갑옷", "철사 고리를 엮어 만든 갑옷", 2000, GearType.Armor, 0, 3, 0, 5),
+        new Gear(4, "다이아몬드 검", "더 쎈 무기", 3000, GearType.Weapon, 33, 0, 12, 0),
+        new Gear(5, "다이아몬드 방패", "더 단단한 방패", 2000, GearType.Shield, 0, 15, 0, 0),
+        new Gear(6, "다이아몬드 갑옷", "딴딴 갑옷 ", 4000, GearType.Armor, 8, 8, 8, 8),
         new ConsumeItem(7, "체력 포션", "체력을 회복하는 물약", 150, 1),
         new ConsumeItem(8, "마나 포션", "마나를 회복하는 물약", 150, 1),
     };

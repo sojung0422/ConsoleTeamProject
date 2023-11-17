@@ -10,11 +10,11 @@ namespace TeamProject {
         // 기본 정보: 게임 내내 변하지 않는 정보입니다.
         public string Name { get; protected set; }
         public float DefaultHpMax { get; protected set; }
-        public float DefaultDamage { get; protected set; }
-        public float DefaultDefense { get; protected set; }
+        public float DefaultDamage { get; set; }
+        public float DefaultDefense { get; set; }
         public float DefaultMpMax { get; protected set; }
-        public float DefaultCritical { get; protected set; } //오태
-        public float DefaultAvoid { get; protected set; } //오태
+        public float DefaultCritical { get; set; } //오태
+        public float DefaultAvoid { get; set; } //오태
         // 현재 정보: 게임 중 변할 수 있는 정보입니다.
         public int Level { get; protected set; }
         public virtual float Hp {

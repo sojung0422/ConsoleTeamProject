@@ -24,6 +24,7 @@ namespace TeamProject {
             }
         }
         public Inventory Inventory { get; }
+        public Equipment Equipment { get; }
 
         public Character(string name, string job, int level, int damage, int defense, int hp, int gold, float critical, float avoid) // 오태
         {
@@ -36,10 +37,13 @@ namespace TeamProject {
             DefaultCritical = critical;
             DefaultAvoid = avoid;
             Gold = gold;
+            
             Inventory = new Inventory(this);
+            Equipment = new Equipment();
 
             Hp = HpMax;
         }
+
         public override void Attack(Creature creature) // 오태
         {
             Console.WriteLine();

@@ -31,14 +31,23 @@ namespace TeamProject {
             Console.OutputEncoding = Encoding.UTF8;
 
             ItemTableFormatters["Index"] = new("Index", "", 2, null);
-            ItemTableFormatters["Equip"] = new("Equip", "", 3, null);
-            ItemTableFormatters["Name"] = new("Name", "이름", 20, i => i.Name);
+            ItemTableFormatters["Name"] = new("Name", "이름", 22, i => {
+                if (i is Gear gear)
+                {
+                    if (gear.IsEquip) return $"[E] {gear.Name}";
+                    else return gear.Name;
+                }
+                else return i.Name;
+            });
             ItemTableFormatters["ItemType"] = new("ItemType", "타입", 15, i => {
                 if (i is Gear gear) return gear.GearType.String();
                 else return i.Type.String();
             });
-            //ItemTableFormatters["Effect"] = new("Effect", "효과", 15, i => i.Effect);
-            ItemTableFormatters["Desc"] = new("Desc", "설명", 50, i => i.Description);
+            ItemTableFormatters["Stat"] = new("Stat", "스탯", 34, i => {
+                if (i is Gear gear) return gear.StatToString();
+                else return string.Empty;
+            });
+            ItemTableFormatters["Desc"] = new("Desc", "설명", 30, i => i.Description);
             ItemTableFormatters["Cost"] = new("Cost", "비용", 10, i => i.Price.ToString());
             ItemTableFormatters["SellCost"] = new("SellCost", "비용", 10, i => (i.Price * 0.85f).ToString());
         }
@@ -114,7 +123,7 @@ namespace TeamProject {
         #endregion
 
         #region Inventory
-        public static int DrawItemList(int startRow, List<Item> items, List<ItemTableFormatter> formatterList) {
+        public static int DrawItemList(int startRow, List<Item> items, List<ItemTableFormatter> formatterList, int selectionIdx = -1) {
             // #1. 그리기 준비.
             int row = startRow;
 
@@ -136,10 +145,18 @@ namespace TeamProject {
                 for (int j = 0; j < formatterList.Count; j++) {
                     ItemTableFormatter formatter = formatterList[j];
                     if (formatter.key == "Index") content += $"{formatter.GetString(i + 1)}|";          // 아이템 번호 출력.
-                    else if (formatter.key == "Equip") content += $"{formatter.GetString(false)}|";     // 장착 여부 출력.    // TODO:: 장착 여부를 확인할 수 없어 일단 false로 두었습니다.
+                    //else if (formatter.key == "Type") content += $"{formatter.GetString(false)}|";    // [박상원] 타입 대신 이름 앞에 출력하도록 주석 처리함
                     else content += $"{formatter.GetString(item)}|";                                    // 아이템 정보 출력.
                 }
+
+                // 선택 부분 아이템 글씨 컬러 바꾸기
+                if (selectionIdx == i)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+
                 Print(row++, content);
+                Console.ForegroundColor = ConsoleColor.Yellow;
             }
             return row;
         }
