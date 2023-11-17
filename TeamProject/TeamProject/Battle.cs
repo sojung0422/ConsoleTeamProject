@@ -93,9 +93,12 @@ namespace TeamProject
                     break;
 
                 // monster 턴
-                while (Monsters[monsterAttackTurn % MonsterCount].IsDead())
-                    monsterAttackTurn++;
-                Monsters[(monsterAttackTurn++) % MonsterCount].Attack(Player);
+                foreach (var monster in Monsters)
+                {
+                    if(monster.IsDead()) continue;
+                    monster.Attack(Player);
+                    Thread.Sleep(1000);
+                }
                 Thread.Sleep(2000);
             }
 
