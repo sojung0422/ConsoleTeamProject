@@ -3,7 +3,7 @@
 public class Game
 {
     public static Character Player { get; set; }
-    public static Monster Monster { get; set; }
+    //public static Monster Monster { get; set; }
 
     public static Stage Stage = new Stage();
     // name, job, level, damage, defense, hp, gold, critical, avoid
