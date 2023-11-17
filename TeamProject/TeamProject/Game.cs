@@ -6,21 +6,21 @@ public class Game
     public static Monster Monster { get; set; }
 
     public static Stage Stage = new Stage();
-
+    // name, job, level, damage, defense, hp, gold, critical, avoid
     public static Character[] Characters =
     {
         new Character("", "전사", 1, 10, 5, 100, 1500, 0.1f, 0.1f),
         new Character("", "마법사", 1, 6, 2, 80, 3000, 0.2f, 0.2f),
         new Character("", "도적", 1, 8, 4, 90, 5000, 0.3f, 0.3f)
     };
-    // 오태
+    // name, hp, damage, defense, mp, critical, avoid
     public static Monster[] Monsters =
     {
         new Monster("슬라임", 10, 10, 2, 0, 0.2f, 0.2f),
         new Monster("트롤", 20, 20, 3, 0, 0.3f, 0.3f),
         new Monster("헬하운드", 30, 30, 5, 0, 0.2f, 0.2f)
     };
-
+    // id, name, description, price, type, stackCount
     public static Item[] Items =
     {
         new Gear(1, "철제 검", "공격에 사용되는 무기", 1500, GearType.Weapon, 12),
