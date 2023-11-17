@@ -29,7 +29,10 @@ public class Gear : Item
 
     public Gear(Gear reference) : base(reference) {
         GearType = reference.GearType;
-        GearState = reference.GearState;
+        Atk = reference.Atk;
+        Def = reference.Def;
+        Crit = reference.Crit;
+        Dodge = reference.Dodge;
         IsEquip = reference.IsEquip;
     }
 
