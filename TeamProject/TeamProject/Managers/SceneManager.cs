@@ -23,7 +23,7 @@ public class SceneManager {
         Options.Add("ShowInfo", new("ShowInfo", "상태보기", () => EnterScene<CharacterInfoScene>()));
         Options.Add("Inventory", new("Inventory", "인벤토리", () => EnterScene<InventoryInfoScene>()));
         Options.Add("Equipment", new("Equipment", "장비관리", () => EnterScene<EquipmentScene>()));
-        Options.Add("Shop", new("Shop", "상점", null));
+        Options.Add("Shop", new("Shop", "상점", () => EnterScene<ShopScene>()));
         Options.Add("Dungeon", new("Dungeon", "던전입구", () => EnterScene<DungeonGateScene>()));
         Options.Add("DungeonEnter", new("DungeonEnter", $"던전입장 (스테이지 {Game.Stage.StageLevel})", () => EnterScene<BattleScene>()));
         Options.Add("Main", new("Main", "메인으로", () => EnterScene<MainScene>()));
