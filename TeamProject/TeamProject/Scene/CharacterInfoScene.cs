@@ -29,12 +29,12 @@ namespace TeamProject {
             // ==== 캐릭터 정보 표시 ====
 
             // 캐릭터 잘 생성됬는지 임시 출력 [박상원]
-            Renderer.Print(5, $"Lv. {Program.player.Level}");
-            Renderer.Print(6, $"{Program.player.Name} ( {Program.player.Job} )");
-            Renderer.Print(7, $"공격력 : {Program.player.DefaultDamage}");
-            Renderer.Print(8, $"방어력 : {Program.player.DefaultDefense}");
-            Renderer.Print(9, $"체 력 : {Program.player.DefaultHpMax}");
-            Renderer.Print(10, $"Gold : {Program.player.Gold} G");
+            Renderer.Print(5, $"Lv. {Game.player.Level}");
+            Renderer.Print(6, $"{Game.player.Name} ( {Game.player.Job} )");
+            Renderer.Print(7, $"공격력 : {Game.player.DefaultDamage}");
+            Renderer.Print(8, $"방어력 : {Game.player.DefaultDefense}");
+            Renderer.Print(9, $"체 력 : {Game.player.DefaultHpMax}");
+            Renderer.Print(10, $"Gold : {Game.player.Gold} G");
 
             Renderer.PrintOptions(12, Options, true);
         }
