@@ -25,27 +25,30 @@ namespace TeamProject
             OnCreatureDead += BattleEnd;
 
             // 몬스터 생성
-            Random random = new Random();
-            MonsterCount = random.Next(1, 5);
-            for (int i = 0; i < MonsterCount; i++)
-            {
-                Creature monster;
-                switch (random.Next(0, 3))
-                {
-                    case 0:
-                        monster = new Monster("Slime", 10, 10, 2, 0, 0.2f, 0.2f);
-                        Monsters.Add(monster);
-                        break;
-                    case 1:
-                        monster = new Monster("Troll", 20, 20, 3, 0, 0.3f, 0.3f);
-                        Monsters.Add(monster);
-                        break;
-                    case 2:
-                        monster = new Monster("Hellhound", 30, 30, 5, 0, 0.2f, 0.2f);
-                        Monsters.Add(monster);
-                        break;
-                }
-            }
+            Monsters = Game.Stage.MonsterSpawn();
+            MonsterCount = Monsters.Count;
+
+            //Random random = new Random();
+            //MonsterCount = random.Next(1, 5);
+            //for (int i = 0; i < MonsterCount; i++)
+            //{
+            //    Creature monster;
+            //    switch (random.Next(0, 3))
+            //    {
+            //        case 0:
+            //            monster = new Monster("Slime", 10, 10, 2, 0, 0.2f, 0.2f);
+            //            Monsters.Add(monster);
+            //            break;
+            //        case 1:
+            //            monster = new Monster("Troll", 20, 20, 3, 0, 0.3f, 0.3f);
+            //            Monsters.Add(monster);
+            //            break;
+            //        case 2:
+            //            monster = new Monster("Hellhound", 30, 30, 5, 0, 0.2f, 0.2f);
+            //            Monsters.Add(monster);
+            //            break;
+            //    }
+            //}
         }
 
         public void BattleStart()
@@ -56,16 +59,23 @@ namespace TeamProject
             {
                 Console.Clear();
                 Console.WriteLine();
+                Console.WriteLine($"스테이지 {Game.Stage.StageLevel}");
                 Console.WriteLine($"{++turnCount}번째 턴");
                 PrintBattleState();
 
                 // player 턴
                 Console.WriteLine();
                 //Console.WriteLine("0. hp포션사용");
+                Console.WriteLine("던전 포기 : q");
                 Console.WriteLine("공격할 몬스터를 선택해주세요.");
+
 
                 int monsterNum = -1;
                 var input = Console.ReadLine();
+
+                if (input == "q")
+                    return;
+
                 int.TryParse(input, out monsterNum);
 
                 // 입력 값 예외처리
@@ -87,18 +97,7 @@ namespace TeamProject
                 while (Monsters[monsterAttackTurn % MonsterCount].IsDead())
                     monsterAttackTurn++;
                 Monsters[(monsterAttackTurn++) % MonsterCount].Attack(Player);
-                Thread.Sleep(1000);
-
-                Console.WriteLine("다음 턴으로 : n\n던전 나가기 : o");
-                var inputStr = Console.ReadLine();  
-                while(inputStr != "n" && inputStr != "o")
-                {
-                    Console.WriteLine("다음 턴으로 : n\n던전 나가기 : o");
-                    inputStr = Console.ReadLine();
-                }
-
-                if (inputStr == "o")
-                    return;
+                Thread.Sleep(2000);
             }
 
             // 전투 종료
@@ -106,7 +105,7 @@ namespace TeamProject
             {
                 OnCreatureDead?.Invoke(Monsters[0]);
             }
-            else if(Player.IsDead())
+            else if (Player.IsDead())
             {
                 OnCreatureDead?.Invoke(Player);
             }
@@ -116,8 +115,9 @@ namespace TeamProject
         public void PrintBattleState()
         {
             Console.WriteLine("------------------------------");
-            Console.WriteLine($"{Player.Name}의 Hp : {Player.Hp}");
+            Console.WriteLine($"내 Hp : {Player.Hp}");
             Console.WriteLine("------------------------------");
+            Console.WriteLine("몬스터");
             for (int i = 0; i < Monsters.Count; i++)
             {
                 var monster = Monsters[i];
@@ -128,8 +128,9 @@ namespace TeamProject
                     Console.ForegroundColor = ConsoleColor.Yellow;
                 }
                 else
-                    Console.WriteLine($"{i + 1}. {monster.Name} Hp : {monster.Hp}");
+                    Console.WriteLine($"{i + 1}. {monster.Name}    Hp : {monster.Hp}");
             }
+            Console.WriteLine("------------------------------");
         }
 
         public bool CheckAllMonstersDead()
@@ -145,16 +146,15 @@ namespace TeamProject
         public void BattleEnd(Creature creature)
         {
             // TODO: 전투 종료
-            if(creature is Monster)
+            if (creature is Monster)
             {
                 // 던전 클리어
                 Console.WriteLine();
                 Console.WriteLine("던전 클리어 !");
 
-                /* 클리어 보상(아이템, 골드, 레벨업 등)
+                // 클리어 보상(아이템, 골드, 레벨업 등)
+                Game.Stage.Reward();
 
-
-                */
 
             }
             else
