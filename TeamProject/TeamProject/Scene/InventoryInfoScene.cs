@@ -38,7 +38,7 @@ namespace TeamProject {
                 Renderer.ItemTableFormatters["Name"],
                 Renderer.ItemTableFormatters["Desc"],
             };
-            row = Renderer.DrawItemList(++row, Game.Player.Inventory.Items, formatters, Game.Player.Inventory);
+            row = Renderer.DrawItemList(++row, Game.Player.Inventory.Items, formatters);
 
             Renderer.PrintOptions(++row, Options, true);
         }
