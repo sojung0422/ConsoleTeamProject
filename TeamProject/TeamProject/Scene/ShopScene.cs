@@ -33,7 +33,6 @@ namespace TeamProject
         };
         private int selectionIdx = 0;
         bool shopModeToggle = true; // true : 구매모드, false : 판매모드
-        int msgLine;
         string msg = "";
         List<ActionOption> buyModeOptions = new();
         List<ActionOption> saleModeOptions = new();
@@ -91,21 +90,19 @@ namespace TeamProject
         protected override void DrawScene()
         {
             // Clear Table...
-            int row = 4;
+            int row = 3;
             for (int i = 0; i < 20; i++)
                 Renderer.ClearLine(row + i);
 
             // Draw Scene...
-            row = 4;
-            row = Renderer.Print(row, "아이템을 구매하거나 판매할 수 있습니다.");
+            row = Renderer.Print(row + 1, "아이템을 구매하거나 판매할 수 있습니다.");
             row = Renderer.Print(row, $"[아이템 {(shopModeToggle ? "구매" : "판매")}]");
             row = Renderer.Print(row, $"현재 골드 : {Game.Player.Gold:#,##0} G");
             if (shopModeToggle)
-                Renderer.DrawItemList(++row, shopSaleItem, buyModeFormatters, selectionIdx);
+                row = Renderer.DrawItemList(++row, shopSaleItem, buyModeFormatters, selectionIdx);
             else
-                Renderer.DrawItemList(++row, playerSaleItem, saleModeFormatters, selectionIdx);
-            msgLine = Renderer.PrintOptions(10, Options, true, selectionIdx) + 1;
-            Renderer.Print(msgLine, msg);
+                row = Renderer.DrawItemList(++row, playerSaleItem, saleModeFormatters, selectionIdx);
+            Renderer.Print(row + 1, msg);
             Renderer.PrintKeyGuide("[방향키 ↑ ↓ : 선택지 이동] [방향키 ← → : 구매/판매 모드 변경] [Enter : 선택] [ESC : 뒤로가기]");
         }
 
