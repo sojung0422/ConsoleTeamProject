@@ -39,6 +39,7 @@ namespace TeamProject {
                 }
                 else return i.Name;
             });
+            ItemTableFormatters["StackCount"] = new("StackCount", "개수", 8, i => i.StackCount.HasValue ? $"{i.StackCount.Value} 개" : "");
             ItemTableFormatters["ItemType"] = new("ItemType", "타입", 15, i => {
                 if (i is Gear gear) return gear.GearType.String();
                 else return i.Type.String();
@@ -49,7 +50,7 @@ namespace TeamProject {
             });
             ItemTableFormatters["Desc"] = new("Desc", "설명", 30, i => i.Description);
             ItemTableFormatters["Cost"] = new("Cost", "비용", 10, i => i.Price.ToString());
-            ItemTableFormatters["SellCost"] = new("SellCost", "비용", 10, i => (i.Price * 0.85f).ToString());
+            ItemTableFormatters["SellCost"] = new("SellCost", "비용", 10, i => ((int)(i.Price * 0.85f)).ToString());
         }
 
         #region Print

@@ -9,23 +9,36 @@ namespace TeamProject
     public class ShopScene : Scene
     {
         public override string Title { get; protected set; } = "상  점";
-        public List<Item> shopSaleItem = Game.Items.ToList();
+        public List<Item> shopSaleItem;
         public List<Item> playerSaleItem;
-        List<ItemTableFormatter> formatters = new() {
+        List<ItemTableFormatter> buyModeFormatters = new() {
                 Renderer.ItemTableFormatters["Index"],
-                Renderer.ItemTableFormatters["ItemType"],
                 Renderer.ItemTableFormatters["Name"],
-                Renderer.ItemTableFormatters["Desc"],
+                Renderer.ItemTableFormatters["ItemType"],
+                Renderer.ItemTableFormatters["Stat"],
                 Renderer.ItemTableFormatters["Cost"],
+                new("", "보유 개수", 11, i => {
+                    if (Game.Player.Inventory.HasSameItem(i, out var res))
+                        return res.StackCount.HasValue ? $"{res.StackCount.Value} 개" : "보유중";
+                    else 
+                        return i.StackCount.HasValue ? "0 개" : "미보유"; })
+        };
+        List<ItemTableFormatter> saleModeFormatters = new() {
+                Renderer.ItemTableFormatters["Index"],
+                Renderer.ItemTableFormatters["Name"],
+                Renderer.ItemTableFormatters["ItemType"],
+                Renderer.ItemTableFormatters["Stat"],
+                Renderer.ItemTableFormatters["SellCost"],
+                Renderer.ItemTableFormatters["StackCount"]
         };
         private int selectionIdx = 0;
-        string msg = "";
         bool shopModeToggle = true; // true : 구매모드, false : 판매모드
         int msgLine;
         List<ActionOption> buyModeOptions = new();
         List<ActionOption> saleModeOptions = new();
         public override void EnterScene()
         {
+            shopSaleItem = Game.Items.ToList();
             playerSaleItem = Game.Player.Inventory.Items;
             Options.Clear();
             shopSaleItem = shopSaleItem.OrderBy(x => { return x is Gear gear ? gear.GearType.String() : x.Type.String(); }).ToList();
@@ -50,6 +63,7 @@ namespace TeamProject
                     Game.Player.Inventory.Add(buyItem.DeepCopy());
                     Game.Player.ChangeGold(-buyItem.Price);
                     Renderer.Print(msgLine, $"{buyItem.Name}을/를 샀습니다.");
+                    Renderer.DrawItemList(8, shopSaleItem, buyModeFormatters);
                 }));
             }
 
@@ -81,9 +95,9 @@ namespace TeamProject
             row = Renderer.Print(row, $"[아이템 {(shopModeToggle ? "구매" : "판매")}]");
             row = Renderer.Print(6, $"현재 골드 : {Game.Player.Gold:#,##0} G                             ");
             if (shopModeToggle)
-                row = Renderer.DrawItemList(++row, shopSaleItem, formatters);
+                row = Renderer.DrawItemList(++row, shopSaleItem, buyModeFormatters);
             else
-                row = Renderer.DrawItemList(++row, playerSaleItem, formatters);
+                row = Renderer.DrawItemList(++row, playerSaleItem, saleModeFormatters);
             Renderer.PrintKeyGuide("[방향키 ↑ ↓ : 선택지 이동] [방향키 ← → : 구매/판매 모드 변경] [Enter : 선택] [ESC : 뒤로가기]");
         }
 
@@ -95,7 +109,7 @@ namespace TeamProject
                 var saleItem = playerSaleItem[i];
                 saleModeOptions.Add(new("", $"| {i + 1}|", () =>
                 {
-                    if (saleItem.StackCount > 0)
+                    if (saleItem.StackCount > 1)
                         saleItem.StackCount--;
                     else
                     {
@@ -103,6 +117,7 @@ namespace TeamProject
                         UpdateSaleListOptions();
                         DrawScene();
                     }
+                    Renderer.DrawItemList(8, playerSaleItem, saleModeFormatters);
                     Game.Player.ChangeGold((int)(saleItem.Price * 0.85));
                     Renderer.Print(msgLine, $"{saleItem.Name}을/를 팔았습니다.");
                 }));
