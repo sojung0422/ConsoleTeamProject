@@ -247,6 +247,7 @@ namespace TeamProject
         {
             // #1. 그리기 준비.
             int row = startRow;
+
             // #2. 상위 행 그리기.
             string title = "|";
             string horizontal = "|";
@@ -258,6 +259,7 @@ namespace TeamProject
             }
             Print(row++, title);
             Print(row++, horizontal);
+
             // #3. 본문 행 그리기.
             for (int i = 0; i < characters.Length; i++)
             {
