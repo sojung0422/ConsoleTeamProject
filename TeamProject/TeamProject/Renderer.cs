@@ -78,7 +78,7 @@ namespace TeamProject
         /// <param name="content">출력할 내용</param>
         /// <param name="isHighlightNumber">숫자를 강조할 지 여부</param>
         /// <returns>출력한 후 다음 줄을 리턴합니다.</returns>
-        public static int Print(int line, string content, bool isHighlightNumber = false, int dealy = 0, int margin = 2)
+        public static int Print(int line, string content, bool isHighlightNumber = false, int delay = 0, int margin = 2)
         {
             Console.SetCursorPosition(margin, line++);
             if (isHighlightNumber)
@@ -94,12 +94,12 @@ namespace TeamProject
                 }
             }
             // [고민수] 한 글자씩 출력
-            else if (dealy > 0)
+            else if (delay > 0)
             {
                 foreach (char c in content)
                 {
                     Console.Write(c);
-                    Thread.Sleep(2000 / content.Length); // 글자가 한 글자씩 출력되도록 딜레이
+                    Thread.Sleep(delay / content.Length); // 글자가 한 글자씩 출력되도록 딜레이
                 }
             }
             else

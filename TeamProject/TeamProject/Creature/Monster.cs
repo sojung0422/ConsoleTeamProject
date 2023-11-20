@@ -49,7 +49,7 @@ namespace TeamProject {
             bool isCritical = false;
             if (RandomChance(creature.DefaultAvoid)) // 상대방이 회피 했을때
             {
-                Renderer.Print(line++, $"{creature.Name}이(가) 회피했습니다!", false, 100, printWidthPos);
+                Renderer.Print(line++, $"{creature.Name}이(가) 회피했습니다!", false, 1000, printWidthPos);
             }
             else // 공격에 성공 했을 때
             {
@@ -64,7 +64,7 @@ namespace TeamProject {
                 int finalDamage = Math.Clamp((int)damage - (int)DefaultDefense / 2, 0, (int)Hp);
                 string battleText = $"{Name}이(가) {finalDamage}의 데미지로 공격하였습니다!";
                 if (isCritical) battleText = "치명타 발생! " + battleText;
-                Renderer.Print(line++, battleText, false, 100, printWidthPos);
+                Renderer.Print(line++, battleText, false, 1000, printWidthPos);
                 creature.OnDamaged(finalDamage);
             }
         }
