@@ -124,7 +124,7 @@ namespace TeamProject
             return line;
         }
 
-        public static void PrintOptions(int line, List<ActionOption> options, bool fromZero = true, int selectionLine = 0)
+        public static int PrintOptions(int line, List<ActionOption> options, bool fromZero = true, int selectionLine = 0)
         {
             for (int i = 0; i < options.Count; i++)
             {
@@ -143,6 +143,7 @@ namespace TeamProject
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 line++;
             }
+            return line;
         }
 
         public static void PrintBattleText(int line, List<Creature> monsters, bool fromZero = true, int selectionLine = 0)
@@ -241,7 +242,39 @@ namespace TeamProject
             }
             return row;
         }
-      
+
+        public static int DrawJobList(int startRow, Character[] characters, List<JobTableFormatter> formatterList)
+        {
+            // #1. 그리기 준비.
+            int row = startRow;
+            // #2. 상위 행 그리기.
+            string title = "|";
+            string horizontal = "|";
+            for (int i = 0; i < formatterList.Count; i++)
+            {
+                JobTableFormatter formatter = formatterList[i];
+                title += $"{formatter.GetTitle()}|";
+                horizontal += $"{formatter.GetString()}|";
+            }
+            Print(row++, title);
+            Print(row++, horizontal);
+            // #3. 본문 행 그리기.
+            for (int i = 0; i < characters.Length; i++)
+            {
+                Character character = characters[i];
+                string content = "|";
+                for (int j = 0; j < formatterList.Count; j++)
+                {
+                    JobTableFormatter formatter = formatterList[j];
+                    if (formatter.key == "Index") content += $"{formatter.GetString(i + 1)}|";          // 아이템 번호 출력.
+
+                    else content += $"{formatter.GetString(character)}|";                                    // 아이템 정보 출력.
+                }
+                Print(row++, content);
+            }
+            return row;
+        }
+
         public static string GetInventoryElementString(int maxLength, string data, bool isTitle = false)
         {
             int dataLength = GetPrintingLength(data);
