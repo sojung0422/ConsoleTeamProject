@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace TeamProject {
     public static class Managers {
         private static SceneManager scene = new();
+        private static GameManager game = new();
         public static SceneManager Scene => scene;
+        public static GameManager Game => game;
     }
 }

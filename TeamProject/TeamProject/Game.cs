@@ -39,7 +39,8 @@ public class Game
     public void GameStart()
     {
         Renderer.Initialize();
+        Managers.Game.Initialize();
         Managers.Scene.Initialize();
-        Managers.Scene.EnterScene<CreateCharacterScene>();
+        Managers.Scene.EnterScene<TitleScene>();
     }
 }
