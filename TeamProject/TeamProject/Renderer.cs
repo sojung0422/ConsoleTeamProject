@@ -190,6 +190,12 @@ namespace TeamProject
         }
 
         /// <summary>
+        /// 선택한 줄의 그려진 메시지를 지웁니다. DrawBorder()로 그려진 테두리는 지워지지 않습니다.
+        /// </summary>
+        /// <param name="line">지울 줄의 번호입니다.</param>
+        public static void ClearLine(int line) => Print(line, "".PadLeft(width - 3, ' '));
+
+        /// <summary>
         /// 키 조작 설명문 고정 위치의 출력
         /// </summary>
         /// <param name="keyGuide">출력할 설명문</param>
