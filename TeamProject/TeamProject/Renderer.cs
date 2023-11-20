@@ -17,12 +17,13 @@ namespace TeamProject {
         #region Fields
 
         public static Dictionary<string, ItemTableFormatter> ItemTableFormatters = new();
+        public static Dictionary<string, JobTableFormatter> JobTableFormatters = new();
 
         private static int width;       // 화면 크기.
         private static int height;      // 화면 크기.
 
         #endregion
-        
+
         public static void Initialize() {
             Console.Title = "GameName";
             Console.ForegroundColor = textColor;
@@ -50,6 +51,14 @@ namespace TeamProject {
             ItemTableFormatters["Desc"] = new("Desc", "설명", 30, i => i.Description);
             ItemTableFormatters["Cost"] = new("Cost", "비용", 10, i => i.Price.ToString());
             ItemTableFormatters["SellCost"] = new("SellCost", "비용", 10, i => (i.Price * 0.85f).ToString());
+
+            JobTableFormatters["Job"] = new("Job", "직업", 10, c => c.Job.ToString());
+            JobTableFormatters["Damage"] = new("DefaultDamage", "공격력", 10, c => c.DefaultDamage.ToString());
+            JobTableFormatters["Defense"] = new("DefaultDefense", "방어력", 10, c => c.DefaultDefense.ToString());
+            JobTableFormatters["HpMax"] = new("DefalutHpMax", "체 력", 10, c => c.DefaultHpMax.ToString());
+            JobTableFormatters["Critical"] = new("Critical", "크리율", 20, c => c.Critical.ToString("0%"));
+            JobTableFormatters["Avoid"] = new("Avoid", "회피율", 20, c => c.Critical.ToString("0%"));
+
         }
 
         #region Print
@@ -160,6 +169,36 @@ namespace TeamProject {
             }
             return row;
         }
+        
+        public static int DrawJobList(int startRow, Character[] characters, List<JobTableFormatter> formatterList) {
+            // #1. 그리기 준비.
+            int row = startRow;
+
+            // #2. 상위 행 그리기.
+            string title = "|";
+            string horizontal = "|";
+            for (int i = 0; i < formatterList.Count; i++) {
+                JobTableFormatter formatter = formatterList[i];
+                title += $"{formatter.GetTitle()}|";
+                horizontal += $"{formatter.GetString()}|";
+            }
+            Print(row++, title);
+            Print(row++, horizontal);
+
+            // #3. 본문 행 그리기.
+            for (int i = 0; i < characters.Length; i++) {
+                Character character = characters[i];
+                string content = "|";
+                for (int j = 0; j < formatterList.Count; j++) {
+                    JobTableFormatter formatter = formatterList[j];
+                    if (formatter.key == "Index") content += $"{formatter.GetString(i + 1)}|";          // 아이템 번호 출력.
+                    
+                    else content += $"{formatter.GetString(character)}|";                                    // 아이템 정보 출력.
+                }
+                Print(row++, content);
+            }
+            return row;
+        }
         public static string GetInventoryElementString(int maxLength, string data, bool isTitle = false) {
             int dataLength = GetPrintingLength(data);
             if (data == "=") return new string('=', maxLength);
@@ -231,5 +270,26 @@ namespace TeamProject {
         public string GetString(int index) => Renderer.GetInventoryElementString(length, index.ToString(), false);
         public string GetString(bool isEquipped) => Renderer.GetInventoryElementString(length, isEquipped ? "[E]" : "", false);
         public string GetString(Item item) => Renderer.GetInventoryElementString(length, dataSelector(item), false);
+    }
+
+    public class JobTableFormatter
+    {
+        public string key;
+        public string description;
+        public int length;
+        public Func<Character, string>? dataSelector;
+
+        public JobTableFormatter(string key, string description, int length, Func<Character, string>? dataSelector)
+        {
+            this.key = key;
+            this.description = description;
+            this.length = length;
+            this.dataSelector = dataSelector;
+        }
+
+        public string GetTitle() => Renderer.GetInventoryElementString(length, description, true);
+        public string GetString() => Renderer.GetInventoryElementString(length, "=", false);
+        public string GetString(int index) => Renderer.GetInventoryElementString(length, index.ToString(), false);        
+        public string GetString(Character character) => Renderer.GetInventoryElementString(length, dataSelector(character), false);
     }
 }
