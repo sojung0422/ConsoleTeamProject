@@ -34,6 +34,7 @@ namespace TeamProject
         private int selectionIdx = 0;
         bool shopModeToggle = true; // true : 구매모드, false : 판매모드
         int msgLine;
+        string msg = "";
         List<ActionOption> buyModeOptions = new();
         List<ActionOption> saleModeOptions = new();
         public override void EnterScene()
@@ -48,28 +49,29 @@ namespace TeamProject
             for (int i = 0; i < shopSaleItem.Count; i++)
             {
                 var buyItem = shopSaleItem[i].DeepCopy();
-                buyModeOptions.Add(new("", $"| {i + 1}|", () =>
+                buyModeOptions.Add(new("", "", () =>
                 {
                     if (Game.Player.Inventory.HasSameItem(buyItem) && !buyItem.StackCount.HasValue)
                     {
-                        Renderer.Print(msgLine, "보유 중인 아이템입니다.");
+                        msg = "보유 중인 아이템입니다.";
                         return;
                     }
                     if (Game.Player.Gold < buyItem.Price)
                     {
-                        Renderer.Print(msgLine, "골드가 부족합니다.");
+                        msg = "골드가 부족합니다.";
                         return;
                     }
                     Game.Player.Inventory.Add(buyItem.DeepCopy());
                     Game.Player.ChangeGold(-buyItem.Price);
-                    Renderer.Print(msgLine, $"{buyItem.Name}을/를 샀습니다.");
-                    Renderer.DrawItemList(8, shopSaleItem, buyModeFormatters);
+                    msg = $"{buyItem.Name}을/를 샀습니다.";
                 }));
             }
 
             // 판매 리스트 선택지 생성
             UpdateSaleListOptions();
 
+            // draw
+            Renderer.DrawBorder(Title);
             DrawScene();
         }
 
@@ -81,23 +83,29 @@ namespace TeamProject
                     Options = buyModeOptions;
                 else
                     Options = saleModeOptions;
-                msgLine = Renderer.PrintOptions(10, Options, true, selectionIdx) + 1;
-                Renderer.Print(6, $"현재 골드 : {Game.Player.Gold:#,##0} G                             ");
+                DrawScene();
             }
             while (ManageInput());
         }
 
         protected override void DrawScene()
         {
-            Renderer.DrawBorder(Title);
+            // Clear Table...
             int row = 4;
+            for (int i = 0; i < 20; i++)
+                Renderer.ClearLine(row + i);
+
+            // Draw Scene...
+            row = 4;
             row = Renderer.Print(row, "아이템을 구매하거나 판매할 수 있습니다.");
             row = Renderer.Print(row, $"[아이템 {(shopModeToggle ? "구매" : "판매")}]");
-            row = Renderer.Print(6, $"현재 골드 : {Game.Player.Gold:#,##0} G                             ");
+            row = Renderer.Print(row, $"현재 골드 : {Game.Player.Gold:#,##0} G");
             if (shopModeToggle)
-                row = Renderer.DrawItemList(++row, shopSaleItem, buyModeFormatters);
+                Renderer.DrawItemList(++row, shopSaleItem, buyModeFormatters, selectionIdx);
             else
-                row = Renderer.DrawItemList(++row, playerSaleItem, saleModeFormatters);
+                Renderer.DrawItemList(++row, playerSaleItem, saleModeFormatters, selectionIdx);
+            msgLine = Renderer.PrintOptions(10, Options, true, selectionIdx) + 1;
+            Renderer.Print(msgLine, msg);
             Renderer.PrintKeyGuide("[방향키 ↑ ↓ : 선택지 이동] [방향키 ← → : 구매/판매 모드 변경] [Enter : 선택] [ESC : 뒤로가기]");
         }
 
@@ -107,7 +115,7 @@ namespace TeamProject
             for (int i = 0; i < playerSaleItem.Count; i++)
             {
                 var saleItem = playerSaleItem[i];
-                saleModeOptions.Add(new("", $"| {i + 1}|", () =>
+                saleModeOptions.Add(new("", "", () =>
                 {
                     if (saleItem.StackCount > 1)
                         saleItem.StackCount--;
@@ -115,11 +123,9 @@ namespace TeamProject
                     {
                         Game.Player.Inventory.Remove(saleItem);
                         UpdateSaleListOptions();
-                        DrawScene();
                     }
-                    Renderer.DrawItemList(8, playerSaleItem, saleModeFormatters);
                     Game.Player.ChangeGold((int)(saleItem.Price * 0.85));
-                    Renderer.Print(msgLine, $"{saleItem.Name}을/를 팔았습니다.");
+                    msg = $"{saleItem.Name}을/를 팔았습니다.";
                 }));
             }
             if (selectionIdx > 0)
@@ -148,8 +154,7 @@ namespace TeamProject
 
         private void OnCommand(Command cmd)
         {
-            Renderer.Print(msgLine, "                                                                                                           ");
-            Renderer.Print(msgLine + 1, "                                                                                                           ");
+            msg = "";
             switch (cmd)
             {
                 case Command.MoveTop:
@@ -164,13 +169,11 @@ namespace TeamProject
                     shopModeToggle = !shopModeToggle;
                     UpdateSaleListOptions();
                     selectionIdx = 0;
-                    DrawScene();
                     break;
                 case Command.MoveRight:
                     shopModeToggle = !shopModeToggle;
                     UpdateSaleListOptions();
                     selectionIdx = 0;
-                    DrawScene();
                     break;
                 case Command.Interact:
                     if (Options.Count > 0)
