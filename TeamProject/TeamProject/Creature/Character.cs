@@ -94,6 +94,11 @@ namespace TeamProject {
             return false;
         }
 
+        public void ChangeGold(int gold)
+        {
+            Gold += gold; 
+        }
+
         public void ChangeExp(int expAmount)
         {
             int levelsToAdvance = 0;
