@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TeamProject {
     public class Character : Creature{
@@ -48,35 +49,39 @@ namespace TeamProject {
             Hp = HpMax;
         }
 
-        public override void Attack(Creature creature)
+        public override void Attack(Creature creature, int line)
         {
-            Console.WriteLine();
-            Console.WriteLine($"{Name}이 {creature.Name}을 공격");
-
+            int printWidthPos = Console.WindowWidth / 2;
+            bool isCritical = false;
+            for (int i = 0; i < Console.WindowHeight - 2 - line; i++)
+            {
+                Renderer.Print(line + i, new string(' ', printWidthPos - 1), false, 0, printWidthPos);
+            }
             if (RandomChance(creature.DefaultAvoid)) // 상대방이 회피 했을때
             {
-                Console.WriteLine($"{creature.Name}가 회피했습니다!");
-                Console.WriteLine();
+                Renderer.Print(line++, $"{creature.Name}이(가) 회피했습니다!", false, 100, printWidthPos);
             }
             else // 공격에 성공 했을 때
             {
+                float damage = DefaultDamage;
                 // 일정 확률로 치명타 적용
                 if (RandomChance(DefaultCritical))
                 {
-                    float criticalDamage = DefaultDamage * 1.5f; // 기본 데미지의 1.5배
-                    Console.WriteLine("치명타 발생!");
-                    creature.OnDamaged(criticalDamage);
+                    isCritical = true;
+                    damage *= 1.5f; // 기본 데미지의 1.5배
                 }
-                else creature.OnDamaged(DefaultDamage); // 기본 공격
+
+                int finalDamage = Math.Clamp((int)damage - (int)DefaultDefense / 2, 0, (int)Hp);
+                string battleText = $"{creature.Name}에게 {finalDamage}의 데미지를 입혔습니다!";
+                if (isCritical) battleText = "치명타 발생! " + battleText;
+                Renderer.Print(line++, battleText, false, 100, printWidthPos);
+                creature.OnDamaged(finalDamage);
             }
         }
 
-        public override void OnDamaged(float damage)
+        public override void OnDamaged(int damage)
         {
-            int finalDamage = Math.Clamp((int)damage - (int)DefaultDefense / 2, 0, (int)Hp);
-            Console.WriteLine($"{finalDamage}의 데미지를 입음");
-            Console.WriteLine();
-            Hp -= finalDamage;
+            Hp -= damage;
         }
 
         //확률에 따라 발생하는 메서드
@@ -117,9 +122,9 @@ namespace TeamProject {
             DefaultDefense += 0.5f * levelsToAdvance;
 
             // 출력
-            Console.WriteLine($"레벨 {Level- levelsToAdvance} -> {Level}");
-            Console.WriteLine($"공격력 {Damage - 1.0f * levelsToAdvance} -> {Damage}");
-            Console.WriteLine($"방어력 {Defense - 0.5f * levelsToAdvance} -> {Defense}");
+            Renderer.Print(Console.WindowHeight - 7, $"레벨 {Level- levelsToAdvance} -> {Level}");
+            Renderer.Print(Console.WindowHeight - 6, $"공격력 {Damage - 1.0f * levelsToAdvance} -> {Damage}");
+            Renderer.Print(Console.WindowHeight - 5, $"방어력 {Defense - 0.5f * levelsToAdvance} -> {Defense}");
         }
 
         private float hpMaxModifier;

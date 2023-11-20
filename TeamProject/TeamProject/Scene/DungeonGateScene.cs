@@ -12,7 +12,6 @@ public class DungeonGateScene : Scene
     public override void EnterScene()
     {
         Options.Clear();
-        Options.Add(Managers.Scene.GetOption("Main"));
         if (Game.Player.Hp >= 20)
             Options.Add(Managers.Scene.GetOption("DungeonEnter"));
         DrawScene();
@@ -20,11 +19,15 @@ public class DungeonGateScene : Scene
 
     public override void NextScene()
     {
-        do
+        Renderer.PrintOptions(14, Options, true, selectionIdx);
+        while (true)
         {
-            Renderer.PrintOptions(14, Options, true, selectionIdx);
+            var key = Console.ReadKey(true);
+            if(key.Key == ConsoleKey.Enter && Game.Player.Hp >= 20)
+                Managers.Scene.GetOption("DungeonEnter").Execute();
+            if (key.Key == ConsoleKey.Escape)
+                Managers.Scene.GetOption("Main").Execute();
         }
-        while (ManageInput());
 
         //while (true)
         //{
@@ -45,9 +48,12 @@ public class DungeonGateScene : Scene
         Renderer.Print(9, $"체 력 : {Game.Player.Hp} / {Game.Player.DefaultHpMax}");
         Renderer.Print(10, $"Gold : {Game.Player.Gold} G");
         if (Game.Player.Hp < 20)
+        {
             Renderer.Print(12, "체력이 부족하여 던전에 입장할 수 없습니다(체력 20이상 필요)");
-
-        Renderer.PrintOptions(14, Options, true);
+            Renderer.PrintKeyGuide("[ESC : 메인화면]");
+        }   
+        else
+            Renderer.PrintKeyGuide("[ESC : 메인화면] [Enter : 던전 입장]");
     }
 
     // 키조작
@@ -67,8 +73,9 @@ public class DungeonGateScene : Scene
         };
 
         OnCommand(commands);
-
-        return commands != Command.Interact;
+        if(Game.Player.Hp >= 20)
+            return commands != Command.Interact;
+        return true;
     }
 
     private void OnCommand(Command cmd)
@@ -84,7 +91,11 @@ public class DungeonGateScene : Scene
                     selectionIdx++;
                 break;
             case Command.Interact:
-                Options[selectionIdx].Execute();
+                if (Game.Player.Hp >= 20)
+                    Options[selectionIdx].Execute();
+                break;
+            case Command.Exit:
+                Managers.Scene.GetOption("Dungeon").Execute();
                 break;
         }
     }
