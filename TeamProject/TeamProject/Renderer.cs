@@ -101,7 +101,7 @@ namespace TeamProject {
             return line;
         }
 
-        public static void PrintOptions(int line, List<ActionOption> options, bool fromZero = true, int selectionLine = 0) {
+        public static int PrintOptions(int line, List<ActionOption> options, bool fromZero = true, int selectionLine = 0) {
             for (int i = 0; i < options.Count; i++) {
                 ActionOption option = options[i];
                 Console.SetCursorPosition(printMargin, line);
@@ -118,6 +118,7 @@ namespace TeamProject {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 line++;
             }
+            return line;
         }
 
         /// <summary>

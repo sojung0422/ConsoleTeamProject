@@ -96,6 +96,8 @@ public enum Command
     Nothing,
     MoveTop,
     MoveBottom,
+    MoveLeft,
+    MoveRight,
     Interact,
     Exit,
 }
