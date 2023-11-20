@@ -88,9 +88,24 @@ public class BattleScene : Scene
                 Renderer.PrintBattleText(3, Monsters, true, selectionIdx);
             }
 
+            for (int i = 0; i < Monsters.Count; i++)
+            {
+                Creature monster = Monsters[i];
+                int statusBarLength = 20;  // 상태 바의 길이
+
+                // HP의 백분율 계산
+                int hpPercentage = (int)((double)monster.Hp / monster.DefaultHpMax * statusBarLength);
+
+                // HP 상태 바 출력
+                Console.ForegroundColor = ConsoleColor.Red;
+                Renderer.Print(5 + i, $"몬스터 {i + 1}: [{new string('■', hpPercentage)}{new string(' ', statusBarLength - hpPercentage)}] {monster.Hp}/{monster.DefaultHpMax}", false, 3, 0);
+            }
+
             Renderer.Print(++line, $"공격할 몬스터를 선택해주세요.", false, 0, Console.WindowWidth / 2);
         }
         Renderer.PrintBattleText(3, Monsters, true, -1);
+
+        
 
         // 전투 종료
         if (CheckAllMonstersDead())
