@@ -30,9 +30,9 @@ namespace TeamProject {
 
         protected float hp;
 
-        public virtual void Attack(Creature creature) { }
+        public virtual void Attack(Creature creature, int line) {  }
         
-        public virtual void OnDamaged(float damage) { }
+        public virtual void OnDamaged(int damage) { }
 
         public virtual bool IsDead() {
             return false;

@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
-namespace TeamProject {
-    public static  class Renderer {
+namespace TeamProject
+{
+    public static class Renderer
+    {
 
         // =================================================================================================================================================
         private static readonly int printMargin = 2;                                // 벽에 붙어서 출력되지 않기 위해 주는 Margin. (벽의 길이 = 1)
@@ -24,7 +28,8 @@ namespace TeamProject {
 
         #endregion
 
-        public static void Initialize() {
+        public static void Initialize()
+        {
             Console.Title = "GameName";
             Console.ForegroundColor = textColor;
             Console.BackgroundColor = bgColor;
@@ -32,7 +37,8 @@ namespace TeamProject {
             Console.OutputEncoding = Encoding.UTF8;
 
             ItemTableFormatters["Index"] = new("Index", "", 2, null);
-            ItemTableFormatters["Name"] = new("Name", "이름", 22, i => {
+            ItemTableFormatters["Name"] = new("Name", "이름", 22, i =>
+            {
                 if (i is Gear gear)
                 {
                     if (gear.IsEquip) return $"[E] {gear.Name}";
@@ -40,11 +46,13 @@ namespace TeamProject {
                 }
                 else return i.Name;
             });
-            ItemTableFormatters["ItemType"] = new("ItemType", "타입", 15, i => {
+            ItemTableFormatters["ItemType"] = new("ItemType", "타입", 15, i =>
+            {
                 if (i is Gear gear) return gear.GearType.String();
                 else return i.Type.String();
             });
-            ItemTableFormatters["Stat"] = new("Stat", "스탯", 34, i => {
+            ItemTableFormatters["Stat"] = new("Stat", "스탯", 34, i =>
+            {
                 if (i is Gear gear) return gear.StatToString();
                 else return string.Empty;
             });
@@ -70,18 +78,32 @@ namespace TeamProject {
         /// <param name="content">출력할 내용</param>
         /// <param name="isHighlightNumber">숫자를 강조할 지 여부</param>
         /// <returns>출력한 후 다음 줄을 리턴합니다.</returns>
-        public static int Print(int line, string content, bool isHighlightNumber = false) {
-            Console.SetCursorPosition(printMargin, line++);
-            if (isHighlightNumber) {
-                foreach (char c in content) {
-                    if (int.TryParse(c.ToString(), out int num)) {
+        public static int Print(int line, string content, bool isHighlightNumber = false, int dealy = 0, int margin = 2)
+        {
+            Console.SetCursorPosition(margin, line++);
+            if (isHighlightNumber)
+            {
+                foreach (char c in content)
+                {
+                    if (int.TryParse(c.ToString(), out int num))
+                    {
                         Console.ForegroundColor = highlightColor;
                         Console.Write(num);
                         Console.ForegroundColor = textColor;
                     }
                 }
             }
-            else {
+            // [고민수] 한 글자씩 출력
+            else if (dealy > 0)
+            {
+                foreach (char c in content)
+                {
+                    Console.Write(c);
+                    Thread.Sleep(2000 / content.Length); // 글자가 한 글자씩 출력되도록 딜레이
+                }
+            }
+            else
+            {
                 Console.WriteLine(content);
             }
             return line;
@@ -92,7 +114,8 @@ namespace TeamProject {
         /// <param name="line">출력할 줄</param>
         /// <param name="content">출력할 내용</param>
         /// <returns>출력한 후 다음 줄을 리턴합니다.</returns>
-        public static int PrintCenter(int line, string content) {
+        public static int PrintCenter(int line, string content)
+        {
             int correctLength = GetPrintingLength(content);
             int start = (width - correctLength / 2);
             if (start < 0) start = 0;
@@ -101,8 +124,10 @@ namespace TeamProject {
             return line;
         }
 
-        public static int PrintOptions(int line, List<ActionOption> options, bool fromZero = true, int selectionLine = 0) {
-            for (int i = 0; i < options.Count; i++) {
+        public static void PrintOptions(int line, List<ActionOption> options, bool fromZero = true, int selectionLine = 0)
+        {
+            for (int i = 0; i < options.Count; i++)
+            {
                 ActionOption option = options[i];
                 Console.SetCursorPosition(printMargin, line);
 
@@ -118,7 +143,49 @@ namespace TeamProject {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 line++;
             }
-            return line;
+        }
+
+        public static void PrintBattleText(int line, List<Creature> monsters, bool fromZero = true, int selectionLine = 0)
+        {
+            Print(line++, $"{Game.Stage.StageLevel} 스테이지", false, 0, Console.WindowWidth / 2 - 5);
+            line++;
+            Print(line++, $"공격할 몬스터를 선택해주세요.");
+            Print(line++, "------------------------------");
+            Print(line, new string(' ', 30));
+            Print(line++, $"{Game.Player.Name,-10} : {Game.Player.Hp}");
+            Renderer.Print(line++, "------------------------------");
+            for (int i = 0; i < monsters.Count; i++)
+            {
+                Creature monster = monsters[i];
+                Console.SetCursorPosition(printMargin, line);
+                Console.Write(new string(' ', 30));
+                Console.SetCursorPosition(printMargin, line);
+
+                if (monster.IsDead())
+                {
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                }
+
+                if (selectionLine == i)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+
+                Console.Write(fromZero ? i : i + 1);
+                Console.Write(". ");
+                if (monster.IsDead())
+                {
+                    Console.Write($"{monster.Name} Dead");
+                }
+                else
+                {
+                    Console.WriteLine($"{monster.Name,-10} : {monster.Hp}");
+                }
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                line++;
+            }
+            Print(line, "------------------------------");
+
         }
 
         /// <summary>
@@ -133,14 +200,16 @@ namespace TeamProject {
         #endregion
 
         #region Inventory
-        public static int DrawItemList(int startRow, List<Item> items, List<ItemTableFormatter> formatterList, int selectionIdx = -1) {
+        public static int DrawItemList(int startRow, List<Item> items, List<ItemTableFormatter> formatterList, int selectionIdx = -1)
+        {
             // #1. 그리기 준비.
             int row = startRow;
 
             // #2. 상위 행 그리기.
             string title = "|";
             string horizontal = "|";
-            for (int i = 0; i < formatterList.Count; i++) {
+            for (int i = 0; i < formatterList.Count; i++)
+            {
                 ItemTableFormatter formatter = formatterList[i];
                 title += $"{formatter.GetTitle()}|";
                 horizontal += $"{formatter.GetString()}|";
@@ -149,10 +218,12 @@ namespace TeamProject {
             Print(row++, horizontal);
 
             // #3. 본문 행 그리기.
-            for (int i = 0; i < items.Count; i++) {
+            for (int i = 0; i < items.Count; i++)
+            {
                 Item item = items[i];
                 string content = "|";
-                for (int j = 0; j < formatterList.Count; j++) {
+                for (int j = 0; j < formatterList.Count; j++)
+                {
                     ItemTableFormatter formatter = formatterList[j];
                     if (formatter.key == "Index") content += $"{formatter.GetString(i + 1)}|";          // 아이템 번호 출력.
                     //else if (formatter.key == "Type") content += $"{formatter.GetString(false)}|";    // [박상원] 타입 대신 이름 앞에 출력하도록 주석 처리함
@@ -170,37 +241,9 @@ namespace TeamProject {
             }
             return row;
         }
-        
-        public static int DrawJobList(int startRow, Character[] characters, List<JobTableFormatter> formatterList) {
-            // #1. 그리기 준비.
-            int row = startRow;
-
-            // #2. 상위 행 그리기.
-            string title = "|";
-            string horizontal = "|";
-            for (int i = 0; i < formatterList.Count; i++) {
-                JobTableFormatter formatter = formatterList[i];
-                title += $"{formatter.GetTitle()}|";
-                horizontal += $"{formatter.GetString()}|";
-            }
-            Print(row++, title);
-            Print(row++, horizontal);
-
-            // #3. 본문 행 그리기.
-            for (int i = 0; i < characters.Length; i++) {
-                Character character = characters[i];
-                string content = "|";
-                for (int j = 0; j < formatterList.Count; j++) {
-                    JobTableFormatter formatter = formatterList[j];
-                    if (formatter.key == "Index") content += $"{formatter.GetString(i + 1)}|";          // 아이템 번호 출력.
-                    
-                    else content += $"{formatter.GetString(character)}|";                                    // 아이템 정보 출력.
-                }
-                Print(row++, content);
-            }
-            return row;
-        }
-        public static string GetInventoryElementString(int maxLength, string data, bool isTitle = false) {
+      
+        public static string GetInventoryElementString(int maxLength, string data, bool isTitle = false)
+        {
             int dataLength = GetPrintingLength(data);
             if (data == "=") return new string('=', maxLength);
             StringBuilder builder = new();
@@ -217,20 +260,23 @@ namespace TeamProject {
 
         #region Border
 
-        public static void DrawBorder(string title = "") {
+        public static void DrawBorder(string title = "")
+        {
             Console.Clear();
             width = Console.WindowWidth;
             height = Console.WindowHeight;
 
             Console.SetCursorPosition(0, 0);
             Console.Write(new string('=', width));
-            for (int i = 1; i < height - 1; i++) {
+            for (int i = 1; i < height - 1; i++)
+            {
                 Console.SetCursorPosition(0, i);
                 Console.Write('║');
                 Console.SetCursorPosition(width - 1, i);
                 Console.Write('║');
             }
-            if (!string.IsNullOrEmpty(title)) {
+            if (!string.IsNullOrEmpty(title))
+            {
                 Console.SetCursorPosition(0, 2);
                 Console.Write(new string('=', width));
                 int correctLength = GetPrintingLength(title);
@@ -253,13 +299,15 @@ namespace TeamProject {
         #endregion
     }
 
-    public class ItemTableFormatter {
+    public class ItemTableFormatter
+    {
         public string key;
         public string description;
         public int length;
         public Func<Item, string>? dataSelector;
 
-        public ItemTableFormatter(string key, string description, int length, Func<Item, string>? dataSelector) {
+        public ItemTableFormatter(string key, string description, int length, Func<Item, string>? dataSelector)
+        {
             this.key = key;
             this.description = description;
             this.length = length;

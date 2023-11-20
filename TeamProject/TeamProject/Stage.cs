@@ -25,6 +25,7 @@ namespace TeamProject
             MonsterMinCount += StageLevel / 10;
             MonsterMaxCount += StageLevel / 10;
             Random random = new Random();
+
             MonsterCount = random.Next(MonsterMinCount, MonsterMaxCount);
 
             // 스테이지별 몬스터 소환
