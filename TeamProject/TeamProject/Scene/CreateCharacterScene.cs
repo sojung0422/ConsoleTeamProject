@@ -4,13 +4,14 @@ public class CreateCharacterScene : Scene
 {
     public override string Title { get; protected set; } = "캐릭터 선택창";
 
+    private List<Item> jobList;
     private enum CreateStep
     {
         Name,
         Job,
         Exit
     }
-   
+
     private Character selectPlayer;
 
     private CreateStep step = CreateStep.Name;
@@ -45,15 +46,43 @@ public class CreateCharacterScene : Scene
         switch (step)
         {
             case CreateStep.Name:
-                Renderer.Print(4, "원하시는 이름을 설정해 주세요");
+                Renderer.Print(4, "당신의 이름은 무엇인가요?");
                 Renderer.Print(6, errorMessage);
                 break;
             case CreateStep.Job:
-                Renderer.Print(4, "원하시는 직업을 선택해 주세요");
-                Renderer.Print(6, "0. 전사");
-                Renderer.Print(7, "1. 마법사");
-                Renderer.Print(8, "2. 도적");
-                Renderer.Print(10, errorMessage);
+                Renderer.Print(4, "직업이 어떻게 되십니까?");
+                int row = 5;
+
+                List<JobTableFormatter> formatters = new() {
+                Renderer.JobTableFormatters["Job"],
+                Renderer.JobTableFormatters["Damage"],
+                Renderer.JobTableFormatters["Defense"],
+                Renderer.JobTableFormatters["HpMax"],
+                Renderer.JobTableFormatters["Critical"],
+                Renderer.JobTableFormatters["Avoid"],
+            };
+                row = Renderer.DrawJobList(++row, Game.Characters, formatters);
+
+                Renderer.Print(14, "1 > 전사");
+                Renderer.Print(15, "2 > 마법사");
+                Renderer.Print(16, "3 > 도적");
+                
+                Renderer.Print(20, errorMessage);
+                Renderer.PrintOptions(++row, Options, true);
+
+                //Renderer.Print(4, "원하시는 직업을 선택해 주세요");
+                //Renderer.Print(6, "                  |전사          |마법사          |도적");
+                //Renderer.Print(7, "================================================================");
+                //Renderer.Print(8, $"공격력            |{Game.Characters[0].DefaultDamage}            |{Game.Characters[1].DefaultDamage}               |{Game.Characters[2].DefaultDamage}");
+                //Renderer.Print(9, $"방어력            |{Game.Characters[0].DefaultDefense}             |{Game.Characters[1].DefaultDefense}               |{Game.Characters[2].DefaultDefense}");
+                //Renderer.Print(10, $"체력              |{Game.Characters[0].DefaultHpMax}           |{Game.Characters[1].DefaultHpMax}              |{Game.Characters[2].DefaultHpMax}");
+                //Renderer.Print(11, $"크리티컬 확률     |{Game.Characters[0].DefaultCritical * 100:0}%           |{Game.Characters[1].DefaultCritical * 100:0}%             |{Game.Characters[2].DefaultCritical * 100:0}%");
+                //Renderer.Print(12, $"회피율            |{Game.Characters[0].DefaultAvoid * 100:0}%           |{Game.Characters[1].DefaultAvoid * 100:0}%             |{Game.Characters[2].DefaultAvoid * 100:0}%");
+                //Renderer.Print(14, "1 > 전사");
+                //Renderer.Print(15, "2 > 마법사");
+                //Renderer.Print(16, "3 > 도적");
+                //Renderer.Print(20, errorMessage);
+                //Renderer.PrintKeyGuide("[원하는 직업의 번호를 입력해주세요]");
                 break;
         }
     }
@@ -88,7 +117,7 @@ public class CreateCharacterScene : Scene
     /// </summary>
     private void ReadJob()
     {
-        Console.SetCursorPosition(2, 11);
+        Console.SetCursorPosition(2, 18);
         var job = Console.ReadLine();
         OnJobChanged(job);
     }
@@ -172,16 +201,16 @@ public class CreateCharacterScene : Scene
         );
 
         //게임 클래스에 저장된 아이템 등록
-        for (int i = 0; i < Game.Items.Length; i++)
-        {
-            Game.Player.Inventory.Add(Game.Items[i]);
-        }
+        //for (int i = 0; i < Game.Items.Length; i++)
+        //{
+        //    Game.Player.Inventory.Add(Game.Items[i]);
+        //}
 
         // [우진영] 상점에서 아이템이 잘 구매되는지 확인하기 위해
         // 기본 아이템만 넣어놨습니다.
-        //Game.Player.Inventory.Add(Game.Items[0]);
-        //Game.Player.Inventory.Add(Game.Items[1]);
-        //Game.Player.Inventory.Add(Game.Items[2]);
+        Game.Player.Inventory.Add(Game.Items[0]);
+        Game.Player.Inventory.Add(Game.Items[1]);
+        Game.Player.Inventory.Add(Game.Items[2]);
     }
 
     private bool ManageInput()

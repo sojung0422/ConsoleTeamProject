@@ -21,6 +21,7 @@ namespace TeamProject
         #region Fields
 
         public static Dictionary<string, ItemTableFormatter> ItemTableFormatters = new();
+        public static Dictionary<string, JobTableFormatter> JobTableFormatters = new();
 
         private static int width;       // 화면 크기.
         private static int height;      // 화면 크기.
@@ -58,6 +59,14 @@ namespace TeamProject
             ItemTableFormatters["Desc"] = new("Desc", "설명", 30, i => i.Description);
             ItemTableFormatters["Cost"] = new("Cost", "비용", 10, i => i.Price.ToString());
             ItemTableFormatters["SellCost"] = new("SellCost", "비용", 10, i => (i.Price * 0.85f).ToString());
+
+            JobTableFormatters["Job"] = new("Job", "직업", 10, c => c.Job.ToString());
+            JobTableFormatters["Damage"] = new("DefaultDamage", "공격력", 10, c => c.DefaultDamage.ToString());
+            JobTableFormatters["Defense"] = new("DefaultDefense", "방어력", 10, c => c.DefaultDefense.ToString());
+            JobTableFormatters["HpMax"] = new("DefalutHpMax", "체 력", 10, c => c.DefaultHpMax.ToString());
+            JobTableFormatters["Critical"] = new("Critical", "크리율", 20, c => c.Critical.ToString("0%"));
+            JobTableFormatters["Avoid"] = new("Avoid", "회피율", 20, c => c.Critical.ToString("0%"));
+
         }
 
         #region Print
@@ -157,7 +166,6 @@ namespace TeamProject
                     Console.ForegroundColor = ConsoleColor.Gray;
                 }
 
-                // [박상원] 선택된 옵션인 경우 초록색 글씨로 표현
                 if (selectionLine == i)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -233,6 +241,7 @@ namespace TeamProject
             }
             return row;
         }
+      
         public static string GetInventoryElementString(int maxLength, string data, bool isTitle = false)
         {
             int dataLength = GetPrintingLength(data);
@@ -310,5 +319,26 @@ namespace TeamProject
         public string GetString(int index) => Renderer.GetInventoryElementString(length, index.ToString(), false);
         public string GetString(bool isEquipped) => Renderer.GetInventoryElementString(length, isEquipped ? "[E]" : "", false);
         public string GetString(Item item) => Renderer.GetInventoryElementString(length, dataSelector(item), false);
+    }
+
+    public class JobTableFormatter
+    {
+        public string key;
+        public string description;
+        public int length;
+        public Func<Character, string>? dataSelector;
+
+        public JobTableFormatter(string key, string description, int length, Func<Character, string>? dataSelector)
+        {
+            this.key = key;
+            this.description = description;
+            this.length = length;
+            this.dataSelector = dataSelector;
+        }
+
+        public string GetTitle() => Renderer.GetInventoryElementString(length, description, true);
+        public string GetString() => Renderer.GetInventoryElementString(length, "=", false);
+        public string GetString(int index) => Renderer.GetInventoryElementString(length, index.ToString(), false);        
+        public string GetString(Character character) => Renderer.GetInventoryElementString(length, dataSelector(character), false);
     }
 }

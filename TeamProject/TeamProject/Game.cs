@@ -3,15 +3,15 @@
 public class Game
 {
     public static Character Player { get; set; }
-    public static Monster Monster { get; set; }
+    //public static Monster Monster { get; set; }
 
     public static Stage Stage = new Stage();
     // name, job, level, damage, defense, hp, gold, critical, avoid
     public static Character[] Characters =
     {
-        new Character("", "전사", 1, 10, 5, 100, 1500, 0.1f, 0.1f),
-        new Character("", "마법사", 1, 6, 2, 80, 3000, 0.2f, 0.2f),
-        new Character("", "도적", 1, 8, 4, 90, 5000, 0.3f, 0.3f)
+        new Character("", "전사", 1, 10, 5, 100, 1500, 0.15f, 0.10f),
+        new Character("", "마법사", 1, 6, 2, 80, 3000, 0.1f, 0.2f),
+        new Character("", "도적", 1, 8, 4, 90, 5000, 0.35f, 0.30f)
     };
     // name, hp, damage, defense, mp, critical, avoid
     public static Monster[] Monsters =

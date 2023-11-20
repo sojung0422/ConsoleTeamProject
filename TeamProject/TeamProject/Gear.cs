@@ -25,6 +25,7 @@ public class Gear : Item
         Crit = crit;
         Dodge = dodge;
         IsEquip = isEquip;
+        OnRemoved += (owner) => { if (owner.Equipment.Equipped[(GearSlot)GearType] == this) owner.Equipment.Unequip((GearSlot)GearType); };
     }
 
     public Gear(Gear reference) : base(reference) {
@@ -34,6 +35,7 @@ public class Gear : Item
         Crit = reference.Crit;
         Dodge = reference.Dodge;
         IsEquip = reference.IsEquip;
+        OnRemoved += (owner) => { if (owner.Equipment.Equipped[(GearSlot)GearType] == this) owner.Equipment.Unequip((GearSlot)GearType); };
     }
 
     // [박상원]

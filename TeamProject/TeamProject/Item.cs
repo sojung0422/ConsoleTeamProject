@@ -22,7 +22,7 @@ namespace TeamProject
         /// <summary>
         /// StackCount.HasValue가 null이라면 쌓을 수 없는 아이템
         /// </summary>
-        public int? StackCount { get; protected set; }
+        public int? StackCount { get; set; }
 
         public Item(int id, string name, string description, int price, ItemType type, int? stackCount = null)
         {
