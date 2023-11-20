@@ -87,7 +87,7 @@ public class BattleScene : Scene
                 monster.Attack(Game.Player, line++);
                 Renderer.PrintBattleText(3, Monsters, true, selectionIdx);
             }
-
+            // ===================시작 오태
             for (int i = 0; i < Monsters.Count; i++)
             {
                 Creature monster = Monsters[i];
@@ -100,7 +100,7 @@ public class BattleScene : Scene
                 Console.ForegroundColor = ConsoleColor.Red;
                 Renderer.Print(5 + i, $"몬스터 {i + 1}: [{new string('■', hpPercentage)}{new string(' ', statusBarLength - hpPercentage)}] {monster.Hp}/{monster.DefaultHpMax}", false, 3, 0);
             }
-
+            //=====================끝
             Renderer.Print(++line, $"공격할 몬스터를 선택해주세요.", false, 0, Console.WindowWidth / 2);
         }
         Renderer.PrintBattleText(3, Monsters, true, -1);
