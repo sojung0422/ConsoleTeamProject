@@ -22,29 +22,33 @@ public class BattleScene : Scene
         Monsters = new List<Creature>();
 
         OnCreatureDead += BattleEnd;
-
-        // 몬스터 생성
-        Monsters = Game.Stage.MonsterSpawn();
-        MonsterCount = Monsters.Count;
     }
     public override void EnterScene()
     {
+        // 몬스터 생성
+        Monsters = Game.Stage.MonsterSpawn();
+        MonsterCount = Monsters.Count;
         DrawScene();
     }
 
     public override void NextScene()
     {
-        if (CheckAllMonstersDead())
-        {
-            OnCreatureDead(Monsters[0]);
-        }
-        else if (Game.Player.IsDead())
-        {
-            OnCreatureDead(Game.Player);
-        }
         Renderer.PrintKeyGuide(new string(' ', Console.WindowWidth - 2));
-        Renderer.PrintKeyGuide("아무 키나 입력하여 나가기");
-        Console.ReadLine();
+        while (Console.KeyAvailable) // 버퍼에 입력이 있는 경우 처리
+        {
+            Console.ReadKey(true); // 입력을 읽고 버퍼를 비움
+        }
+        for (int count = 9; count > 0; count--)
+        {
+            Renderer.PrintKeyGuide($"[아무 키 : 던전 입구]   {count}초 뒤 던전 입구로 이동");
+            Thread.Sleep(1000);
+
+            if (Console.KeyAvailable)
+            {
+                Console.ReadKey(true);
+                break;
+            }
+        }
         Managers.Scene.GetOption("Back").Execute();
     }
     protected override void DrawScene()
@@ -56,10 +60,14 @@ public class BattleScene : Scene
             while (Monsters[selectionIdx].IsDead())
                 selectionIdx++;
             Renderer.PrintKeyGuide("[방향키 ↑ ↓: 공격할 몬스터 이동] [Enter: 선택] [ESC: 던전 포기]");
-            
+
             do
             {
                 Renderer.PrintBattleText(3, Monsters, true, selectionIdx);
+                while (Console.KeyAvailable) // 버퍼에 입력이 있는 경우 처리
+                {
+                    Console.ReadKey(true); // 입력을 읽고 버퍼를 비움
+                }
             }
             while (ManageInput());
             Renderer.PrintBattleText(3, Monsters, true, selectionIdx);
@@ -71,18 +79,29 @@ public class BattleScene : Scene
             line = 7;
             foreach (var monster in Monsters)
             {
-                Thread.Sleep(1000);
-                monster.Attack(Game.Player, line++);
                 if (Game.Player.IsDead())
                     break;
+                if (monster.IsDead())
+                    continue;
+                Thread.Sleep(1000);
+                monster.Attack(Game.Player, line++);
                 Renderer.PrintBattleText(3, Monsters, true, selectionIdx);
             }
 
             Renderer.Print(++line, $"공격할 몬스터를 선택해주세요.", false, 0, Console.WindowWidth / 2);
         }
-        Renderer.PrintBattleText(3, Monsters, true, selectionIdx);
+        Renderer.PrintBattleText(3, Monsters, true, -1);
 
-        // end 실행
+        // 전투 종료
+        if (CheckAllMonstersDead())
+        {
+            OnCreatureDead(Monsters[0]);
+        }
+        else if (Game.Player.IsDead())
+        {
+            OnCreatureDead(Game.Player);
+        }
+
     }
 
 
@@ -184,7 +203,7 @@ public class BattleScene : Scene
             //실패 보상(아이템, 골드, 레벨업 등)
             Game.Stage.Reward();
 
-            
+
         }
     }
 

@@ -19,11 +19,11 @@ public class DungeonGateScene : Scene
 
     public override void NextScene()
     {
-        Renderer.PrintOptions(14, Options, true, selectionIdx);
+        Renderer.PrintOptions(15, Options, true, selectionIdx);
         while (true)
         {
             var key = Console.ReadKey(true);
-            if(key.Key == ConsoleKey.Enter && Game.Player.Hp >= 20)
+            if (key.Key == ConsoleKey.Enter && Game.Player.Hp >= 20)
                 Managers.Scene.GetOption("DungeonEnter").Execute();
             if (key.Key == ConsoleKey.Escape)
                 Managers.Scene.GetOption("Main").Execute();
@@ -54,6 +54,7 @@ public class DungeonGateScene : Scene
         }   
         else
             Renderer.PrintKeyGuide("[ESC : 메인화면] [Enter : 던전 입장]");
+        Renderer.Print(14, $"다음 단계 : {Game.Stage.StageLevel} 스테이지");
     }
 
     // 키조작
