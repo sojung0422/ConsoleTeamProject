@@ -28,15 +28,7 @@ public class MainScene : Scene {
             Renderer.PrintOptions(6, Options, true, selectionIdx);
         }
         while (ManageInput());
-
-        // 세진님의 조작 처리 기능
-        //while (true) {
-        //    DrawScene();
-        //    if (!int.TryParse(Console.ReadLine(), out int index)) continue;
-        //    if (index < 0 || Options.Count < index) continue;
-        //    Options[index].Execute();
-        //    break;
-        //}
+             
     }
 
     protected override void DrawScene() {

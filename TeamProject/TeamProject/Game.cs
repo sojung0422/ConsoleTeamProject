@@ -40,6 +40,6 @@ public class Game
     {
         Renderer.Initialize();
         Managers.Scene.Initialize();
-        Managers.Scene.EnterScene<CreateCharacterScene>();
+        Managers.Scene.EnterScene<TitleScene>();
     }
 }
