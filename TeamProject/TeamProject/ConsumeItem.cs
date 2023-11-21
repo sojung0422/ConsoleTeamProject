@@ -11,6 +11,11 @@ namespace TeamProject
 {
     public class ConsumeItem : Item
     {
+        public ConsumeItem() 
+        {
+            OnAdded += MergeItem;
+        }
+
         public ConsumeItem(int id, string name, string description, int price, int stackCount, ItemType itemType = ItemType.ConsumeItem) : base(id, name, description, price, itemType, stackCount)
         {
             OnAdded += MergeItem;
