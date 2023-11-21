@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -126,11 +128,18 @@ namespace TeamProject
         }
 
         //추후에 data 저장 시에 사용할 메서드
-        //public JArray ToJArray()
-        //{
-        //    JArray res = new JArray(items.Select(x => x.GearName).ToList());
-        //    return res;
-        //}
+        public JArray ToJArray()
+        {
+            JArray res = new JArray(items.Select(x =>
+            {
+                return new JObject()
+                {
+                    { "ID", x.ID },
+                    { "StackCount", x.StackCount }
+                };
+            }).ToList());
+            return res;
+        }
     }
 
     public enum ItemOrderMode
