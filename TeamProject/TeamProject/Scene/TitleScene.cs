@@ -16,49 +16,17 @@ namespace TeamProject {
 
         public override void NextScene() {
             do {
-                Renderer.PrintOptions(7, Options, true, selectionIdx);
+                Renderer.PrintOptions(7, Options, true, selectedOptionIndex);
+                GetInput();
             }
-            while (ManageInput());
+            while (lastCommand != Command.Interact);
         }
 
         protected override void DrawScene() {
             Renderer.DrawBorder();
             Renderer.Print(5, "와 재미잇는 깨임");
-            Renderer.PrintOptions(7, Options, true, selectionIdx);
+            Renderer.PrintOptions(7, Options, true, selectedOptionIndex);
             Renderer.PrintKeyGuide("[방향키 ↑ ↓: 선택지 이동] [Enter: 선택]");
-        }
-
-        private int selectionIdx = 0;
-        public bool ManageInput() {
-            var key = Console.ReadKey(true);
-
-            var commands = key.Key switch {
-                ConsoleKey.UpArrow => Command.MoveTop,
-                ConsoleKey.DownArrow => Command.MoveBottom,
-                ConsoleKey.Enter => Command.Interact,
-                ConsoleKey.Escape => Command.Exit,
-                _ => Command.Nothing
-            };
-
-            OnCommand(commands);
-
-            return commands != Command.Interact;
-        }
-
-        private void OnCommand(Command cmd) {
-            switch (cmd) {
-                case Command.MoveTop:
-                    if (selectionIdx > 0)
-                        selectionIdx--;
-                    break;
-                case Command.MoveBottom:
-                    if (selectionIdx < Options.Count - 1)
-                        selectionIdx++;
-                    break;
-                case Command.Interact:
-                    Options[selectionIdx].Execute();
-                    break;
-            }
         }
     }
 }

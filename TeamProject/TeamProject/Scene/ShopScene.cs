@@ -9,6 +9,9 @@ namespace TeamProject
     public class ShopScene : Scene
     {
         public override string Title { get; protected set; } = "상  점";
+
+        #region Fields
+
         public List<Item> shopSaleItem;
         public List<Item> playerSaleItem;
         List<ItemTableFormatter> buyModeFormatters = new() {
@@ -31,11 +34,15 @@ namespace TeamProject
                 Renderer.ItemTableFormatters["SellCost"],
                 Renderer.ItemTableFormatters["StackCount"]
         };
-        private int selectionIdx = 0;
         bool shopModeToggle = true; // true : 구매모드, false : 판매모드
         string msg = "";
         List<ActionOption> buyModeOptions = new();
         List<ActionOption> saleModeOptions = new();
+
+        #endregion
+
+        #region Scene
+
         public override void EnterScene()
         {
             shopSaleItem = Game.Items.ToList();
@@ -83,8 +90,9 @@ namespace TeamProject
                 else
                     Options = saleModeOptions;
                 DrawScene();
+                GetInput();
             }
-            while (ManageInput());
+            while (lastCommand != Command.Interact || lastCommand != Command.Exit);
         }
 
         protected override void DrawScene()
@@ -99,12 +107,14 @@ namespace TeamProject
             row = Renderer.Print(row, $"[아이템 {(shopModeToggle ? "구매" : "판매")}]");
             row = Renderer.Print(row, $"현재 골드 : {Game.Player.Gold:#,##0} G");
             if (shopModeToggle)
-                row = Renderer.DrawItemList(++row, shopSaleItem, buyModeFormatters, selectionIdx);
+                row = Renderer.DrawItemList(++row, shopSaleItem, buyModeFormatters, selectedOptionIndex);
             else
-                row = Renderer.DrawItemList(++row, playerSaleItem, saleModeFormatters, selectionIdx);
+                row = Renderer.DrawItemList(++row, playerSaleItem, saleModeFormatters, selectedOptionIndex);
             Renderer.Print(row + 1, msg);
             Renderer.PrintKeyGuide("[방향키 ↑ ↓ : 선택지 이동] [방향키 ← → : 구매/판매 모드 변경] [Enter : 선택] [ESC : 뒤로가기]");
         }
+
+        #endregion
 
         void UpdateSaleListOptions()
         {
@@ -125,61 +135,24 @@ namespace TeamProject
                     msg = $"{saleItem.Name}을/를 팔았습니다.";
                 }));
             }
-            if (selectionIdx > 0)
-                selectionIdx--;
+            if (selectedOptionIndex > 0)
+                selectedOptionIndex--;
         }
 
-        public bool ManageInput()
-        {
-            var key = Console.ReadKey(true);
+        #region Input
 
-            var commands = key.Key switch
-            {
-                ConsoleKey.UpArrow => Command.MoveTop,
-                ConsoleKey.DownArrow => Command.MoveBottom,
-                ConsoleKey.LeftArrow => Command.MoveLeft,
-                ConsoleKey.RightArrow => Command.MoveRight,
-                ConsoleKey.Enter => Command.Interact,
-                ConsoleKey.Escape => Command.Exit,
-                _ => Command.Nothing
-            };
-
-            OnCommand(commands);
-
-            return commands != Command.Exit;
+        protected override void OnCommandMoveLeft() {
+            shopModeToggle = !shopModeToggle;
+            UpdateSaleListOptions();
+            selectedOptionIndex = 0;
         }
 
-        private void OnCommand(Command cmd)
-        {
-            msg = "";
-            switch (cmd)
-            {
-                case Command.MoveTop:
-                    if (selectionIdx > 0)
-                        selectionIdx--;
-                    break;
-                case Command.MoveBottom:
-                    if (selectionIdx < Options.Count - 1)
-                        selectionIdx++;
-                    break;
-                case Command.MoveLeft:
-                    shopModeToggle = !shopModeToggle;
-                    UpdateSaleListOptions();
-                    selectionIdx = 0;
-                    break;
-                case Command.MoveRight:
-                    shopModeToggle = !shopModeToggle;
-                    UpdateSaleListOptions();
-                    selectionIdx = 0;
-                    break;
-                case Command.Interact:
-                    if (Options.Count > 0)
-                        Options[selectionIdx].Execute();
-                    break;
-                case Command.Exit:
-                    Managers.Scene.GetOption("Back").Execute();
-                    break;
-            }
+        protected override void OnCommandMoveRight() {
+            shopModeToggle = !shopModeToggle;
+            UpdateSaleListOptions();
+            selectedOptionIndex = 0;
         }
+
+        #endregion
     }
 }

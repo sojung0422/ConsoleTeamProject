@@ -29,7 +29,7 @@ public class Game
         new Gear(4, "다이아몬드 검", "더 쎈 무기", 3000, GearType.Weapon, 33, 0, 12, 0),
         new Gear(5, "다이아몬드 방패", "더 단단한 방패", 2000, GearType.Shield, 0, 15, 0, 0),
         new Gear(6, "다이아몬드 갑옷", "딴딴 갑옷 ", 4000, GearType.Armor, 8, 8, 8, 8),
-        new ConsumeItem(7, "체력 포션", "체력을 회복하는 물약", 150, 1),
+        new HealingPotion(7, "체력 포션", "체력을 회복하는 물약", 150, 1, 10),
         new ConsumeItem(8, "마나 포션", "마나를 회복하는 물약", 150, 1),
     };
   

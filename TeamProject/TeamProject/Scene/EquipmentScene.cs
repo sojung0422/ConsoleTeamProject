@@ -15,7 +15,6 @@ public class EquipmentScene : Scene
 
     private EquipStep step;
     private List<Item> gearList = new();
-    private int selectionIdx;
 
     #region Scene
 
@@ -23,7 +22,7 @@ public class EquipmentScene : Scene
     {
         step = EquipStep.Show;
         gearList = Game.Player.Inventory.Items.Where(item => item.Type == ItemType.Gear).ToList();  // 장비 아이템만 따로 리스트 복제
-        selectionIdx = 0;
+        selectedOptionIndex = 0;
 
         // #1. 선택지 설정.
         Options.Clear();
@@ -36,8 +35,9 @@ public class EquipmentScene : Scene
         do
         {
             DrawStep();
+            GetInput();
         }
-        while (ManageInput());
+        while (Managers.Scene.CurrentScene is EquipmentScene);
     }
 
     private void DrawStep()
@@ -72,70 +72,31 @@ public class EquipmentScene : Scene
                 Renderer.ItemTableFormatters["Stat"],
                 Renderer.ItemTableFormatters["Desc"],
             };
-            Renderer.DrawItemList(++row, gearList, formatters, selectionIdx);
+            Renderer.DrawItemList(++row, gearList, formatters, selectedOptionIndex);
             
             Renderer.PrintKeyGuide("[방향키 ↑ ↓: 선택지 이동] [Enter: 장착] [ESC : 보기모드]");
         }
     }
 
-    private bool ManageInput()
-    {
-        var key = Console.ReadKey(true);
+    #endregion
 
-        var commands = key.Key switch
-        {
-            ConsoleKey.UpArrow => Command.MoveTop,
-            ConsoleKey.DownArrow => Command.MoveBottom,
-            ConsoleKey.Enter => Command.Interact,
-            ConsoleKey.Escape => Command.Exit,
-            _ => Command.Nothing
-        };
+    #region Input
 
-        if (step == EquipStep.Show)
-        {
-            OnShowCommand(commands);
-        }
-        else
-        {
-            OnEquipCommand(commands);
-        }
-
-        // TODO: 깔끔히 do-while 탈출을 못한 추후 최적화를 위해 수정이 필요할수도..
-        return true;
+    protected override void OnCommandMoveTop() {
+        if (step == EquipStep.Equipment && selectedOptionIndex > 0)
+            selectedOptionIndex--;
     }
-
-    void OnShowCommand(Command cmd)
-    {
-        switch (cmd)
-        {
-            case Command.Interact:
-                step = EquipStep.Equipment;
-                break;
-            case Command.Exit:
-                Options[0].Execute();
-                break;
-        }
+    protected override void OnCommandMoveBottom() {
+        if (step == EquipStep.Equipment && selectedOptionIndex < gearList.Count - 1)
+            selectedOptionIndex++;
     }
-
-    void OnEquipCommand(Command cmd)
-    {
-        switch (cmd)
-        {
-            case Command.MoveTop:
-                if (selectionIdx > 0)
-                    selectionIdx--;
-                break;
-            case Command.MoveBottom:
-                if (selectionIdx < gearList.Count - 1)
-                    selectionIdx++;
-                break;
-            case Command.Interact:
-                EquipFromInventory();
-                break;
-            case Command.Exit:
-                step = EquipStep.Show;
-                break;
-        }
+    protected override void OnCommandInteract() {
+        if (step == EquipStep.Show) step = EquipStep.Equipment;
+        else if (step == EquipStep.Equipment) EquipFromInventory();
+    }
+    protected override void OnCommandExit() {
+        if (step == EquipStep.Show) Options[0].Execute();
+        else if (step == EquipStep.Equipment) step = EquipStep.Show;
     }
 
     #endregion
@@ -147,7 +108,7 @@ public class EquipmentScene : Scene
     /// </summary>
     private void EquipFromInventory()
     {
-        var item = gearList.ElementAtOrDefault(selectionIdx);
+        var item = gearList.ElementAtOrDefault(selectedOptionIndex);
 
         if (item is Gear gear)
         {
