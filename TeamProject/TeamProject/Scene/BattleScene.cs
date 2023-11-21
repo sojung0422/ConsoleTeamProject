@@ -330,7 +330,7 @@ public class BattleScene : Scene
     public void SelectAction()
     {
         selectionIdx = 0;
-        Renderer.PrintKeyGuide("[방향키 ↑ ↓: 이동] [Enter: 선택] [ESC : 뒤로 가기]");
+        Renderer.PrintKeyGuide("[방향키 ↑ ↓: 이동] [Enter: 선택]");
         do
         {
             Renderer.PrintSelectAction(startTextLine, ActionTextList, true, selectionIdx);

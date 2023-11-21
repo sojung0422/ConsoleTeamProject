@@ -185,6 +185,8 @@ namespace TeamProject
                 else
                 {
                     Console.WriteLine($"{monster.Name,-10} : {monster.Hp}");
+                    line++;
+                    line++;
                 }
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 line++;

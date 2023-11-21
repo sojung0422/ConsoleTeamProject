@@ -44,7 +44,7 @@ namespace TeamProject {
             string file = File.ReadAllText(path);
             GameData data = JsonConvert.DeserializeObject<GameData>(file, settings);
             if (data != null) this.data = data;
-            if (string.IsNullOrEmpty(data.character.Name)) return false;
+            //if (string.IsNullOrEmpty(data.character.Name)) return false; //이 부분이 있으면 게임을 키고 그냥 껐을때 다시 실행이안됌.
 
             return true;
         }
