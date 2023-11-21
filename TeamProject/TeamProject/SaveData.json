@@ -16,17 +16,11 @@
     "MpMax": 0.0,
     "Critical": 0.1,
     "Avoid": 0.2,
-    "Gold": 3000,
+    "Gold": 2850,
     "Hp": 80.0,
     "Inventory": {
       "Items": [
         {
-          "GearType": 0,
-          "Atk": 12.0,
-          "Def": 0.0,
-          "Crit": 0.0,
-          "Dodge": 0.0,
-          "IsEquip": false,
           "ID": 1,
           "Name": "철제 검",
           "Description": "공격에 사용되는 무기",
@@ -35,12 +29,6 @@
           "StackCount": null
         },
         {
-          "GearType": 1,
-          "Atk": 0.0,
-          "Def": 6.0,
-          "Crit": 0.0,
-          "Dodge": 0.0,
-          "IsEquip": false,
           "ID": 2,
           "Name": "원형 방패",
           "Description": "적의 공격을 방어하는 방패",
@@ -49,21 +37,24 @@
           "StackCount": null
         },
         {
-          "GearType": 2,
-          "Atk": 0.0,
-          "Def": 3.0,
-          "Crit": 0.0,
-          "Dodge": 5.0,
-          "IsEquip": false,
           "ID": 3,
           "Name": "사슬 갑옷",
           "Description": "철사 고리를 엮어 만든 갑옷",
           "Price": 2000,
           "Type": 0,
           "StackCount": null
+        },
+        {
+          "ID": 7,
+          "Name": "체력 포션",
+          "Description": "체력을 회복하는 물약",
+          "Price": 150,
+          "Type": 1,
+          "StackCount": 1
         }
       ],
-      "Count": 3,
+      "Parent": null,
+      "Count": 4,
       "MaxPad": 4
     },
     "Equipment": {
@@ -112,7 +103,7 @@
         }
       }
     },
-    "Name": "김철수",
+    "Name": "156",
     "DefaultHpMax": 80.0,
     "DefaultDamage": 6.0,
     "DefaultDefense": 2.0,
