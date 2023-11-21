@@ -52,9 +52,10 @@ namespace TeamProject
                 if (i is Gear gear) return gear.GearType.String();
                 else return i.Type.String();
             });
-            ItemTableFormatters["Stat"] = new("Stat", "스탯", 34, i =>
+            ItemTableFormatters["Effect"] = new("Effect", "효과", 34, i =>
             {
                 if (i is Gear gear) return gear.StatToString();
+                else if (i is ConsumeItem consume) return consume.EffectDesc;
                 else return string.Empty;
             });
             ItemTableFormatters["Desc"] = new("Desc", "설명", 30, i => i.Description);

@@ -33,18 +33,26 @@ namespace TeamProject {
         }
 
         public bool LoadGame() {
-            if (!File.Exists(path)) return false;
-            var settings = new JsonSerializerSettings
+            //if (!File.Exists(path)) return false;
+            // [우진영] 임시로 예외처리 해두었습니다.
+            try
             {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                Formatting = Formatting.Indented,
-                TypeNameHandling = TypeNameHandling.All,
-                PreserveReferencesHandling = PreserveReferencesHandling.All,
-            };
-            string file = File.ReadAllText(path);
-            GameData data = JsonConvert.DeserializeObject<GameData>(file, settings);
-            if (data != null) this.data = data;
-            //if (string.IsNullOrEmpty(data.character.Name)) return false; //이 부분이 있으면 게임을 키고 그냥 껐을때 다시 실행이안됌.
+                var settings = new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    Formatting = Formatting.Indented,
+                    TypeNameHandling = TypeNameHandling.All,
+                    PreserveReferencesHandling = PreserveReferencesHandling.All,
+                };
+                string file = File.ReadAllText(path);
+                GameData data = JsonConvert.DeserializeObject<GameData>(file, settings);
+                if (data != null) this.data = data;
+                if (string.IsNullOrEmpty(data.character.Name)) return false;
+            }
+            catch 
+            {
+                return false;
+            }
 
             return true;
         }
