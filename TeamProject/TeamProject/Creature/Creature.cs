@@ -29,6 +29,7 @@ namespace TeamProject {
         #endregion
 
         public float hp;
+        public int textdelay = 500; // 텍스트 0.5초만에 한줄 출력
 
         public virtual void Attack(Creature creature, int line) {  }
         
