@@ -186,7 +186,19 @@ namespace TeamProject
                 }
                 else
                 {
-                    Console.WriteLine($"{monster.Name,-10} : {monster.Hp}");
+                    Console.WriteLine($"{monster.Name,-10} : {monster.Hp}/{monster.DefaultHpMax}");
+
+                    Console.SetCursorPosition(margin, ++line);
+                    // HP 상태바 길이 조절
+                    int statusBarLength = 15;  
+                    // HP 백분율 계산
+                    int hpPercentage = (int)((double)monster.Hp / monster.DefaultHpMax * statusBarLength);
+                    // HP 상태바
+                    string statusBar = new string('█', hpPercentage) + new string(' ', statusBarLength - hpPercentage);
+                    // HP 상태 바 출력
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"[{statusBar}]");
+                    line++;
                 }
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 line++;

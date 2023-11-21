@@ -12,7 +12,8 @@
     "mpMaxModifier": 0.0,
     "criticalModifier": 0.0,
     "avoidModifier": 0.0,
-    "hp": 54.0,
+    "hp": 61.0,
+    "textdelay": 200,
     "Job": "마법사",
     "HpMax": 80.0,
     "Damage": 6.0,
@@ -21,7 +22,7 @@
     "Critical": 0.1,
     "Avoid": 0.2,
     "Gold": 3000,
-    "Hp": 54.0,
+    "Hp": 61.0,
     "Inventory": {
       "$id": "3",
       "$type": "TeamProject.Inventory, TeamProject",
@@ -113,7 +114,7 @@
         }
       }
     },
-    "Name": "1",
+    "Name": "12",
     "DefaultHpMax": 80.0,
     "DefaultDamage": 6.0,
     "DefaultDefense": 2.0,
