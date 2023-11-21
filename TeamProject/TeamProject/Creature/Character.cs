@@ -62,7 +62,7 @@ namespace TeamProject {
         {
             int printWidthPos = Console.WindowWidth / 2;
             bool isCritical = false;
-            for (int i = 0; i < Console.WindowHeight - 2 - line; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Renderer.Print(line + i, new string(' ', printWidthPos - 1), false, 0, printWidthPos);
             }
