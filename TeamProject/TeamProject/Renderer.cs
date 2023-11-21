@@ -201,6 +201,7 @@ namespace TeamProject
         /// <param name="keyGuide">출력할 설명문</param>
         public static void PrintKeyGuide(string keyGuide)
         {
+            ClearLine(height - 2);
             Print(height - 2, keyGuide);
         }
 
