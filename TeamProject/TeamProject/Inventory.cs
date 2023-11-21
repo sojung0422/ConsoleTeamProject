@@ -94,27 +94,27 @@ namespace TeamProject
             return false;
         }
 
-        public void OrderBy(ItemOrderMode mode)
-        {
-            switch (mode)
-            {
-                case ItemOrderMode.Default:
-                    //items = items.OrderBy(element => element.ID).ToList();
-                    break;
-                case ItemOrderMode.NameAsc:
-                    break;
-                case ItemOrderMode.NameDesc:
-                    break;
-                case ItemOrderMode.AtkDesc:
-                    break;
-                case ItemOrderMode.DefDesc:
-                    break;
-                case ItemOrderMode.PriceAsc:
-                    break;
-                case ItemOrderMode.PriceDesc:
-                    break;
-            }
-        }
+        //public void OrderBy(ItemOrderMode mode)
+        //{
+        //    switch (mode)
+        //    {
+        //        case ItemOrderMode.Default:
+        //            //items = items.OrderBy(element => element.ID).ToList();
+        //            break;
+        //        case ItemOrderMode.NameAsc:
+        //            break;
+        //        case ItemOrderMode.NameDesc:
+        //            break;
+        //        case ItemOrderMode.AtkDesc:
+        //            break;
+        //        case ItemOrderMode.DefDesc:
+        //            break;
+        //        case ItemOrderMode.PriceAsc:
+        //            break;
+        //        case ItemOrderMode.PriceDesc:
+        //            break;
+        //    }
+        //}
 
         //List처럼 인덱싱.. ex) player.Inventory[0]
         public Item this[int idx]
@@ -128,18 +128,18 @@ namespace TeamProject
         }
 
         //추후에 data 저장 시에 사용할 메서드
-        public JArray ToJArray()
-        {
-            JArray res = new JArray(items.Select(x =>
-            {
-                return new JObject()
-                {
-                    { "ID", x.ID },
-                    { "StackCount", x.StackCount }
-                };
-            }).ToList());
-            return res;
-        }
+        //public JArray ToJArray()
+        //{
+        //    JArray res = new JArray(items.Select(x =>
+        //    {
+        //        return new JObject()
+        //        {
+        //            { "ID", x.ID },
+        //            { "StackCount", x.StackCount }
+        //        };
+        //    }).ToList());
+        //    return res;
+        //}
     }
 
     public enum ItemOrderMode

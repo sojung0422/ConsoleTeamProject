@@ -25,6 +25,8 @@ namespace TeamProject {
             var settings = new JsonSerializerSettings {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 Formatting = Formatting.Indented,
+                TypeNameHandling = TypeNameHandling.All,
+                PreserveReferencesHandling = PreserveReferencesHandling.All,
             };
             string jsonStr = JsonConvert.SerializeObject(data, settings);
             File.WriteAllText(path, jsonStr);
@@ -32,9 +34,15 @@ namespace TeamProject {
 
         public bool LoadGame() {
             if (!File.Exists(path)) return false;
-
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.Indented,
+                TypeNameHandling = TypeNameHandling.All,
+                PreserveReferencesHandling = PreserveReferencesHandling.All,
+            };
             string file = File.ReadAllText(path);
-            GameData data = JsonConvert.DeserializeObject<GameData>(file);
+            GameData data = JsonConvert.DeserializeObject<GameData>(file, settings);
             if (data != null) this.data = data;
             if (string.IsNullOrEmpty(data.character.Name)) return false;
 
