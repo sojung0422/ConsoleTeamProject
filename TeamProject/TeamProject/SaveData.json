@@ -12,7 +12,7 @@
     "mpMaxModifier": 0.0,
     "criticalModifier": 0.0,
     "avoidModifier": 0.0,
-    "hp": 70.0,
+    "hp": 54.0,
     "Job": "마법사",
     "HpMax": 80.0,
     "Damage": 6.0,
@@ -20,8 +20,8 @@
     "MpMax": 0.0,
     "Critical": 0.1,
     "Avoid": 0.2,
-    "Gold": 2250,
-    "Hp": 70.0,
+    "Gold": 3000,
+    "Hp": 54.0,
     "Inventory": {
       "$id": "3",
       "$type": "TeamProject.Inventory, TeamProject",
@@ -78,7 +78,9 @@
           }
         ]
       },
-      "Parent": null,
+      "Parent": {
+        "$ref": "2"
+      },
       "Count": 3,
       "MaxPad": 4
     },
@@ -111,7 +113,7 @@
         }
       }
     },
-    "Name": "asd",
+    "Name": "1",
     "DefaultHpMax": 80.0,
     "DefaultDamage": 6.0,
     "DefaultDefense": 2.0,

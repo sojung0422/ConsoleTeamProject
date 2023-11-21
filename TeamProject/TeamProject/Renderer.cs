@@ -149,7 +149,7 @@ namespace TeamProject
 
         public static void PrintBattleText(int line, List<Creature> monsters, bool fromZero = true, int selectionLine = 0)
         {
-            int margin = 32;
+            int margin = 33;
             int printWidthPos = Console.WindowWidth / 2 - margin;
             for (int i = 0; i < 2 + monsters.Count; i++)
             {
@@ -157,8 +157,9 @@ namespace TeamProject
             }
             if (selectionLine >= 0)
                 Print(line, "공격할 몬스터를 선택하세요.");
+            Print(line++, "-------------------------", false, 0, margin);
             Print(line++, "        몬스터             ", false, 0, margin);
-            Print(line++, "---------------------------", false, 0, margin);
+            Print(line++, "-------------------------", false, 0, margin);
             for (int i = 0; i < monsters.Count; i++)
             {
                 Creature monster = monsters[i];
@@ -189,7 +190,7 @@ namespace TeamProject
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 line++;
             }
-            Print(line++, "---------------------------", false, 0, margin);
+            Print(line++, "-------------------------", false, 0, margin);
 
         }
 
@@ -202,8 +203,8 @@ namespace TeamProject
             }
             Print(line++, $"원하는 행동을 선택해주세요.");
             Print(line++, "---------------------------");
-            Print(line, new string(' ', printWidthPos));
-            Print(line++, $"{Game.Player.Name,-10} : {Game.Player.Hp}");
+            PrintPlayerState(line);
+            line++;
             Print(line++, "---------------------------");
             for(int i = 0; i < actionText.Count; i++)
             {
@@ -221,11 +222,15 @@ namespace TeamProject
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 line++; 
             }
-            Console.WriteLine(selectionLine.ToString());
             Print(line++, "---------------------------");
 
         }
 
+        public static void PrintPlayerState(int line)
+        {
+            Print(line, new string(' ', 30));
+            Print(line, $"{Game.Player.Name,-10} : {Game.Player.Hp}");
+        }
 
         /// <summary>
         /// 선택한 줄의 그려진 메시지를 지웁니다. DrawBorder()로 그려진 테두리는 지워지지 않습니다.
