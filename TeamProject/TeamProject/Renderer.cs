@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -148,19 +149,22 @@ namespace TeamProject
 
         public static void PrintBattleText(int line, List<Creature> monsters, bool fromZero = true, int selectionLine = 0)
         {
-            Print(line++, $"{Game.Stage.StageLevel} 스테이지", false, 0, Console.WindowWidth / 2 - 5);
-            line++;
-            Print(line++, $"공격할 몬스터를 선택해주세요.");
-            Print(line++, "------------------------------");
-            Print(line, new string(' ', 30));
-            Print(line++, $"{Game.Player.Name,-10} : {Game.Player.Hp}");
-            Renderer.Print(line++, "------------------------------");
+            int margin = 32;
+            int printWidthPos = Console.WindowWidth / 2 - margin;
+            for (int i = 0; i < 2 + monsters.Count; i++)
+            {
+                Print(line + i, new string(' ', printWidthPos), false, 0, margin);
+            }
+            if (selectionLine >= 0)
+                Print(line, "공격할 몬스터를 선택하세요.");
+            Print(line++, "        몬스터             ", false, 0, margin);
+            Print(line++, "---------------------------", false, 0, margin);
             for (int i = 0; i < monsters.Count; i++)
             {
                 Creature monster = monsters[i];
-                Console.SetCursorPosition(printMargin, line);
-                Console.Write(new string(' ', 30));
-                Console.SetCursorPosition(printMargin, line);
+                Console.SetCursorPosition(margin, line);
+                Console.Write(new string(' ', printWidthPos));
+                Console.SetCursorPosition(margin, line);
 
                 if (monster.IsDead())
                 {
@@ -185,9 +189,43 @@ namespace TeamProject
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 line++;
             }
-            Print(line, "------------------------------");
+            Print(line++, "---------------------------", false, 0, margin);
 
         }
+
+        public static void PrintSelectAction(int line, List<string> actionText, bool fromZero = true, int selectionLine = 0)
+        {
+            int printWidthPos = 30;
+            for (int i = 0; i < height - 10; i++)
+            {
+                Print(line + i, new string(' ', printWidthPos));
+            }
+            Print(line++, $"원하는 행동을 선택해주세요.");
+            Print(line++, "---------------------------");
+            Print(line, new string(' ', printWidthPos));
+            Print(line++, $"{Game.Player.Name,-10} : {Game.Player.Hp}");
+            Print(line++, "---------------------------");
+            for(int i = 0; i < actionText.Count; i++)
+            {
+                Console.SetCursorPosition(printMargin, line);
+                Console.Write(new string(' ', printWidthPos));
+                Console.SetCursorPosition(printMargin, line);
+
+                if (selectionLine == i)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                Console.WriteLine(actionText[i]);
+                //Console.Write(fromZero ? i : i + 1);
+                //Console.Write(". ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                line++; 
+            }
+            Console.WriteLine(selectionLine.ToString());
+            Print(line++, "---------------------------");
+
+        }
+
 
         /// <summary>
         /// 선택한 줄의 그려진 메시지를 지웁니다. DrawBorder()로 그려진 테두리는 지워지지 않습니다.

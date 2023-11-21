@@ -41,17 +41,22 @@ namespace TeamProject
             return Monsters;
         }
 
-        public void Reward()
+        public void ClearReward()
         {
             // 스테이지 보상
             //아이템
 
             //경험치 : 스테이지*20
-            int expReward = StageLevel * 100;
+            int expReward = StageLevel * 20;
             Game.Player.ChangeExp(expReward);
 
             // 스테이지 1 증가
             StageLevel++;
+        }
+        public void FailReward()
+        {
+            // 던전 클리어 실패 시
+
         }
     }
 }
