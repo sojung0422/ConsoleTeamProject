@@ -18,7 +18,7 @@ namespace TeamProject
                 Renderer.ItemTableFormatters["Index"],
                 Renderer.ItemTableFormatters["Name"],
                 Renderer.ItemTableFormatters["ItemType"],
-                Renderer.ItemTableFormatters["Stat"],
+                Renderer.ItemTableFormatters["Effect"],
                 Renderer.ItemTableFormatters["Cost"],
                 new("", "보유 개수", 11, i => {
                     if (Game.Player.Inventory.HasSameItem(i, out var res))
@@ -30,7 +30,7 @@ namespace TeamProject
                 Renderer.ItemTableFormatters["Index"],
                 Renderer.ItemTableFormatters["Name"],
                 Renderer.ItemTableFormatters["ItemType"],
-                Renderer.ItemTableFormatters["Stat"],
+                Renderer.ItemTableFormatters["Effect"],
                 Renderer.ItemTableFormatters["SellCost"],
                 Renderer.ItemTableFormatters["StackCount"]
         };

@@ -11,20 +11,25 @@ namespace TeamProject
 {
     public class ConsumeItem : Item
     {
+        public string EffectDesc { get; set; }
+
         public ConsumeItem() 
         {
+            EffectDesc = string.Empty;
             OnAdded += MergeItem;
             OnUsed += UseEffect;
         }
 
-        public ConsumeItem(int id, string name, string description, int price, int stackCount, ItemType itemType = ItemType.ConsumeItem) : base(id, name, description, price, itemType, stackCount)
+        public ConsumeItem(int id, string name, string description, int price, int stackCount, ItemType itemType = ItemType.ConsumeItem, string effectDesc = null) : base(id, name, description, price, itemType, stackCount)
         {
+            EffectDesc = effectDesc ?? "";
             OnAdded += MergeItem;
             OnUsed += UseEffect;
         }
 
         public ConsumeItem(ConsumeItem reference) : base(reference) 
         {
+            EffectDesc = reference.EffectDesc;
             OnAdded += MergeItem;
             OnUsed += UseEffect;
         }
@@ -48,27 +53,27 @@ namespace TeamProject
 
     public class HealingPotion : ConsumeItem
     {
-        public int healValue;
+        private int healValue;
+        public int HealValue { get => healValue; set { healValue = value; EffectDesc = $"체력 {healValue} 회복"; } }
 
         public HealingPotion() : base()
         {
         }
 
-        public HealingPotion(int id, string name, string description, int price, int stackCount, int healValue, ItemType itemType = ItemType.ConsumeItem) : base(id, name, description, price, stackCount, itemType)
+        public HealingPotion(int id, string name, string description, int price, int stackCount, int healValue, ItemType itemType = ItemType.ConsumeItem, string effectDesc = null) : base(id, name, description, price, stackCount, itemType, effectDesc)
         {
-            this.healValue = healValue;
+            HealValue = healValue;
         }
 
         public HealingPotion(HealingPotion reference) : base(reference)
         {
-            healValue = reference.healValue;
+            HealValue = reference.HealValue;
         }
 
         public override void UseEffect(Character owner)
         {
             base.UseEffect(owner);
-            //owner.OnDamaged(-healValue);
-            owner.Hp += healValue;
+            owner.OnDamaged(-healValue);
         }
 
         public override Item DeepCopy() => new HealingPotion(this);
