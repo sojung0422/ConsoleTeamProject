@@ -47,6 +47,10 @@ namespace TeamProject {
         {
             int printWidthPos = Console.WindowWidth / 2;
             bool isCritical = false;
+            for (int i = 0; i < 10; i++)
+            {
+                Renderer.Print(line + i, new string(' ', printWidthPos - 1), false, 0, printWidthPos);
+            }
             if (RandomChance(creature.DefaultAvoid)) // 상대방이 회피 했을때
             {
                 Renderer.Print(line++, $"{creature.Name}이(가) 회피했습니다!", false, 1000, printWidthPos);

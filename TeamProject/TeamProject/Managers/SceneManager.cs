@@ -109,3 +109,12 @@ public enum Command
     Exit,
 }
 
+public enum BattleAction
+{
+    SelectAction,
+    SelectSkill,
+    SelectAttack,
+    Attack,
+    UsePotion
+}
+

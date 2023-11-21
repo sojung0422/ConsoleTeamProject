@@ -13,13 +13,20 @@ public class BattleScene : Scene
     public override string Title { get; protected set; } = $"지하 감옥";
     public List<Creature> Monsters;
     public int MonsterCount;
+    public List<string> ActionTextList;
+    public List<string> AttackTextList;
+
+    protected int startTextLine;
     protected int line;
 
     public delegate void GameEvent(Creature creature);
     public event GameEvent OnCreatureDead;
     public BattleScene()
     {
+        startTextLine = 4;
         Monsters = new List<Creature>();
+        ActionTextList = new List<string>();
+        AttackTextList = new List<string>();
 
         OnCreatureDead += BattleEnd;
     }
@@ -28,16 +35,23 @@ public class BattleScene : Scene
         // 몬스터 생성
         Monsters = Game.Stage.MonsterSpawn();
         MonsterCount = Monsters.Count;
+
+        ActionTextList.Clear();
+        ActionTextList.Add("1. 몬스터 공격");
+        ActionTextList.Add("2. 체력 회복[미구현]");
+        ActionTextList.Add("3. 던전 포기");
+
+        AttackTextList.Clear();
+        AttackTextList.Add("1. 기본 공격");
+        AttackTextList.Add("2. 스킬[미구현]");
+
         DrawScene();
     }
 
     public override void NextScene()
     {
         Renderer.PrintKeyGuide(new string(' ', Console.WindowWidth - 2));
-        while (Console.KeyAvailable) // 버퍼에 입력이 있는 경우 처리
-        {
-            Console.ReadKey(true); // 입력을 읽고 버퍼를 비움
-        }
+        ClearBuffer();
         for (int count = 9; count > 0; count--)
         {
             Renderer.PrintKeyGuide($"[아무 키 : 던전 입구]   {count}초 뒤 던전 입구로 이동");
@@ -54,29 +68,27 @@ public class BattleScene : Scene
     protected override void DrawScene()
     {
         Renderer.DrawBorder(Title);
+        // player : 6 ~ 10 , monster : 15 ~ 24
+        Renderer.Print(3, $"{Game.Stage.StageLevel} 스테이지", false, 0, Console.WindowWidth / 2 - 5);
+        Renderer.Print(4, $"{Game.Player.Name}의 공격", false, 0, Console.WindowWidth / 2);
+        Renderer.Print(5, new string('-', 55), false, 0, Console.WindowWidth / 2);
+        Renderer.Print(11, new string('-', 55), false, 0, Console.WindowWidth / 2);
+        Renderer.Print(13, $"몬스터의 공격", false, 0, Console.WindowWidth / 2);
+        Renderer.Print(14, new string('-', 55), false, 0, Console.WindowWidth / 2);
+        Renderer.Print(25, new string('-', 55), false, 0, Console.WindowWidth / 2);
+        Renderer.PrintBattleText(startTextLine, Monsters, true, -1);
+        Renderer.PrintKeyGuide(new string(' ', Console.WindowWidth - 2));
         while (!CheckAllMonstersDead() && !Game.Player.IsDead())
         {
-            selectionIdx = 0;
-            while (Monsters[selectionIdx].IsDead())
-                selectionIdx++;
-            Renderer.PrintKeyGuide("[방향키 ↑ ↓: 공격할 몬스터 이동] [Enter: 선택] [ESC: 던전 포기]");
-
-            do
-            {
-                Renderer.PrintBattleText(3, Monsters, true, selectionIdx);
-                while (Console.KeyAvailable) // 버퍼에 입력이 있는 경우 처리
-                {
-                    Console.ReadKey(true); // 입력을 읽고 버퍼를 비움
-                }
-            }
-            while (ManageInput());
-            Renderer.PrintBattleText(3, Monsters, true, selectionIdx);
+            SelectAction();
 
             if (CheckAllMonstersDead())
-                break;
+            {
+                OnCreatureDead(Monsters[0]);
+            }
 
             // 몬스터 턴
-            line = 7;
+            line = 15;
             foreach (var monster in Monsters)
             {
                 if (Game.Player.IsDead())
@@ -85,12 +97,10 @@ public class BattleScene : Scene
                     continue;
                 Thread.Sleep(1000);
                 monster.Attack(Game.Player, line++);
-                Renderer.PrintBattleText(3, Monsters, true, selectionIdx);
+                Renderer.PrintBattleText(startTextLine, Monsters, true, selectionIdx);
             }
-
-            Renderer.Print(++line, $"공격할 몬스터를 선택해주세요.", false, 0, Console.WindowWidth / 2);
         }
-        Renderer.PrintBattleText(3, Monsters, true, -1);
+        Renderer.PrintBattleText(startTextLine, Monsters, true, -1);
 
         // 전투 종료
         if (CheckAllMonstersDead())
@@ -104,10 +114,11 @@ public class BattleScene : Scene
 
     }
 
+    // ================= 키조작 관련 ================= //
 
     private int selectionIdx = 0;
 
-    public bool ManageInput()
+    public bool ManageInput(BattleAction action)
     {
         var key = Console.ReadKey(true);
 
@@ -119,13 +130,86 @@ public class BattleScene : Scene
             ConsoleKey.Escape => Command.Exit,
             _ => Command.Nothing
         };
-
-        OnCommand(commands);
-
+        switch (action)
+        {
+            case BattleAction.SelectAction:
+                ActionOnCommand(commands);
+                break;
+            case BattleAction.SelectSkill:
+                // 스킬 사용
+                SkillOnCommand(commands);
+                break;
+            case BattleAction.SelectAttack:
+                // 공격
+                SelectAttackOnCommand(commands);
+                break; ;
+            case BattleAction.Attack:
+                AttackOnCommand(commands);
+                break;
+            case BattleAction.UsePotion:
+                // 포션 사용
+                UsePotionOnCommand(commands);
+                break;
+        }
         return commands != Command.Interact;
     }
 
-    private void OnCommand(Command cmd)
+    private void ActionOnCommand(Command cmd)
+    {
+        switch (cmd)
+        {
+            case Command.MoveTop:
+                if (selectionIdx > 0)
+                {
+                    --selectionIdx;
+                }
+                break;
+            case Command.MoveBottom:
+                if (selectionIdx < ActionTextList.Count - 1)
+                {
+                    ++selectionIdx;
+                }
+                break;
+            case Command.Interact:
+                if (selectionIdx == 0)
+                    SelectAttack();
+                else if (selectionIdx == 1)
+                    UsePotion();
+                else if (selectionIdx == 2)
+                    Managers.Scene.GetOption("Back").Execute();
+                break;
+        }
+    }
+
+    private void SelectAttackOnCommand(Command cmd)
+    {
+        switch (cmd)
+        {
+            case Command.MoveTop:
+                if (selectionIdx > 0)
+                {
+                    --selectionIdx;
+                }
+                break;
+            case Command.MoveBottom:
+                if (selectionIdx < AttackTextList.Count - 1)
+                {
+                    ++selectionIdx;
+                }
+                break;
+            case Command.Interact:
+                if (selectionIdx == 0)
+                    MonsterAttack();
+                else
+                    SelectSkill();
+                break;
+            case Command.Exit:
+                SelectAction();
+                break;
+        }
+    }
+
+    private void AttackOnCommand(Command cmd)
     {
         int tempSelectionIdx;
         switch (cmd)
@@ -161,16 +245,149 @@ public class BattleScene : Scene
                 }
                 break;
             case Command.Interact:
-                Game.Player.Attack(Monsters[selectionIdx], 5);
+                Game.Player.Attack(Monsters[selectionIdx], 6);
                 break;
+            /*    //  던전포기 -> ActionOnCommand로 이동
             case Command.Exit:
+                // 던전 포기 패널티
+                Game.Player.Hp -= 20;
                 Managers.Scene.GetOption("Back").Execute();
                 break;
-
+            */
         }
     }
 
+    private void SkillOnCommand(Command cmd)
+    {
+        switch (cmd)
+        {
+            case Command.MoveTop:
+                if (selectionIdx > 0)
+                {
+                    --selectionIdx;
+                }
+                break;
+            case Command.MoveBottom:
+                // TODO: 스킬개수 Count - 1 로 변경
+                if (selectionIdx < ActionTextList.Count - 1)
+                {
+                    ++selectionIdx;
+                }
+                break;
+            case Command.Interact:
+                switch (selectionIdx)
+                {
+                    case 0:
+                        // 0번 스킬 사용
+                        break;
+                    case 1:
+                        // 1번 스킬 사용
+                        break;
+                }
+                break;
+            case Command.Exit:
+                SelectAttack();
+                break;
+        }
+    }
+    private void UsePotionOnCommand(Command cmd)
+    {
+        switch (cmd)
+        {
+            case Command.MoveTop:
+                if (selectionIdx > 0)
+                {
+                    --selectionIdx;
+                }
+                break;
+            case Command.MoveBottom:
+                // TODO: 보유 포션 Count - 1 로 변경
+                if (selectionIdx < ActionTextList.Count - 1)
+                {
+                    ++selectionIdx;
+                }
+                break;
+            case Command.Interact:
+                switch (selectionIdx)
+                {
+                    case 0:
+                        // 0번 포션 사용
+                        break;
+                    case 1:
+                        // 1번 포션 사용
+                        break;
+                }
+                break;
+            case Command.Exit:
+                SelectAction();
+                break;
+        }
+    }
+    // ============================================ //
+
     // ================= 전투 관련 ================= //
+
+    public void SelectAction()
+    {
+        selectionIdx = 0;
+        Renderer.PrintKeyGuide("[방향키 ↑ ↓: 이동] [Enter: 선택] [ESC : 뒤로 가기]");
+        do
+        {
+            Renderer.PrintSelectAction(startTextLine, ActionTextList, true, selectionIdx);
+            ClearBuffer();
+        }
+        while (ManageInput(BattleAction.SelectAction));
+    }
+    public void MonsterAttack()
+    {
+        // 공격
+        selectionIdx = 0;
+        while (Monsters[selectionIdx].IsDead())
+            selectionIdx++;
+        do
+        {
+            Renderer.PrintBattleText(startTextLine, Monsters, true, selectionIdx);
+            ClearBuffer();
+        }
+        while (ManageInput(BattleAction.Attack));
+        Renderer.PrintBattleText(startTextLine, Monsters, true, -1);
+    }
+
+    public void SelectAttack()
+    {
+        do
+        {
+            Renderer.PrintSelectAction(startTextLine, AttackTextList, true, selectionIdx);
+            ClearBuffer();
+        }
+        while (ManageInput(BattleAction.SelectAttack));
+    }
+
+    public void SelectSkill()
+    {
+        // 스킬 구현
+        /* TODO: AttackTextList -> 스킬 리스트로 변경
+         * do
+        {
+            Renderer.PrintChoiceAction(startTextLine, AttackTextList, true, selectionIdx);
+            ClearBuffer();
+        }
+        while (ManageInput(BattleAction.SelectAttack));
+        */
+    }
+
+    public void UsePotion()
+    {
+        /*
+        do
+        {
+            // TODO: AttackTextList -> 포션 리스트로 변경
+            Renderer.PrintChoiceAction(startTextLine, AttackTextList, true, selectionIdx);
+            ClearBuffer();
+        }
+        while (ManageInput(BattleAction.UsePotion));
+        */
+    }
 
     public bool CheckAllMonstersDead()
     {
@@ -191,7 +408,7 @@ public class BattleScene : Scene
             Renderer.Print(12 + MonsterCount, "던전 클리어!");
 
             // 클리어 보상(아이템, 골드, 레벨업 등)
-            Game.Stage.Reward();
+            Game.Stage.ClearReward();
 
 
         }
@@ -201,12 +418,20 @@ public class BattleScene : Scene
             Renderer.Print(12 + MonsterCount, "던전 클리어 실패!");
 
             //실패 보상(아이템, 골드, 레벨업 등)
-            Game.Stage.Reward();
+            Game.Stage.FailReward();
 
 
         }
     }
 
     // ============================================ //
+
+    public void ClearBuffer()
+    {
+        while (Console.KeyAvailable) // 버퍼에 입력이 있는 경우 처리
+        {
+            Console.ReadKey(true); // 입력을 읽고 버퍼를 비움
+        }
+    }
 }
 
