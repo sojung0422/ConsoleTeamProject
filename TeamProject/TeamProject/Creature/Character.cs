@@ -25,7 +25,6 @@ namespace TeamProject {
                 if (value <= 0) hp = 0;
                 else if (value >= HpMax) hp = HpMax;
                 else hp = value;
-                Managers.Game.SaveGame();
             }
         }
         public Inventory Inventory { get; set; }
@@ -91,6 +90,7 @@ namespace TeamProject {
         public override void OnDamaged(int damage)
         {
             Hp -= damage;
+            Managers.Game.SaveGame();
         }
 
         //확률에 따라 발생하는 메서드
