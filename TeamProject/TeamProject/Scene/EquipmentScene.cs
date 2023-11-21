@@ -53,7 +53,7 @@ public class EquipmentScene : Scene
                 Renderer.ItemTableFormatters["Index"],
                 Renderer.ItemTableFormatters["Name"],
                 Renderer.ItemTableFormatters["ItemType"],
-                Renderer.ItemTableFormatters["Stat"],
+                Renderer.ItemTableFormatters["Effect"],
                 Renderer.ItemTableFormatters["Desc"],
             };
             Renderer.DrawItemList(++row, gearList, formatters);
