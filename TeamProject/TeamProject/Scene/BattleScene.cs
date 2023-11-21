@@ -68,14 +68,15 @@ public class BattleScene : Scene
     protected override void DrawScene()
     {
         Renderer.DrawBorder(Title);
-        // player : 6 ~ 10 , monster : 15 ~ 24
+        // player : 7 ~ 11, monster : 15 ~ 26
         Renderer.Print(3, $"{Game.Stage.StageLevel} 스테이지", false, 0, Console.WindowWidth / 2 - 5);
-        Renderer.Print(4, $"{Game.Player.Name}의 공격", false, 0, Console.WindowWidth / 2);
-        Renderer.Print(5, new string('-', 55), false, 0, Console.WindowWidth / 2);
-        Renderer.Print(11, new string('-', 55), false, 0, Console.WindowWidth / 2);
+        Renderer.Print(4, new string('-', 55), false, 0, Console.WindowWidth / 2);
+        Renderer.Print(5, $"{Game.Player.Name}의 공격", false, 0, Console.WindowWidth / 2);
+        Renderer.Print(6, new string('-', 55), false, 0, Console.WindowWidth / 2);
+        Renderer.Print(12, new string('-', 55), false, 0, Console.WindowWidth / 2);
         Renderer.Print(13, $"몬스터의 공격", false, 0, Console.WindowWidth / 2);
         Renderer.Print(14, new string('-', 55), false, 0, Console.WindowWidth / 2);
-        Renderer.Print(25, new string('-', 55), false, 0, Console.WindowWidth / 2);
+        Renderer.Print(27, new string('-', 55), false, 0, Console.WindowWidth / 2);
         Renderer.PrintBattleText(startTextLine, Monsters, true, -1);
         Renderer.PrintKeyGuide(new string(' ', Console.WindowWidth - 2));
         while (!CheckAllMonstersDead() && !Game.Player.IsDead())
@@ -97,10 +98,9 @@ public class BattleScene : Scene
                     continue;
                 Thread.Sleep(1000);
                 monster.Attack(Game.Player, line++);
-                Renderer.PrintBattleText(startTextLine, Monsters, true, selectionIdx);
+                Renderer.PrintPlayerState(6);
             }
         }
-        Renderer.PrintBattleText(startTextLine, Monsters, true, -1);
 
         // 전투 종료
         if (CheckAllMonstersDead())
@@ -245,7 +245,7 @@ public class BattleScene : Scene
                 }
                 break;
             case Command.Interact:
-                Game.Player.Attack(Monsters[selectionIdx], 6);
+                Game.Player.Attack(Monsters[selectionIdx], 7);
                 break;
             /*    //  던전포기 -> ActionOnCommand로 이동
             case Command.Exit:
@@ -344,6 +344,9 @@ public class BattleScene : Scene
         selectionIdx = 0;
         while (Monsters[selectionIdx].IsDead())
             selectionIdx++;
+
+        Renderer.PrintSelectAction(startTextLine, AttackTextList, true, -1);
+
         do
         {
             Renderer.PrintBattleText(startTextLine, Monsters, true, selectionIdx);
@@ -355,6 +358,7 @@ public class BattleScene : Scene
 
     public void SelectAttack()
     {
+        
         do
         {
             Renderer.PrintSelectAction(startTextLine, AttackTextList, true, selectionIdx);
