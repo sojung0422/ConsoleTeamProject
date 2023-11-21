@@ -19,8 +19,8 @@ public class SceneManager {
         }
 
         // #2. 선택지 정보 초기화.
-        Options.Add("NewGame", new("NewGame", "새로시작", ()=>EnterScene<CreateCharacterScene>()));
-        Options.Add("LoadGame", new("LoadGame", "불러오기(미구현)", null));
+        Options.Add("NewGame", new("NewGame", "새로시작", () => EnterScene<CreateCharacterScene>()));
+        Options.Add("LoadGame", new("LoadGame", "불러오기(미구현)", LoadGame));
         Options.Add("Back", new("Back", "뒤로가기", () => EnterScene<Scene>(PrevScene.GetType().Name)));
         Options.Add("ShowInfo", new("ShowInfo", "상태보기", () => EnterScene<CharacterInfoScene>()));
         Options.Add("Inventory", new("Inventory", "인벤토리", () => EnterScene<InventoryInfoScene>()));
@@ -78,6 +78,11 @@ public class SceneManager {
     }
 
     #endregion
+
+    private void LoadGame() {
+        Game.Player = Managers.Game.data.character;
+        EnterScene<MainScene>();
+    }
 }
 
 public class ActionOption {

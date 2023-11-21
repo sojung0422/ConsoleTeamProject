@@ -17,6 +17,7 @@ public class Gear : Item
     public float Dodge { get; set; }    // 회피율
     public bool IsEquip { get; set; }
 
+    public Gear() { }
     public Gear(int id, string name, string description, int price, GearType gearType, float atk, float def, float crit, float dodge, ItemType itemType = ItemType.Gear, bool isEquip = false) : base(id, name, description, price, itemType)
     {
         GearType = gearType;

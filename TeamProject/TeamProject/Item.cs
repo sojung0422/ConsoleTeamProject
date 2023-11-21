@@ -24,6 +24,7 @@ namespace TeamProject
         /// </summary>
         public int? StackCount { get; set; }
 
+        public Item() { }
         public Item(int id, string name, string description, int price, ItemType type, int? stackCount = null)
         {
             ID = id;

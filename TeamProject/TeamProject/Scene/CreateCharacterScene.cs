@@ -211,6 +211,9 @@ public class CreateCharacterScene : Scene
         Game.Player.Inventory.Add(Game.Items[0]);
         Game.Player.Inventory.Add(Game.Items[1]);
         Game.Player.Inventory.Add(Game.Items[2]);
+
+        Managers.Game.data.character = Game.Player;
+        Managers.Game.SaveGame();
     }
 
     private bool ManageInput()
