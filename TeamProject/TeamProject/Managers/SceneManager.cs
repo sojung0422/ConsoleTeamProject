@@ -37,10 +37,22 @@ public class SceneManager {
 
     private void UseInn()
     {
-        Renderer.Print(5, $"당신의 체력 : {Game.Player.Hp} / {Game.Player.DefaultHpMax}");
-        Renderer.Print(7, $"보유 골드 : {Game.Player.Gold} G");
-        Renderer.Print(10, "회복되었습니다!");
-    }
+        if (Game.Player.Hp == Game.Player.HpMax)        
+            Renderer.Print(10, "이미 체력이 최대입니다.");
+        
+        else if (Game.Player.Gold <= 100)        
+            Renderer.Print(10, "돈이 부족합니다.");
+        else
+        {            
+            Renderer.Print(10, "회 복 중 입 니 다 . . . ", false, 2000, 2);
+            Game.Player.Hp = Game.Player.HpMax;
+            Game.Player.ChangeGold(-100);
+            Renderer.Print(5, $"당신의 체력 : {Game.Player.Hp} / {Game.Player.DefaultHpMax}");
+            Renderer.Print(7, $"보유 골드 : {Game.Player.Gold} G");
+            Renderer.Print(10, "체력이 모두 회복되었습니다!");
+        }
+            
+        }
 
     #region ActionOption
 
