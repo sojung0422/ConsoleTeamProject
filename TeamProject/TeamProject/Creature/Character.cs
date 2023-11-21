@@ -7,7 +7,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace TeamProject {
     public class Character : Creature{
-        public string Job { get; protected set; }
+        public string Job { get; set; }
         public float HpMax => DefaultHpMax + hpMaxModifier;
         public float Damage => DefaultDamage + damageModifier;
         public float Defense => DefaultDefense + defenseModifier;
@@ -18,7 +18,7 @@ namespace TeamProject {
         public int NextLevelExp;
         public int TotalExp;
 
-        public int Gold { get; protected set; }
+        public int Gold { get; set; }
         public override float Hp {
             get => hp;
             set {
@@ -30,7 +30,15 @@ namespace TeamProject {
         public Inventory Inventory { get; }
         public Equipment Equipment { get; }
 
-        public Character(string name, string job, int level, int damage, int defense, int hp, int gold, float critical, float avoid)
+        public float hpMaxModifier;
+        public float damageModifier;
+        public float defenseModifier;
+        public float mpMaxModifier;
+        public float criticalModifier;
+        public float avoidModifier;
+
+        //public Character() { }
+        public Character(string name, string job, int level, float damage, float defense, float hp, int gold, float critical, float avoid)
         {
             Name = name;
             Job = job;
@@ -132,11 +140,5 @@ namespace TeamProject {
             Renderer.Print(Console.WindowHeight - 5, $"방어력 {Defense - 0.5f * levelsToAdvance} -> {Defense}");
         }
 
-        private float hpMaxModifier;
-        private float damageModifier;
-        private float defenseModifier;
-        private float mpMaxModifier;
-        private float criticalModifier;
-        private float avoidModifier;
     }
 }
