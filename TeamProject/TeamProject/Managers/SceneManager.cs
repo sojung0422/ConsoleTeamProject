@@ -29,7 +29,17 @@ public class SceneManager {
         Options.Add("Dungeon", new("Dungeon", "던전입구", () => EnterScene<DungeonGateScene>()));
         Options.Add("DungeonEnter", new("DungeonEnter", $"던전입장", () => EnterScene<BattleScene>()));
         Options.Add("Main", new("Main", "메인으로", () => EnterScene<MainScene>()));
-        Options.Add("Rest", new("Rest", "휴식하기", null));
+        Options.Add("Rest", new("Rest", "휴식하기", () => EnterScene<RestScene>()));
+
+        //
+        Options.Add("UseInn", new("UseInn", "여관 이용하기", UseInn));
+    }
+
+    private void UseInn()
+    {
+        Renderer.Print(5, $"당신의 체력 : {Game.Player.Hp} / {Game.Player.DefaultHpMax}");
+        Renderer.Print(7, $"보유 골드 : {Game.Player.Gold} G");
+        Renderer.Print(10, "회복되었습니다!");
     }
 
     #region ActionOption
