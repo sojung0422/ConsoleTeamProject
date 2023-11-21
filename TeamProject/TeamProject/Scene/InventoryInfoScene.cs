@@ -13,6 +13,7 @@ namespace TeamProject {
             Options.Clear();
             Options.Add(Managers.Scene.GetOption("Back"));
 
+            Renderer.DrawBorder(Title);
             DrawScene();
         }
 
@@ -27,7 +28,6 @@ namespace TeamProject {
         }
 
         protected override void DrawScene() {
-            Renderer.DrawBorder(Title);
             int row = 4;
             row = Renderer.Print(row, "이 곳은 인벤토리");
             row = Renderer.Print(row, "인벤토리 정보를 보여줍니다.");
@@ -44,7 +44,5 @@ namespace TeamProject {
             Renderer.PrintOptions(++row, Options, true);
             Renderer.PrintKeyGuide("[ESC : 뒤로가기]");
         }
-
-
     }
 }

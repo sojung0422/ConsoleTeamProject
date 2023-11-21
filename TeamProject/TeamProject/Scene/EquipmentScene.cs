@@ -28,6 +28,7 @@ public class EquipmentScene : Scene
         // #1. 선택지 설정.
         Options.Clear();
         Options.Add(Managers.Scene.GetOption("Back"));
+        Renderer.DrawBorder(Title);
     }
 
     public override void NextScene()
@@ -41,7 +42,6 @@ public class EquipmentScene : Scene
 
     private void DrawStep()
     {
-        Renderer.DrawBorder(Title);
 
         if (step == EquipStep.Show)
         {
@@ -56,9 +56,7 @@ public class EquipmentScene : Scene
                 Renderer.ItemTableFormatters["Stat"],
                 Renderer.ItemTableFormatters["Desc"],
             };
-            row = Renderer.DrawItemList(++row, gearList, formatters);
-
-            Renderer.PrintOptions(++row, Options, true);
+            Renderer.DrawItemList(++row, gearList, formatters);
             Renderer.PrintKeyGuide("[Enter : 관리모드] [ESC : 뒤로가기]");
         }
         else

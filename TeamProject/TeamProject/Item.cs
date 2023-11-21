@@ -13,11 +13,11 @@ namespace TeamProject
         /// <summary>
         /// 아이템을 식별할 고유 번호 <br/>
         /// </summary>
-        public int ID { get; protected set; }
-        public string Name { get; protected set; }
-        public string Description { get; protected set; }
-        public int Price { get; protected set; }
-        public ItemType Type { get; protected set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Price { get; set; }
+        public ItemType Type { get; set; }
 
         /// <summary>
         /// StackCount.HasValue가 null이라면 쌓을 수 없는 아이템

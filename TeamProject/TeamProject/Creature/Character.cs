@@ -25,10 +25,11 @@ namespace TeamProject {
                 if (value <= 0) hp = 0;
                 else if (value >= HpMax) hp = HpMax;
                 else hp = value;
+                Managers.Game.SaveGame();
             }
         }
-        public Inventory Inventory { get; }
-        public Equipment Equipment { get; }
+        public Inventory Inventory { get; set; }
+        public Equipment Equipment { get; set; }
 
         public float hpMaxModifier;
         public float damageModifier;
@@ -109,7 +110,8 @@ namespace TeamProject {
 
         public void ChangeGold(int gold)
         {
-            Gold += gold; 
+            Gold += gold;
+            Managers.Game.SaveGame();
         }
 
         public void ChangeExp(int expAmount)
@@ -123,6 +125,7 @@ namespace TeamProject {
                 NextLevelExp += 50;
             }
             LevelUp(levelsToAdvance);
+            Managers.Game.SaveGame();
         }
 
         public void LevelUp(int levelsToAdvance)
@@ -138,6 +141,7 @@ namespace TeamProject {
             Renderer.Print(Console.WindowHeight - 7, $"레벨 {Level- levelsToAdvance} -> {Level}");
             Renderer.Print(Console.WindowHeight - 6, $"공격력 {Damage - 1.0f * levelsToAdvance} -> {Damage}");
             Renderer.Print(Console.WindowHeight - 5, $"방어력 {Defense - 0.5f * levelsToAdvance} -> {Defense}");
+            Managers.Game.SaveGame();
         }
 
     }
