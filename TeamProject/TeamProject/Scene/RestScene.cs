@@ -54,23 +54,34 @@ public class RestScene : Scene {
 
         OnCommand(commands);
 
-        if(commands == Command.Exit) Options[1].Execute();
-
-        if (commands == Command.Interact)
+        if (commands == Command.Exit)
         {
-            if (Game.Player.Hp == Game.Player.HpMax)
-                Renderer.Print(10, "이미 체력이 최대입니다.");
+            Options[1].Execute();
 
-            else if (Game.Player.Gold <= 100)
-                Renderer.Print(10, "돈이 부족합니다.");
-
-            else
-            {
-                Game.Player.Hp = Game.Player.HpMax;
-                Game.Player.ChangeGold(-100);
-                Options[selectionIdx].Execute();
-            }
+            return true;
         }
+
+        //if (commands == Command.Interact)
+        //{
+        //    if (Game.Player.Hp == Game.Player.HpMax)
+        //    {
+        //        Renderer.Print(10, "이미 체력이 최대입니다.");
+        //        return true;
+        //    }
+
+        //    else if (Game.Player.Gold <= 100)
+        //    {
+        //        Renderer.Print(10, "돈이 부족합니다.");
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        Game.Player.Hp = Game.Player.HpMax;
+        //        Game.Player.ChangeGold(-100);
+        //        Options[selectionIdx].Execute();
+        //        return true;
+        //    }
+        //}
 
         return true;
     }
