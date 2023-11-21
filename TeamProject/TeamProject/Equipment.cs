@@ -44,6 +44,7 @@ public class Equipment
         equipped[slot] = gear;
         StatAdd(equipped[slot]);
         equipped[slot].IsEquip = true;
+        Managers.Game.SaveGame();
     }
 
     public void Unequip(GearSlot slot)
@@ -51,6 +52,7 @@ public class Equipment
         StatSubtract(equipped[slot]);
         equipped[slot].IsEquip = false;
         equipped[slot] = Gear.Empty;
+        Managers.Game.SaveGame();
     }
 
     public void StatAdd(Gear gear)
