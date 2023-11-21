@@ -12,16 +12,16 @@
     "mpMaxModifier": 0.0,
     "criticalModifier": 0.0,
     "avoidModifier": 0.0,
-    "hp": 80.0,
+    "hp": 70.0,
     "Job": "마법사",
     "HpMax": 80.0,
-    "Damage": 18.0,
-    "Defense": 11.0,
+    "Damage": 6.0,
+    "Defense": 2.0,
     "MpMax": 0.0,
     "Critical": 0.1,
-    "Avoid": 0.25,
-    "Gold": 1200,
-    "Hp": 80.0,
+    "Avoid": 0.2,
+    "Gold": 2250,
+    "Hp": 70.0,
     "Inventory": {
       "$id": "3",
       "$type": "TeamProject.Inventory, TeamProject",
@@ -36,7 +36,7 @@
             "Def": 0.0,
             "Crit": 0.0,
             "Dodge": 0.0,
-            "IsEquip": true,
+            "IsEquip": false,
             "ID": 1,
             "Name": "철제 검",
             "Description": "공격에 사용되는 무기",
@@ -52,7 +52,7 @@
             "Def": 6.0,
             "Crit": 0.0,
             "Dodge": 0.0,
-            "IsEquip": true,
+            "IsEquip": false,
             "ID": 2,
             "Name": "원형 방패",
             "Description": "적의 공격을 방어하는 방패",
@@ -68,63 +68,56 @@
             "Def": 3.0,
             "Crit": 0.0,
             "Dodge": 5.0,
-            "IsEquip": true,
+            "IsEquip": false,
             "ID": 3,
             "Name": "사슬 갑옷",
             "Description": "철사 고리를 엮어 만든 갑옷",
             "Price": 2000,
             "Type": 0,
             "StackCount": null
-          },
-          {
-            "$id": "7",
-            "$type": "TeamProject.ConsumeItem, TeamProject",
-            "ID": 7,
-            "Name": "체력 포션",
-            "Description": "체력을 회복하는 물약",
-            "Price": 150,
-            "Type": 1,
-            "StackCount": 8
-          },
-          {
-            "$id": "8",
-            "$type": "TeamProject.ConsumeItem, TeamProject",
-            "ID": 8,
-            "Name": "마나 포션",
-            "Description": "마나를 회복하는 물약",
-            "Price": 150,
-            "Type": 1,
-            "StackCount": 4
           }
         ]
       },
       "Parent": null,
-      "Count": 5,
+      "Count": 3,
       "MaxPad": 4
     },
     "Equipment": {
-      "$id": "9",
+      "$id": "7",
       "$type": "TeamProject.Equipment, TeamProject",
       "Equipped": {
         "$type": "System.Collections.Generic.Dictionary`2[[TeamProject.GearSlot, TeamProject],[TeamProject.Gear, TeamProject]], System.Private.CoreLib",
         "Weapon": {
-          "$ref": "4"
+          "$id": "8",
+          "$type": "TeamProject.Gear, TeamProject",
+          "GearType": 3,
+          "Atk": 0.0,
+          "Def": 0.0,
+          "Crit": 0.0,
+          "Dodge": 0.0,
+          "IsEquip": false,
+          "ID": -1,
+          "Name": "",
+          "Description": "",
+          "Price": 0,
+          "Type": 0,
+          "StackCount": null
         },
         "Shield": {
-          "$ref": "5"
+          "$ref": "8"
         },
         "Armor": {
-          "$ref": "6"
+          "$ref": "8"
         }
       }
     },
     "Name": "asd",
     "DefaultHpMax": 80.0,
-    "DefaultDamage": 18.0,
-    "DefaultDefense": 11.0,
+    "DefaultDamage": 6.0,
+    "DefaultDefense": 2.0,
     "DefaultMpMax": 0.0,
     "DefaultCritical": 0.1,
-    "DefaultAvoid": 0.25,
+    "DefaultAvoid": 0.2,
     "Level": 1
   }
 }
