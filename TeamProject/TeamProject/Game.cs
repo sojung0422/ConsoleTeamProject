@@ -1,4 +1,6 @@
-﻿namespace TeamProject;
+﻿using System.Collections.Generic;
+
+namespace TeamProject;
 
 public class Game
 {
@@ -6,19 +8,27 @@ public class Game
     //public static Monster Monster { get; set; }
 
     public static Stage Stage = new Stage();
+    public static Skill[] skills =
+    {
+        new Skill(new List<string>{"격돌", "회전베기"}, new List<float>{30, 20}, new List<int>{20, 25}),
+        new Skill(new List<string>{"화염구", "불기둥"}, new List<float>{40, 25}, new List<int>{30, 50}),
+        new Skill(new List<string>{"침투", "연쇄 암살"}, new List<float>{50, 15}, new List<int>{20, 30}),
+    };
+
     // name, job, level, damage, defense, hp, gold, critical, avoid
     public static Character[] Characters =
     {
-        new Character("", "전사", 1, 10, 5, 100, 50, 1500, 0.15f, 0.10f),
-        new Character("", "마법사", 1, 6, 2, 80, 100, 3000, 0.1f, 0.2f),
-        new Character("", "도적", 1, 8, 4, 90, 70, 5000, 0.35f, 0.30f)
+        new Character("", "전사", 1, 10, 5, 100, 50, 1500, 0.15f, 0.10f, skills[0]),
+        new Character("", "마법사", 1, 6, 2, 80, 100, 3000, 0.1f, 0.2f, skills[1]),
+        new Character("", "도적", 1, 8, 4, 90, 70, 5000, 0.35f, 0.30f, skills[2])
     };
+
     // name, hp, damage, defense, mp, critical, avoid
     public static Monster[] Monsters =
     {
-        new Monster("슬라임", 10, 10, 2, 0, 0.1f, 0.1f),
-        new Monster("트롤", 20, 20, 3, 0, 0.1f, 0.1f),
-        new Monster("헬하운드", 30, 30, 5, 0, 0.1f, 0.1f)
+        new Monster("슬라임", 10, 8, 2, 0, 0.1f, 0.1f),
+        new Monster("트롤", 20, 15, 3, 0, 0.1f, 0.1f),
+        new Monster("헬하운드", 30, 20, 5, 0, 0.1f, 0.1f)
     };
     // id, name, description, price, type, stackCount
     public static Item[] Items =
