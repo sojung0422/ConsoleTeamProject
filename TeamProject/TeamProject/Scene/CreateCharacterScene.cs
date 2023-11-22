@@ -22,7 +22,8 @@ public class CreateCharacterScene : Scene
 
     public override void EnterScene() {
         MusicPlayer.Instance.Stop();
-        MusicPlayer.Instance.PlayAsync("Story.mp3", 0.01f); // 음악파일명, 볼륨
+        MusicPlayer.Instance.music = "Story.mp3";
+        MusicPlayer.Instance.PlayAsync(0.1f); // 음악파일명, 볼륨
         step = CreateStep.Name;
         formatters = Managers.Table.GetFormatters<Character>(new string[] { "Job", "Damage", "Defense", "HpMax", "MpMax", "Critical", "Avoid" });
         DrawScene();

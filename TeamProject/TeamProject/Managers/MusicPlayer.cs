@@ -9,6 +9,7 @@ public class MusicPlayer
 
     private WaveOutEvent waveOutEvent;
     private AudioFileReader audioFileReader;
+    public string music = "";
 
     private MusicPlayer() { }
 
@@ -28,11 +29,11 @@ public class MusicPlayer
         get { return waveOutEvent != null && waveOutEvent.PlaybackState == PlaybackState.Playing; }
     }
 
-    public async Task PlayAsync(string fileName, float volume = 1.0f)
+    public async Task PlayAsync(float volume = 1.0f)
     {
         Stop(); // 이미 플레이 중인 경우 중지
 
-        string filePath = Path.Combine(GetProjectDirectory(), "Sounds", fileName);
+        string filePath = Path.Combine(GetProjectDirectory(), "Sounds", music);
         audioFileReader = new AudioFileReader(filePath);
         waveOutEvent = new WaveOutEvent();
         waveOutEvent.Init(audioFileReader);
