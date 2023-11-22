@@ -66,6 +66,7 @@ namespace TeamProject
             JobTableFormatters["Damage"] = new("DefaultDamage", "공격력", 10, c => c.DefaultDamage.ToString());
             JobTableFormatters["Defense"] = new("DefaultDefense", "방어력", 10, c => c.DefaultDefense.ToString());
             JobTableFormatters["HpMax"] = new("DefalutHpMax", "체 력", 10, c => c.DefaultHpMax.ToString());
+            JobTableFormatters["MpMax"] = new("DefalutMpMax", "마 나", 10, c => c.DefaultMpMax.ToString());
             JobTableFormatters["Critical"] = new("Critical", "크리율", 20, c => c.Critical.ToString("0%"));
             JobTableFormatters["Avoid"] = new("Avoid", "회피율", 20, c => c.Critical.ToString("0%"));
 

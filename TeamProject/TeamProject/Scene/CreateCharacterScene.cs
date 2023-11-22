@@ -71,6 +71,7 @@ public class CreateCharacterScene : Scene
                 Renderer.JobTableFormatters["Damage"],
                 Renderer.JobTableFormatters["Defense"],
                 Renderer.JobTableFormatters["HpMax"],
+                Renderer.JobTableFormatters["MpMax"],
                 Renderer.JobTableFormatters["Critical"],
                 Renderer.JobTableFormatters["Avoid"],
             };
@@ -223,6 +224,7 @@ public class CreateCharacterScene : Scene
             (int)selectPlayer.DefaultDamage,
             (int)selectPlayer.DefaultDefense,
             (int)selectPlayer.DefaultHpMax,
+            (int)selectPlayer.DefaultMpMax,
             selectPlayer.Gold,
             selectPlayer.Critical,
             selectPlayer.Avoid

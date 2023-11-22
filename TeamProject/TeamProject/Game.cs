@@ -9,9 +9,9 @@ public class Game
     // name, job, level, damage, defense, hp, gold, critical, avoid
     public static Character[] Characters =
     {
-        new Character("", "전사", 1, 10, 5, 100, 1500, 0.15f, 0.10f),
-        new Character("", "마법사", 1, 6, 2, 80, 3000, 0.1f, 0.2f),
-        new Character("", "도적", 1, 8, 4, 90, 5000, 0.35f, 0.30f)
+        new Character("", "전사", 1, 10, 5, 100, 50, 1500, 0.15f, 0.10f),
+        new Character("", "마법사", 1, 6, 2, 80, 100, 3000, 0.1f, 0.2f),
+        new Character("", "도적", 1, 8, 4, 90, 70, 5000, 0.35f, 0.30f)
     };
     // name, hp, damage, defense, mp, critical, avoid
     public static Monster[] Monsters =
@@ -29,8 +29,8 @@ public class Game
         new Gear(4, "다이아몬드 검", "더 쎈 무기", 3000, GearType.Weapon, 33, 0, 12, 0),
         new Gear(5, "다이아몬드 방패", "더 단단한 방패", 2000, GearType.Shield, 0, 15, 0, 0),
         new Gear(6, "다이아몬드 갑옷", "딴딴 갑옷 ", 4000, GearType.Armor, 8, 8, 8, 8),
-        new HealingPotion(7, "체력 포션", "체력을 회복하는 물약", 150, 1, 10),
-        new ConsumeItem(8, "마나 포션", "마나를 회복하는 물약", 150, 1),
+        new HealingPotion(7, "체력 포션", "체력을 회복하는 물약", 150, 1, 50),
+        new ManaPotion(8, "마나 포션", "마나를 회복하는 물약", 150, 1, 50),
     };
   
     /// <summary>
