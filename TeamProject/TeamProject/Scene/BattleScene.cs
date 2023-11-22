@@ -494,9 +494,7 @@ public class BattleScene : Scene
             Renderer.Print(12 + MonsterCount, "던전 클리어!");
 
             // 클리어 보상(아이템, 골드, 레벨업 등)
-            Game.Stage.ClearReward();
-
-
+            Game.Stage.SetClearReward();
         }
         else
         {
@@ -504,10 +502,11 @@ public class BattleScene : Scene
             Renderer.Print(12 + MonsterCount, "던전 클리어 실패!");
 
             //실패 보상(아이템, 골드, 레벨업 등)
-            Game.Stage.FailReward();
-
-
+            Game.Stage.SetFailReward();
         }
+
+        // [우진영] 여기서 StageRewardScene 으로 연결해주세요.
+        Managers.Scene.EnterScene<StageRewardScene>();
     }
 
     // ============================================ //
