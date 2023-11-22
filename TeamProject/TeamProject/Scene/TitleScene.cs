@@ -18,7 +18,7 @@ namespace TeamProject {
 
         public override void NextScene() {
             do {
-                Renderer.PrintOptions(18, Options, true, selectedOptionIndex);
+                Renderer.PrintOptions(19, Options, true, selectedOptionIndex);
                 GetInput();
             }
             while (lastCommand != Command.Interact);
@@ -34,6 +34,17 @@ namespace TeamProject {
             Renderer.PrintCenter(9,   "██    ██ ██  ██ ██ ██   ██ ██      ██   ██        ██    ██   ██ ██      ██      ");
             Renderer.PrintCenter(10, "  ██████  ██   ████ ██████  ███████ ██   ██        ██    ██   ██ ███████ ███████  ");
                                                                               
+
+            Renderer.Print(17," ▄▀▄▀▀▀▀▄▀▄", margin: Console.WindowWidth - 30);
+            Renderer.Print(18," █░░░░░░░░▀▄      ▄ ", margin: Console.WindowWidth - 30);
+            Renderer.Print(19,"█░░▀░░▀░░░░░▀▄▄  █░█", margin: Console.WindowWidth - 30);
+            Renderer.Print(20,"█░▄░█▀░▄░░░░░░░▀▀░░█", margin: Console.WindowWidth - 30);
+            Renderer.Print(21,"█░░▀▀▀▀░░░░░░░░░░░░█", margin: Console.WindowWidth - 30);
+            Renderer.Print(22,"█░░░░░░░░░░░░░░░░░░█", margin: Console.WindowWidth - 30);
+            Renderer.Print(23,"█░░░░░░░░░░░░░░░░░░█", margin: Console.WindowWidth - 30);
+            Renderer.Print(24," █░░▄▄░░▄▄▄▄░░▄▄░░█ ", margin: Console.WindowWidth - 30);
+            Renderer.Print(25," █░▄▀█░▄▀░░█░▄▀█░▄▀ ", margin: Console.WindowWidth - 30);
+            Renderer.Print(26, "  ▀   ▀     ▀   ▀    ", margin: Console.WindowWidth - 30);
             Renderer.PrintKeyGuide("[방향키 ↑ ↓: 선택지 이동] [Enter: 선택]");
         }
     }

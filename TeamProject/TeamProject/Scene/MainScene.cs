@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TeamProject; 
 public class MainScene : Scene {
-    public override string Title { get; protected set; } = "스파르타 마을";
+    public override string Title { get; protected set; } = "스 노 우 딘";
 
     #region Scene
 
@@ -28,7 +28,7 @@ public class MainScene : Scene {
     {
         do
         {
-            Renderer.PrintOptions(9, Options, true, selectedOptionIndex);
+            Renderer.PrintOptions(19, Options, true, selectedOptionIndex);
             GetInput();
         }
         while (lastCommand != Command.Interact);
@@ -36,10 +36,29 @@ public class MainScene : Scene {
 
     protected override void DrawScene() {
         Renderer.DrawBorder(Title);
-        Renderer.PrintCenter(4, "[폐 허]");
-        Renderer.Print(6, "폐허에는 퍼즐과 몬스터로 가득하다.");
-        Renderer.Print(7, "이 곳에서 나가기 위해 싸움을 준비하자");
-        
+        Renderer.Print(4, "너, 인간이지? 정말 웃기는구만", margin: Console.WindowWidth / 2);
+        Renderer.Print(5, "난 샌즈야, 뼈다귀 샌즈", margin: Console.WindowWidth / 2);
+        Renderer.Print(6, "원래는 인간들을 감시하는 일을 해야하는데", margin: Console.WindowWidth / 2);
+        Renderer.Print(7, "근데.. 그냥.. 누구 잡는 일은 딱히 신경 안써서", margin: Console.WindowWidth / 2);
+        Renderer.Print(9, "하지만 던전 안쪽에는 몬스터들이 있어서 조심해", margin: Console.WindowWidth / 2);
+        Renderer.Print(10, "여기 스노우딘 마을에서 채비를 갖추는게 좋을거야", margin: Console.WindowWidth / 2);
+
+
+        Renderer.Print(12, "          ▄▄▀▀▀▀▀▀▀▀▀▄▄", margin: Console.WindowWidth / 2);
+        Renderer.Print(13, "         █░░░░░░░░░░░░░█", margin: Console.WindowWidth / 2);
+        Renderer.Print(14, "        █░░░░░░░░░░▄▄▄░░█", margin: Console.WindowWidth / 2);
+        Renderer.Print(15, "        █░░▄▄▄░░▄░░███░░█", margin: Console.WindowWidth / 2);
+        Renderer.Print(16, "        ▄█░▄░░░▀▀▀░░░▄░█▄", margin: Console.WindowWidth / 2);
+        Renderer.Print(17, "        █░░▀█▀█▀█▀█▀█▀░░█", margin: Console.WindowWidth / 2);
+        Renderer.Print(18, "        ▄██▄▄▀▀▀▀▀▀▀▄▄██▄", margin: Console.WindowWidth / 2);
+        Renderer.Print(19, "      ▄█░█▀▀█▀▀▀█▀▀▀█▀▀█░█▄", margin: Console.WindowWidth / 2);
+        Renderer.Print(20, "     ▄▀░▄▄▀▄▄▀▀▀▄▀▀▀▄▄▀▄▄░▀▄", margin: Console.WindowWidth / 2);
+        Renderer.Print(21, "     █░░░░▀▄░█▄░░░▄█░▄▀░░░░█", margin: Console.WindowWidth / 2);
+        Renderer.Print(22, "     ▀▄▄░█░░█▄▄▄▄▄█░░█░▄▄▀", margin: Console.WindowWidth / 2);
+        Renderer.Print(23, "        ▀██▄▄███████▄▄██▀", margin: Console.WindowWidth / 2);
+        Renderer.Print(24, "         ███████▀████████", margin: Console.WindowWidth / 2);
+        Renderer.Print(25, "       ▄▄█▀▀▀▀█   █▀▀▀▀█▄▄", margin: Console.WindowWidth / 2);
+        Renderer.Print(26, "       ▀▄▄▄▄▄▀▀   ▀▀▄▄▄▄▄▀ ", margin: Console.WindowWidth / 2);
         Renderer.PrintKeyGuide("[방향키 ↑ ↓: 선택지 이동] [Enter: 선택]");
     }
 

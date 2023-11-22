@@ -66,9 +66,8 @@ public class CreateCharacterScene : Scene
                 break;
             case CreateStep.Job:
                 Renderer.Print(4, "떨어진 인간의 직업은?");
-                Renderer.Print(5, "떨어진 인간의 직업은?", delay: 1000);
-                Renderer.Print(6, "떨어진 인간의 직업은?");
-                int row = 7;
+                
+                int row = (Console.WindowHeight / 2) - 5;
                 row = Renderer.DrawJobList(row, Game.Characters, formatters, selectedOptionIndex) + 1;
                 Renderer.ClearLine(row);
                 Renderer.Print(row, errorMessage);
