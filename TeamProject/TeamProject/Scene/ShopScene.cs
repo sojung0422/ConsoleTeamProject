@@ -48,6 +48,7 @@ namespace TeamProject
 
         public override void EnterScene() {
             // #1. 씬 설정.
+            msg = "";
 
             // #2. 아이템 정보 설정.
             shopSaleItem = Game.Items.ToList();
