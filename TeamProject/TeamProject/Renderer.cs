@@ -61,6 +61,10 @@ namespace TeamProject {
                 if (delay > 0) {
                     int characterDelay = delay / content.Length;
                     foreach (char c in content) {
+                        if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Enter) {
+                            delay = 0;
+                            characterDelay = 0;
+                        }
                         Console.Write(c);
                         Thread.Sleep(characterDelay);
                     }
