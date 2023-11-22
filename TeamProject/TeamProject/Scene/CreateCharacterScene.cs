@@ -4,7 +4,6 @@ public class CreateCharacterScene : Scene
 {
     public override string Title { get; protected set; } = "캐릭터 선택창";
 
-    private List<Item> jobList;
     private enum CreateStep
     {
         Name,
@@ -14,7 +13,7 @@ public class CreateCharacterScene : Scene
     }
 
     private Character selectPlayer;
-
+    private List<JobTableFormatter> formatters;
     private CreateStep step = CreateStep.Name;
     private string createName = string.Empty;
     private string errorMessage = string.Empty;
@@ -23,6 +22,16 @@ public class CreateCharacterScene : Scene
 
     public override void EnterScene() {
         step = CreateStep.Name;
+        formatters = new() {
+                Renderer.JobTableFormatters["Job"],
+                Renderer.JobTableFormatters["Damage"],
+                Renderer.JobTableFormatters["Defense"],
+                Renderer.JobTableFormatters["HpMax"],
+                Renderer.JobTableFormatters["MpMax"],
+                Renderer.JobTableFormatters["Critical"],
+                Renderer.JobTableFormatters["Avoid"],
+            };
+        DrawScene();
     }
 
     public override void NextScene() {
@@ -34,59 +43,35 @@ public class CreateCharacterScene : Scene
             DrawStep();
             GetInput();
         }
-        
-
-
-
-        //do {
-        //    DrawStep();
-        //    GetInput();
-        //}
-        //while (ManageInput());
-        //Managers.Scene.EnterScene<MainScene>();
     }
-
-    #endregion
-
-    #region Step
-
-    private void DrawStep()
-    {
+    protected override void DrawScene() {
         Renderer.DrawBorder(Title);
         Renderer.Print(3, "스파르타 마을에 오신 여러분 환영합니다.");
-
-        switch (step)
-        {
+    }
+    
+    private void DrawStep() {
+        switch (step) {
             case CreateStep.Name:
+                Renderer.ClearLine(4);
                 Renderer.Print(4, "당신의 이름은 무엇인가요?");
+                Renderer.ClearLine(6);
                 Renderer.Print(6, errorMessage);
                 Renderer.PrintKeyGuide("[Enter: 결정]");
                 break;
             case CreateStep.Job:
                 Renderer.Print(4, "직업이 어떻게 되십니까?");
                 int row = 5;
-
-                List<JobTableFormatter> formatters = new() {
-                Renderer.JobTableFormatters["Job"],
-                Renderer.JobTableFormatters["Damage"],
-                Renderer.JobTableFormatters["Defense"],
-                Renderer.JobTableFormatters["HpMax"],
-                Renderer.JobTableFormatters["MpMax"],
-                Renderer.JobTableFormatters["Critical"],
-                Renderer.JobTableFormatters["Avoid"],
-            };
-                row = Renderer.DrawJobList(++row, Game.Characters, formatters, selectedOptionIndex);
-
-                //Renderer.Print(14, "1 > 전사");
-                //Renderer.Print(15, "2 > 마법사");
-                //Renderer.Print(16, "3 > 도적");
-                
-                Renderer.Print(20, errorMessage);
-                Renderer.PrintKeyGuide("[방향키 ↑ ↓: 선택지 이동] [Enter: 결정]");
-                //Renderer.PrintOptions(++row, Options, true);
+                row = Renderer.DrawJobList(row, Game.Characters, formatters, selectedOptionIndex) + 1;
+                Renderer.ClearLine(row);
+                Renderer.Print(row, errorMessage);
+                Renderer.PrintKeyGuide("[Enter: 결정]");
                 break;
         }
     }
+
+    #endregion
+
+    #region Step
 
     private void NextStep()
     {
@@ -142,10 +127,6 @@ public class CreateCharacterScene : Scene
     /// </summary>
     private void ReadJob()
     {
-        //Console.SetCursorPosition(2, 18);
-        //var job = Console.ReadLine();
-
-        //OnJobChanged(job);
 
         selectPlayer = Game.Characters[selectedOptionIndex];
         NextStep();
