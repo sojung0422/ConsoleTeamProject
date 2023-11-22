@@ -33,7 +33,7 @@ public class TableManager {
         items["StackCount"] = new("StackCount", "개수", 8, i => i.StackCount.HasValue ? $"{i.StackCount.Value} 개" : "");
         items["ItemType"] = new("ItemType", "타입", 15, item => {
             if (item is Gear gear) return gear.GearType.String();
-            else return item.Type.ToString();
+            else return item.Type.String();
         });
         items["Effect"] = new("Effect", "효과", 34, item => {
             if (item is Gear gear) return gear.StatToString();
