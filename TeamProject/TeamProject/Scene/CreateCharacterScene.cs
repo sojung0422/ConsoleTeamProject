@@ -153,9 +153,12 @@ public class CreateCharacterScene : Scene
     /// </summary>
     private void ReadName()
     {
+        Console.CursorVisible = true;
+        Renderer.ClearLine(23);
         Console.SetCursorPosition(2, 23);
         var name = Console.ReadLine();
         OnNameChanged(name);
+        Console.CursorVisible = false;
     }
 
     /// <summary>

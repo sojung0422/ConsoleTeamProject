@@ -36,6 +36,7 @@ public class CharacterInfoScene : Scene
         Renderer.Print(8, $"방어력 : {Game.Player.DefaultDefense}");
         Renderer.Print(9, $"체  력 : {Game.Player.Hp} / {Game.Player.DefaultHpMax}");
         Renderer.Print(10, $"마  나 : {Game.Player.Mp} / {Game.Player.DefaultMpMax}");
+        Renderer.Print(10, $"경험치 : {Game.Player.TotalExp} / {Game.Player.NextLevelExp}");
         Renderer.Print(11, $"치명타 :{Game.Player.Critical * 100:00}%");
         Renderer.Print(12, $"회피율 :{Game.Player.Avoid * 100:00}%");
         Renderer.Print(13, $"Gold : {Game.Player.Gold} G");
