@@ -88,12 +88,11 @@ public class BattleScene : Scene
         while (!CheckAllMonstersDead() && !Game.Player.IsDead())
         {
             SelectAction();
-            /*
+
             if (CheckAllMonstersDead())
-            {
-                OnCreatureDead(Monsters[0]);
-            }
-            */
+                break;
+
+
             // 몬스터 턴
             line = 15;
             foreach (var monster in Monsters)
@@ -253,13 +252,13 @@ public class BattleScene : Scene
             case Command.Interact:
                 Game.Player.Attack(Monsters[selectionIdx], 7);
                 break;
-            /*    //  던전포기 -> ActionOnCommand로 이동
-            case Command.Exit:
-                // 던전 포기 패널티
-                Game.Player.Hp -= 20;
-                Managers.Scene.GetOption("Back").Execute();
-                break;
-            */
+                /*    //  던전포기 -> ActionOnCommand로 이동
+                case Command.Exit:
+                    // 던전 포기 패널티
+                    Game.Player.Hp -= 20;
+                    Managers.Scene.GetOption("Back").Execute();
+                    break;
+                */
         }
     }
 
@@ -364,7 +363,7 @@ public class BattleScene : Scene
 
     public void SelectAttack()
     {
-        
+
         do
         {
             Renderer.PrintSelectAction(startTextLine, AttackTextList, true, selectionIdx);
@@ -442,7 +441,7 @@ public class BattleScene : Scene
     {
         while (Console.KeyAvailable) // 버퍼에 입력이 있는 경우 처리
         {
-            Console.ReadKey(true); // 입력을 읽고 버퍼를 비움
+            Console.ReadKey(true); // 입력을 읽고 버퍼를 비움 
         }
     }
 }
