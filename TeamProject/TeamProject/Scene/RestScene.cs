@@ -10,6 +10,8 @@ public class RestScene : Scene {
 
     public override void EnterScene()
     {
+        MusicPlayer.Instance.music = "Home.mp3";
+        MusicPlayer.Instance.PlayAsync(0.1f); // 음악파일명, 볼륨
         // #1. 선택지 설정.
         Options.Clear();
         Options.Add(Managers.Scene.GetOption("UseInn"));
