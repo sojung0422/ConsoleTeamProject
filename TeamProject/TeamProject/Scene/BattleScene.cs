@@ -53,7 +53,7 @@ public class BattleScene : Scene
         AttackTextList.Add("기본 공격");
         AttackTextList.Add("스킬 사용");
 
-        musicPlayer.PlayAsync("BGM1.mp3", 0.01f); // 음악파일명, 볼륨
+        musicPlayer.PlayAsync("Battle.mp3", 0.01f); // 음악파일명, 볼륨
 
         DrawScene();
     }
