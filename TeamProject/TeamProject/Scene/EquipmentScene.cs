@@ -15,18 +15,24 @@ public class EquipmentScene : Scene
 
     private EquipStep step;
     private List<Item> gearList = new();
+    private List<TableFormatter<Item>> formatters = new();
 
     #region Scene
 
     public override void EnterScene()
     {
+        // #1. 씬 설정.
         step = EquipStep.Show;
-        gearList = Game.Player.Inventory.Items.Where(item => item.Type == ItemType.Gear).ToList();  // 장비 아이템만 따로 리스트 복제
         selectedOptionIndex = 0;
 
-        // #1. 선택지 설정.
+        // #2. 선택지 설정.
         Options.Clear();
         Options.Add(Managers.Scene.GetOption("Back"));
+
+        // #3. 테이블 및 아이템 설정.
+        formatters = Managers.Table.GetFormatters<Item>(new string[] { "Index", "Name", "ItemType", "Effect", "Desc" });
+        gearList = Game.Player.Inventory.Items.Where(item => item.Type == ItemType.Gear).ToList();  // 장비 아이템만 따로 리스트 복제
+
         Renderer.DrawBorder(Title);
     }
 
@@ -47,32 +53,14 @@ public class EquipmentScene : Scene
         {
             int row = 4;
             row = Renderer.Print(row, "장 비 창 - 보 기");
-
-            List<ItemTableFormatter> formatters = new()
-            {
-                Renderer.ItemTableFormatters["Index"],
-                Renderer.ItemTableFormatters["Name"],
-                Renderer.ItemTableFormatters["ItemType"],
-                Renderer.ItemTableFormatters["Effect"],
-                Renderer.ItemTableFormatters["Desc"],
-            };
-            Renderer.DrawItemList(++row, gearList, formatters);
+            Renderer.DrawTable(row, gearList, formatters);
             Renderer.PrintKeyGuide("[Enter : 관리모드] [ESC : 뒤로가기]");
         }
         else
         {
             int row = 4;
             row = Renderer.Print(row, "장 비 창 - 관 리");
-
-            List<ItemTableFormatter> formatters = new()
-            {
-                Renderer.ItemTableFormatters["Index"],
-                Renderer.ItemTableFormatters["Name"],
-                Renderer.ItemTableFormatters["ItemType"],
-                Renderer.ItemTableFormatters["Effect"],
-                Renderer.ItemTableFormatters["Desc"],
-            };
-            Renderer.DrawItemList(++row, gearList, formatters, selectedOptionIndex);
+            Renderer.DrawTable(row, gearList, formatters, selectedOptionIndex);
             
             Renderer.PrintKeyGuide("[방향키 ↑ ↓: 선택지 이동] [Enter: 장착] [ESC : 보기모드]");
         }

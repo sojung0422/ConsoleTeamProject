@@ -13,7 +13,7 @@ public class CreateCharacterScene : Scene
     }
 
     private Character selectPlayer;
-    private List<JobTableFormatter> formatters;
+    private List<TableFormatter<Character>> formatters = new();
     private CreateStep step = CreateStep.Name;
     private string createName = string.Empty;
     private string errorMessage = string.Empty;
@@ -22,15 +22,7 @@ public class CreateCharacterScene : Scene
 
     public override void EnterScene() {
         step = CreateStep.Name;
-        formatters = new() {
-                Renderer.JobTableFormatters["Job"],
-                Renderer.JobTableFormatters["Damage"],
-                Renderer.JobTableFormatters["Defense"],
-                Renderer.JobTableFormatters["HpMax"],
-                Renderer.JobTableFormatters["MpMax"],
-                Renderer.JobTableFormatters["Critical"],
-                Renderer.JobTableFormatters["Avoid"],
-            };
+        formatters = Managers.Table.GetFormatters<Character>(new string[] { "Job", "Damage", "Defense", "HpMax", "MpMax", "Critical", "Avoid" });
         DrawScene();
     }
 
@@ -61,16 +53,15 @@ public class CreateCharacterScene : Scene
     private void DrawStep() {
         switch (step) {
             case CreateStep.Name:                
-                Renderer.Print(25, errorMessage);
+                Renderer.Print(25, errorMessage, clear: true);
                 Renderer.PrintKeyGuide("[Enter: 결정]");
                 break;
             case CreateStep.Job:
                 Renderer.Print(4, "떨어진 인간의 직업은?");
                 
                 int row = (Console.WindowHeight / 2) - 5;
-                row = Renderer.DrawJobList(row, Game.Characters, formatters, selectedOptionIndex) + 1;
-                Renderer.ClearLine(row);
-                Renderer.Print(row, errorMessage);
+                row = Renderer.DrawTable(row, Game.Characters.ToList(), formatters, selectedOptionIndex) + 1;
+                Renderer.Print(row, errorMessage, clear: true);
                 Renderer.PrintKeyGuide("[Enter: 결정]");
                 break;
         }
@@ -218,7 +209,8 @@ public class CreateCharacterScene : Scene
             (int)selectPlayer.DefaultMpMax,
             selectPlayer.Gold,
             selectPlayer.Critical,
-            selectPlayer.Avoid
+            selectPlayer.Avoid,
+            selectPlayer.PlayerSkill
         );
 
         //게임 클래스에 저장된 아이템 등록
@@ -229,9 +221,15 @@ public class CreateCharacterScene : Scene
 
         // [우진영] 상점에서 아이템이 잘 구매되는지 확인하기 위해
         // 기본 아이템만 넣어놨습니다.
-        Game.Player.Inventory.Add(Game.Items[0]);
-        Game.Player.Inventory.Add(Game.Items[1]);
-        Game.Player.Inventory.Add(Game.Items[2]);
+        Gear basicWeapon = Game.Items[0].DeepCopy() as Gear;
+        Gear basicShield = Game.Items[1].DeepCopy() as Gear;
+        Gear basicArmor = Game.Items[2].DeepCopy() as Gear;
+        Game.Player.Inventory.Add(basicWeapon);
+        Game.Player.Inventory.Add(basicShield);
+        Game.Player.Inventory.Add(basicArmor);
+        Game.Player.Equipment.Equip((GearSlot)basicWeapon.GearType, basicWeapon);
+        Game.Player.Equipment.Equip((GearSlot)basicShield.GearType, basicShield);
+        Game.Player.Equipment.Equip((GearSlot)basicArmor.GearType, basicArmor);
 
         Managers.Game.data.character = Game.Player;
         Managers.Game.data.stage = Game.Stage;

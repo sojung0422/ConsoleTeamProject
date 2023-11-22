@@ -12,28 +12,31 @@ namespace TeamProject
 
         #region Fields
 
-        public List<Item> shopSaleItem;
-        public List<Item> playerSaleItem;
-        List<ItemTableFormatter> buyModeFormatters = new() {
-                Renderer.ItemTableFormatters["Index"],
-                Renderer.ItemTableFormatters["Name"],
-                Renderer.ItemTableFormatters["ItemType"],
-                Renderer.ItemTableFormatters["Effect"],
-                Renderer.ItemTableFormatters["Cost"],
-                new("", "보유 개수", 11, i => {
-                    if (Game.Player.Inventory.HasSameItem(i, out var res))
-                        return res.StackCount.HasValue ? $"{res.StackCount.Value} 개" : "보유중";
-                    else 
-                        return i.StackCount.HasValue ? "0 개" : "미보유"; })
-        };
-        List<ItemTableFormatter> saleModeFormatters = new() {
-                Renderer.ItemTableFormatters["Index"],
-                Renderer.ItemTableFormatters["Name"],
-                Renderer.ItemTableFormatters["ItemType"],
-                Renderer.ItemTableFormatters["Effect"],
-                Renderer.ItemTableFormatters["SellCost"],
-                Renderer.ItemTableFormatters["StackCount"]
-        };
+        public List<Item> shopSaleItem = new();
+        public List<Item> playerSaleItem = new();
+        public List<TableFormatter<Item>> formattersBuy = new();
+        public List<TableFormatter<Item>> formattersSale = new();
+
+        //List<ItemTableFormatter> buyModeFormatters = new() {
+        //        Renderer.ItemTableFormatters["Index"],
+        //        Renderer.ItemTableFormatters["Name"],
+        //        Renderer.ItemTableFormatters["ItemType"],
+        //        Renderer.ItemTableFormatters["Effect"],
+        //        Renderer.ItemTableFormatters["Cost"],
+        //        new("", "보유 개수", 11, i => {
+        //            if (Game.Player.Inventory.HasSameItem(i, out var res))
+        //                return res.StackCount.HasValue ? $"{res.StackCount.Value} 개" : "보유중";
+        //            else 
+        //                return i.StackCount.HasValue ? "0 개" : "미보유"; })
+        //};
+        //List<ItemTableFormatter> saleModeFormatters = new() {
+        //        Renderer.ItemTableFormatters["Index"],
+        //        Renderer.ItemTableFormatters["Name"],
+        //        Renderer.ItemTableFormatters["ItemType"],
+        //        Renderer.ItemTableFormatters["Effect"],
+        //        Renderer.ItemTableFormatters["SellCost"],
+        //        Renderer.ItemTableFormatters["StackCount"]
+        //};
         bool shopModeToggle = true; // true : 구매모드, false : 판매모드
         string msg = "";
         List<ActionOption> buyModeOptions = new();
@@ -43,27 +46,21 @@ namespace TeamProject
 
         #region Scene
 
-        public override void EnterScene()
-        {
-            shopSaleItem = Game.Items.ToList();
-            playerSaleItem = Game.Player.Inventory.Items;
-            Options.Clear();
-            shopSaleItem = shopSaleItem.OrderBy(x => { return x is Gear gear ? gear.GearType.String() : x.Type.String(); }).ToList();
+        public override void EnterScene() {
+            // #1. 씬 설정.
 
-            // 구매 리스트 선택지 생성
-            buyModeOptions.Clear();
-            for (int i = 0; i < shopSaleItem.Count; i++)
-            {
+            // #2. 선택지 설정.
+            Options.Clear();
+            UpdateSaleListOptions();    // 판매 리스트 선택지 생성.
+            buyModeOptions.Clear();     // 구매 리스트 선택지 생성
+            for (int i = 0; i < shopSaleItem.Count; i++) {
                 var buyItem = shopSaleItem[i].DeepCopy();
-                buyModeOptions.Add(new("", "", () =>
-                {
-                    if (Game.Player.Inventory.HasSameItem(buyItem) && !buyItem.StackCount.HasValue)
-                    {
+                buyModeOptions.Add(new("", "", () => {
+                    if (Game.Player.Inventory.HasSameItem(buyItem) && !buyItem.StackCount.HasValue) {
                         msg = "보유 중인 아이템입니다.";
                         return;
                     }
-                    if (Game.Player.Gold < buyItem.Price)
-                    {
+                    if (Game.Player.Gold < buyItem.Price) {
                         msg = "골드가 부족합니다.";
                         return;
                     }
@@ -73,8 +70,15 @@ namespace TeamProject
                 }));
             }
 
-            // 판매 리스트 선택지 생성
-            UpdateSaleListOptions();
+            // #3. 아이템 정보 설정.
+            shopSaleItem = Game.Items.ToList();
+            playerSaleItem = Game.Player.Inventory.Items;
+            shopSaleItem = shopSaleItem.OrderBy(x => { return x is Gear gear ? gear.GearType.String() : x.Type.String(); }).ToList();
+
+            // #4. 테이블 설정.
+            formattersBuy = Managers.Table.GetFormatters<Item>(new string[] { "Index", "Name", "ItemType", "Effect", "Cost", "ShopCount" });
+            formattersSale = Managers.Table.GetFormatters<Item>(new string[] { "Index", "Name", "ItemType", "Effect", "SellCost", "StackCount" });
+
 
             // draw
             Renderer.DrawBorder(Title);
@@ -106,10 +110,14 @@ namespace TeamProject
             row = Renderer.Print(row + 1, "아이템을 구매하거나 판매할 수 있습니다.");
             row = Renderer.Print(row, $"[아이템 {(shopModeToggle ? "구매" : "판매")}]");
             row = Renderer.Print(row, $"현재 골드 : {Game.Player.Gold:#,##0} G");
-            if (shopModeToggle)
-                row = Renderer.DrawItemList(++row, shopSaleItem, buyModeFormatters, selectedOptionIndex);
-            else
-                row = Renderer.DrawItemList(++row, playerSaleItem, saleModeFormatters, selectedOptionIndex);
+            row = Renderer.DrawTable(++row,
+                shopModeToggle ? shopSaleItem : playerSaleItem,
+                shopModeToggle ? formattersBuy : formattersSale,
+                selectedOptionIndex);
+            //if (shopModeToggle)
+            //    row = Renderer.DrawItemList(++row, shopSaleItem, buyModeFormatters, selectedOptionIndex);
+            //else
+            //    row = Renderer.DrawItemList(++row, playerSaleItem, saleModeFormatters, selectedOptionIndex);
             Renderer.Print(row + 1, msg);
             Renderer.PrintKeyGuide("[방향키 ↑ ↓ : 선택지 이동] [방향키 ← → : 구매/판매 모드 변경] [Enter : 선택] [ESC : 뒤로가기]");
         }

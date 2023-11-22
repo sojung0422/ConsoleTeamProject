@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
@@ -19,13 +20,16 @@ public class BattleScene : Scene
     public List<string> AttackTextList;
 
     protected int startTextLine;
+    protected int startTextLineClearLength;
     protected int line;
+    protected int textdelay = 200;
 
     public delegate void GameEvent(Creature creature);
     public event GameEvent OnCreatureDead;
     public BattleScene()
     {
         startTextLine = 4;
+        startTextLineClearLength = Console.WindowWidth / 4 * 3;
         Monsters = new List<Creature>();
         ActionTextList = new List<string>();
         AttackTextList = new List<string>();
@@ -41,13 +45,13 @@ public class BattleScene : Scene
         MonsterCount = Monsters.Count;
 
         ActionTextList.Clear();
-        ActionTextList.Add("1. 몬스터 공격");
-        ActionTextList.Add("2. 체력 회복");
-        ActionTextList.Add("3. 던전 포기");
+        ActionTextList.Add("몬스터 공격");
+        ActionTextList.Add("체력 회복");
+        ActionTextList.Add("던전 포기");
 
         AttackTextList.Clear();
-        AttackTextList.Add("1. 기본 공격");
-        AttackTextList.Add("2. 스킬[미구현]");
+        AttackTextList.Add("기본 공격");
+        AttackTextList.Add("스킬 사용");
 
         musicPlayer.PlayAsync("BGM1.mp3", 0.01f); // 음악파일명, 볼륨
 
@@ -62,7 +66,7 @@ public class BattleScene : Scene
         ClearBuffer();
         for (int count = 9; count > 0; count--)
         {
-            Renderer.PrintKeyGuide($"[아무 키 : 던전 입구]   {count}초 뒤 던전 입구로 이동");
+            Renderer.PrintKeyGuide($"[아무 키 : 보상 맵]   {count}초 뒤 보상 맵으로 이동");
             Thread.Sleep(1000);
 
             if (Console.KeyAvailable)
@@ -71,7 +75,7 @@ public class BattleScene : Scene
                 break;
             }
         }
-        Managers.Scene.GetOption("Back").Execute();
+        Managers.Scene.EnterScene<StageRewardScene>();
     }
     protected override void DrawScene()
     {
@@ -85,8 +89,7 @@ public class BattleScene : Scene
         Renderer.Print(13, $"몬스터의 공격", false, 0, Console.WindowWidth / 2);
         Renderer.Print(14, new string('-', 55), false, 0, Console.WindowWidth / 2);
         Renderer.Print(27, new string('-', 55), false, 0, Console.WindowWidth / 2);
-        Renderer.PrintBattleText(startTextLine, Monsters, true, -1);
-        Renderer.PrintKeyGuide(new string(' ', Console.WindowWidth - 2));
+        Renderer.PrintBattleText(startTextLine, Monsters, false, -1);
         while (!CheckAllMonstersDead() && !Game.Player.IsDead())
         {
             SelectAction();
@@ -105,7 +108,6 @@ public class BattleScene : Scene
                     continue;
                 Thread.Sleep(1000);
                 monster.Attack(Game.Player, line++);
-                Renderer.PrintPlayerState(6);
             }
         }
 
@@ -124,10 +126,9 @@ public class BattleScene : Scene
     // ================= 키조작 관련 ================= //
 
     private int selectionIdx = 0;
-    private int previousSelectionIdx = 0;
     private Stack<int> idxStack = new Stack<int>();
 
-    public bool ManageInput(BattleAction action)
+    public bool ManageInput(BattleAction action, bool isSkill = false)
     {
         var key = Console.ReadKey(true);
 
@@ -146,14 +147,17 @@ public class BattleScene : Scene
                 break;
             case BattleAction.SelectSkill:
                 // 스킬 사용
-                SkillOnCommand(commands);
+                bool isSkillNotUsed = true;
+                SkillOnCommand(commands, ref isSkillNotUsed);
+                if (commands == Command.Interact)
+                    return isSkillNotUsed;
                 break;
             case BattleAction.SelectAttack:
                 // 공격
                 SelectAttackOnCommand(commands);
                 break; ;
             case BattleAction.Attack:
-                AttackOnCommand(commands);
+                AttackOnCommand(commands, isSkill);
                 break;
             case BattleAction.UsePotion:
                 // 포션 사용
@@ -240,7 +244,7 @@ public class BattleScene : Scene
         }
     }
 
-    private void AttackOnCommand(Command cmd)
+    private void AttackOnCommand(Command cmd, bool isSkill = false)
     {
         int tempSelectionIdx;
         switch (cmd)
@@ -276,7 +280,16 @@ public class BattleScene : Scene
                 }
                 break;
             case Command.Interact:
-                Game.Player.Attack(Monsters[selectionIdx], 7);
+                int playerline = 7;
+                Renderer.ClearPlayerLine();
+                // 단일 스킬
+                Renderer.Print(playerline++, $"{Game.Player.PlayerSkill.Names[0]} 사용!", false, textdelay, Console.WindowWidth / 2);
+                if (isSkill)
+                {
+                    Game.Player.Skill(Monsters[selectionIdx], ref playerline, Game.Player.PlayerSkill.Damage[0]);
+                }
+                else
+                    Game.Player.Attack(Monsters[selectionIdx], 7);
                 break;
                 /*  // 던전포기 -> ActionOnCommand로 이동
                     case Command.Exit:
@@ -288,7 +301,7 @@ public class BattleScene : Scene
         }
     }
 
-    private void SkillOnCommand(Command cmd)
+    private void SkillOnCommand(Command cmd, ref bool isSkillNotUsed)
     {
         switch (cmd)
         {
@@ -300,7 +313,7 @@ public class BattleScene : Scene
                 break;
             case Command.MoveBottom:
                 // TODO: 스킬개수 Count - 1 로 변경
-                if (selectionIdx < ActionTextList.Count - 1)
+                if (selectionIdx < 1)
                 {
                     ++selectionIdx;
                 }
@@ -308,12 +321,44 @@ public class BattleScene : Scene
             case Command.Interact:
                 switch (selectionIdx)
                 {
+                    // 단일 스킬
                     case 0:
-                        // 0번 스킬 사용
+                        if (Game.Player.Mp < Game.Player.PlayerSkill.MpCost[0])
+                        {
+                            Renderer.ClearLine(startTextLine, startTextLineClearLength);
+                            Renderer.Print(startTextLine, $"마나가 부족합니다!");
+                        }
+                        else
+                        {
+                            Game.Player.Mp -= Game.Player.PlayerSkill.MpCost[0];
+                            MonsterAttack(true);
+                            isSkillNotUsed = false;
+                            Renderer.PrintPlayerState(6);
+                        }
                         break;
+                    // 광역 스킬
                     case 1:
-                        // 1번 스킬 사용
+                        if(Game.Player.Mp < Game.Player.PlayerSkill.MpCost[1])
+                        {
+                            Renderer.ClearLine(startTextLine, startTextLineClearLength);
+                            Renderer.Print(startTextLine, $"마나가 부족합니다!");
+                        }
+                        else
+                        {
+                            int playerline = 7;
+                            Game.Player.Mp -= Game.Player.PlayerSkill.MpCost[1];
+                            Renderer.ClearPlayerLine();
+                            Renderer.Print(playerline++, $"{Game.Player.PlayerSkill.Names[1]} 사용!", false, textdelay, Console.WindowWidth / 2);
+                            foreach (var monster in Monsters)
+                            {
+                                Game.Player.Skill(monster, ref playerline, Game.Player.PlayerSkill.Damage[1]);
+                                Renderer.PrintBattleText(startTextLine, Monsters, false, -1);
+                            }
+                            isSkillNotUsed = false;
+                            Renderer.PrintPlayerState(6);
+                        }
                         break;
+
                 }
                 break;
             case Command.Exit:
@@ -346,7 +391,7 @@ public class BattleScene : Scene
                         if (Game.Player.Inventory.HasSameItem(Game.Items[6], out var hpPotion))
                         {
                             // 포션이 있을 때
-                            Renderer.ClearLine(startTextLine, 30);
+                            Renderer.ClearLine(startTextLine, startTextLineClearLength);
                             if (Game.Player.Hp >= Game.Player.HpMax)
                                 Renderer.Print(startTextLine, $"이미 체력이 최대입니다!");
                             else
@@ -354,12 +399,13 @@ public class BattleScene : Scene
                                 hpPotion.Use(Game.Player);
                                 Renderer.Print(startTextLine, $"HP 포션을 사용했습니다!");
                                 isPotionNotUsed = false;
+                                Renderer.PrintPlayerState(6);
                             }
                         }
                         else
                         {
                             // 포션이 없을 때
-                            Renderer.ClearLine(startTextLine, 30);
+                            Renderer.ClearLine(startTextLine, startTextLineClearLength);
                             Renderer.Print(startTextLine, $"HP 포션이 부족합니다!");
                         }
                         break;
@@ -368,7 +414,7 @@ public class BattleScene : Scene
                         if (Game.Player.Inventory.HasSameItem(Game.Items[7], out var mpPotion))
                         {
                             // 포션이 있을 때
-                            Renderer.ClearLine(startTextLine, 30);
+                            Renderer.ClearLine(startTextLine, startTextLineClearLength);
                             if (Game.Player.Mp >= Game.Player.MpMax)
                                 Renderer.Print(startTextLine, $"이미 마나가 최대입니다!");
                             else
@@ -376,12 +422,13 @@ public class BattleScene : Scene
                                 mpPotion.Use(Game.Player);
                                 Renderer.Print(startTextLine, $"MP 포션을 사용했습니다!");
                                 isPotionNotUsed = false;
+                                Renderer.PrintPlayerState(6);
                             }
                         }
                         else
                         {
                             // 포션이 없을 때
-                            Renderer.ClearLine(startTextLine, 30);
+                            Renderer.ClearLine(startTextLine, startTextLineClearLength);
                             Renderer.Print(startTextLine, $"MP 포션이 부족합니다!");
                         }
                         break;
@@ -400,17 +447,18 @@ public class BattleScene : Scene
     public void SelectAction()
     {
         idxStack.Clear();
+        selectionIdx = 0;
         Renderer.Print(startTextLine, $"원하는 행동을 선택해주세요.");
         Renderer.PrintKeyGuide("[방향키 ↑ ↓: 이동] [Enter: 선택] [ESC: 뒤로가기]");
         do
         {
-            Renderer.PrintSelectAction(startTextLine, ActionTextList, true, selectionIdx);
+            Renderer.PrintSelectAction(startTextLine, ActionTextList, false, selectionIdx);
             ClearBuffer();
         }
         while (ManageInput(BattleAction.SelectAction));
     }
 
-    public void MonsterAttack()
+    public void MonsterAttack(bool isSkill = false)
     {
         // 공격
         selectionIdx = 0;
@@ -418,15 +466,15 @@ public class BattleScene : Scene
             selectionIdx++;
 
         // 선택한 옵션 색 초기화
-        Renderer.PrintSelectAction(startTextLine, AttackTextList, true, -1);
-        Renderer.PrintBattleText(startTextLine, Monsters, true, -1);
-
+        Renderer.PrintSelectAction(startTextLine, AttackTextList, false, -1);
+        Renderer.PrintBattleText(startTextLine, Monsters, false, -1);
         do
         {
-            Renderer.PrintBattleText(startTextLine, Monsters, true, selectionIdx);
+            Renderer.PrintBattleText(startTextLine, Monsters, false, selectionIdx);
             ClearBuffer();
         }
-        while (ManageInput(BattleAction.Attack));
+        while (ManageInput(BattleAction.Attack, isSkill));
+        Renderer.PrintBattleText(startTextLine, Monsters, false, -1);
     }
 
     public void SelectAttack()
@@ -434,7 +482,7 @@ public class BattleScene : Scene
         Renderer.Print(startTextLine, $"공격할 방법을 선택해주세요.");
         do
         {
-            Renderer.PrintSelectAction(startTextLine, AttackTextList, true, selectionIdx);
+            Renderer.PrintSelectAction(startTextLine, AttackTextList, false, selectionIdx);
             ClearBuffer();
         }
         while (ManageInput(BattleAction.SelectAttack));
@@ -442,7 +490,14 @@ public class BattleScene : Scene
 
     public void SelectSkill()
     {
-        // 스킬 구현 후 구현할 예정
+        List<string> skill = Game.Player.PlayerSkill.Names;
+        Renderer.Print(startTextLine, $"사용할 스킬을 선택해주세요.");
+        do
+        {
+            Renderer.PrintSelectAction(startTextLine, skill, false, selectionIdx);
+            ClearBuffer();
+        }
+        while (ManageInput(BattleAction.SelectSkill));
     }
 
     public void UsePotion()
@@ -465,10 +520,10 @@ public class BattleScene : Scene
 
             List<string> potionStateList = new List<string>
         {
-            $"1. HP 포션 : {hpPotionCount}개",
-            $"2. MP 포션 : {mpPotionCount}개"
+            $"HP 포션 : {hpPotionCount}개",
+            $"MP 포션 : {mpPotionCount}개"
         };
-            Renderer.PrintSelectAction(startTextLine, potionStateList, true, selectionIdx);
+            Renderer.PrintSelectAction(startTextLine, potionStateList, false, selectionIdx);
             ClearBuffer();
         }
         while (ManageInput(BattleAction.UsePotion));
@@ -487,6 +542,7 @@ public class BattleScene : Scene
 
     public void BattleEnd(Creature creature)
     {
+        musicPlayer.Stop();
         // TODO: 전투 종료
         if (creature is Monster)
         {
@@ -494,9 +550,7 @@ public class BattleScene : Scene
             Renderer.Print(12 + MonsterCount, "던전 클리어!");
 
             // 클리어 보상(아이템, 골드, 레벨업 등)
-            Game.Stage.ClearReward();
-
-
+            Game.Stage.SetClearReward();
         }
         else
         {
@@ -504,10 +558,11 @@ public class BattleScene : Scene
             Renderer.Print(12 + MonsterCount, "던전 클리어 실패!");
 
             //실패 보상(아이템, 골드, 레벨업 등)
-            Game.Stage.FailReward();
-
-
+            Game.Stage.SetFailReward();
         }
+
+        // [우진영] 여기서 StageRewardScene 으로 연결해주세요.
+        // NextScene으로 이동
     }
 
     // ============================================ //
