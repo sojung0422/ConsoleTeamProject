@@ -52,11 +52,12 @@ namespace TeamProject
 
             // 스테이지 1 증가
             StageLevel++;
+            Managers.Game.SaveGame();
         }
         public void FailReward()
         {
             // 던전 클리어 실패 시
-
+            Managers.Game.SaveGame();
         }
     }
 }
