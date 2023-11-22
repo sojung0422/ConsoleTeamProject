@@ -52,6 +52,7 @@ public class Game
         Renderer.Initialize();
         Managers.Game.Initialize();
         Managers.Scene.Initialize();
+        Managers.Table.Initialize();
         Managers.Scene.EnterScene<TitleScene>();
     }
 }

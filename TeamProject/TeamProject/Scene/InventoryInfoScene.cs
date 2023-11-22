@@ -8,23 +8,20 @@ namespace TeamProject {
     public class InventoryInfoScene : Scene {
         public override string Title { get; protected set; } = "인 벤 토 리";
 
+        private List<TableFormatter<Item>> formatters = new();
         public override void EnterScene() {
             // #1. 선택지 설정.
             Options.Clear();
             Options.Add(Managers.Scene.GetOption("Back"));
+
+            // #2. 테이블 설정.
+            formatters = Managers.Table.GetFormatters<Item>(new string[] { "Index", "Name", "ItemType", "Desc", "StackCount" });
 
             Renderer.DrawBorder(Title);
             DrawScene();
         }
 
         public override void NextScene() {
-            //while (true)
-            //{
-            //    var key = Console.ReadKey(true);
-            //    if (key.Key != ConsoleKey.Escape) continue;
-            //    Options[0].Execute();
-            //    break;
-            //}
             do {
                 GetInput();
             } while (Managers.Scene.CurrentScene is InventoryInfoScene);
@@ -35,14 +32,7 @@ namespace TeamProject {
             row = Renderer.Print(row, "이 곳은 인벤토리");
             row = Renderer.Print(row, "인벤토리 정보를 보여줍니다.");
 
-            List<ItemTableFormatter> formatters = new() {
-                Renderer.ItemTableFormatters["Index"],
-                Renderer.ItemTableFormatters["Name"],
-                Renderer.ItemTableFormatters["ItemType"],
-                Renderer.ItemTableFormatters["Desc"],
-                Renderer.ItemTableFormatters["StackCount"],
-            };
-            Renderer.DrawItemList(++row, Game.Player.Inventory.Items, formatters);
+            Renderer.DrawTable(++row, Game.Player.Inventory.Items, formatters);
 
             Renderer.PrintKeyGuide("[ESC : 뒤로가기]");
         }

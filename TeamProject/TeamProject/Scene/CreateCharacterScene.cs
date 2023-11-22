@@ -13,7 +13,7 @@ public class CreateCharacterScene : Scene
     }
 
     private Character selectPlayer;
-    private List<JobTableFormatter> formatters;
+    private List<TableFormatter<Character>> formatters = new();
     private CreateStep step = CreateStep.Name;
     private string createName = string.Empty;
     private string errorMessage = string.Empty;
@@ -22,15 +22,7 @@ public class CreateCharacterScene : Scene
 
     public override void EnterScene() {
         step = CreateStep.Name;
-        formatters = new() {
-                Renderer.JobTableFormatters["Job"],
-                Renderer.JobTableFormatters["Damage"],
-                Renderer.JobTableFormatters["Defense"],
-                Renderer.JobTableFormatters["HpMax"],
-                Renderer.JobTableFormatters["MpMax"],
-                Renderer.JobTableFormatters["Critical"],
-                Renderer.JobTableFormatters["Avoid"],
-            };
+        formatters = Managers.Table.GetFormatters<Character>(new string[] { "Job", "Damage", "Defense", "HpMax", "MpMax", "Critical", "Avoid" });
         DrawScene();
     }
 
@@ -52,18 +44,16 @@ public class CreateCharacterScene : Scene
     private void DrawStep() {
         switch (step) {
             case CreateStep.Name:
-                Renderer.ClearLine(4);
-                Renderer.Print(4, "당신의 이름은 무엇인가요?");
-                Renderer.ClearLine(6);
-                Renderer.Print(6, errorMessage);
+                Renderer.Print(4, "당신의 이름은 무엇인가요?", clear: true);
+                Renderer.Print(6, errorMessage, clear: true);
                 Renderer.PrintKeyGuide("[Enter: 결정]");
                 break;
             case CreateStep.Job:
-                Renderer.Print(4, "직업이 어떻게 되십니까?");
+                Renderer.Print(4, "직업이 어떻게 되십니까?", clear: true);
                 int row = 5;
-                row = Renderer.DrawJobList(row, Game.Characters, formatters, selectedOptionIndex) + 1;
-                Renderer.ClearLine(row);
-                Renderer.Print(row, errorMessage);
+                //row = Renderer.DrawJobList(row, Game.Characters, formatters, selectedOptionIndex) + 1;
+                row = Renderer.DrawTable(row, Game.Characters.ToList(), formatters, selectedOptionIndex) + 1;
+                Renderer.Print(row, errorMessage, clear: true);
                 Renderer.PrintKeyGuide("[Enter: 결정]");
                 break;
         }

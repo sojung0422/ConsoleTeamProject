@@ -19,8 +19,6 @@ namespace TeamProject {
 
         #region Fields
 
-        public static Dictionary<string, ItemTableFormatter> ItemTableFormatters = new();
-        public static Dictionary<string, JobTableFormatter> JobTableFormatters = new();
 
         private static int width;       // 화면 크기.
         private static int height;      // 화면 크기.
@@ -33,37 +31,6 @@ namespace TeamProject {
             Console.BackgroundColor = bgColor;
             Console.Clear();
             Console.OutputEncoding = Encoding.UTF8;
-
-            ItemTableFormatters["Index"] = new("Index", "", 2, null);
-            ItemTableFormatters["Name"] = new("Name", "이름", 22, i => {
-                if (i is Gear gear) {
-                    if (gear.IsEquip) return $"[E] {gear.Name}";
-                    else return gear.Name;
-                }
-                else return i.Name;
-            });
-            ItemTableFormatters["StackCount"] = new("StackCount", "개수", 8, i => i.StackCount.HasValue ? $"{i.StackCount.Value} 개" : "");
-            ItemTableFormatters["ItemType"] = new("ItemType", "타입", 15, i => {
-                if (i is Gear gear) return gear.GearType.String();
-                else return i.Type.String();
-            });
-            ItemTableFormatters["Effect"] = new("Effect", "효과", 34, i => {
-                if (i is Gear gear) return gear.StatToString();
-                else if (i is ConsumeItem consume) return consume.EffectDesc;
-                else return string.Empty;
-            });
-            ItemTableFormatters["Desc"] = new("Desc", "설명", 30, i => i.Description);
-            ItemTableFormatters["Cost"] = new("Cost", "비용", 10, i => i.Price.ToString());
-            ItemTableFormatters["SellCost"] = new("SellCost", "비용", 10, i => ((int)(i.Price * 0.85f)).ToString());
-
-            JobTableFormatters["Job"] = new("Job", "직업", 10, c => c.Job.ToString());
-            JobTableFormatters["Damage"] = new("DefaultDamage", "공격력", 10, c => c.DefaultDamage.ToString());
-            JobTableFormatters["Defense"] = new("DefaultDefense", "방어력", 10, c => c.DefaultDefense.ToString());
-            JobTableFormatters["HpMax"] = new("DefalutHpMax", "체 력", 10, c => c.DefaultHpMax.ToString());
-            JobTableFormatters["MpMax"] = new("DefalutMpMax", "마 나", 10, c => c.DefaultMpMax.ToString());
-            JobTableFormatters["Critical"] = new("Critical", "크리율", 20, c => c.Critical.ToString("0%"));
-            JobTableFormatters["Avoid"] = new("Avoid", "회피율", 20, c => c.Critical.ToString("0%"));
-
         }
 
         #region Print
@@ -283,81 +250,41 @@ namespace TeamProject {
 
         #endregion
 
-        #region Inventory
-        public static int DrawItemList(int startRow, List<Item> items, List<ItemTableFormatter> formatterList, int selectionIdx = -1) {
+        public static int DrawTable<T>(int startRow, List<T> items, List<TableFormatter<T>> formatters, int selectedIndex = -1) {
             // #1. 그리기 준비.
             int row = startRow;
 
-            // #2. 상위 행 그리기.
-            string title = "|";
-            string horizontal = "|";
-            for (int i = 0; i < formatterList.Count; i++) {
-                ItemTableFormatter formatter = formatterList[i];
+            // #2. 타이틀 및 구분선 그리기.
+            string title = "|", horizontal = "|";
+            for (int i = 0; i < formatters.Count; i++) {
+                TableFormatter<T> formatter = formatters[i];
                 title += $"{formatter.GetTitle()}|";
-                horizontal += $"{formatter.GetString()}|";
+                horizontal += $"{formatter.GetLine()}|";
             }
             Print(row++, title);
             Print(row++, horizontal);
 
             // #3. 본문 행 그리기.
             for (int i = 0; i < items.Count; i++) {
-                Item item = items[i];
+                T item = items[i];
                 string content = "|";
-                for (int j = 0; j < formatterList.Count; j++) {
-                    ItemTableFormatter formatter = formatterList[j];
-                    if (formatter.key == "Index") content += $"{formatter.GetString(i + 1)}|";          // 아이템 번호 출력.
-                    //else if (formatter.key == "Type") content += $"{formatter.GetString(false)}|";    // [박상원] 타입 대신 이름 앞에 출력하도록 주석 처리함
-                    else content += $"{formatter.GetString(item)}|";                                    // 아이템 정보 출력.
+                for (int j = 0; j < formatters.Count; j++) {
+                    TableFormatter<T> formatter = formatters[j];
+                    if (formatter.key == "Index") content += $"{formatter.GetString(i + 1)}|";
+                    else content += $"{formatter.GetString(item)}|";
                 }
-
-                // 선택 부분 아이템 글씨 컬러 바꾸기
-                if (selectionIdx == i) {
-                    Console.ForegroundColor = ConsoleColor.Green;
+                if (selectedIndex == i) {
+                    Console.ForegroundColor = highlightColor;
+                    Print(row++, content);
+                    Console.ForegroundColor = textColor;
                 }
-
-                Print(row++, content);
-                Console.ForegroundColor = ConsoleColor.Yellow;
+                else Print(row++, content);
             }
             return row;
         }
 
-        public static int DrawJobList(int startRow, Character[] characters, List<JobTableFormatter> formatterList, int selectionIdx = -1) {
-            // #1. 그리기 준비.
-            int row = startRow;
-
-            // #2. 상위 행 그리기.
-            string title = "|";
-            string horizontal = "|";
-            for (int i = 0; i < formatterList.Count; i++) {
-                JobTableFormatter formatter = formatterList[i];
-                title += $"{formatter.GetTitle()}|";
-                horizontal += $"{formatter.GetString()}|";
-            }
-            Print(row++, title);
-            Print(row++, horizontal);
-
-            // #3. 본문 행 그리기.
-            for (int i = 0; i < characters.Length; i++) {
-                Character character = characters[i];
-                string content = "|";
-                for (int j = 0; j < formatterList.Count; j++) {
-                    JobTableFormatter formatter = formatterList[j];
-                    if (formatter.key == "Index") content += $"{formatter.GetString(i + 1)}|";          // 아이템 번호 출력.
-
-                    else content += $"{formatter.GetString(character)}|";                                    // 아이템 정보 출력.
-                }
-                // 선택 부분 아이템 글씨 컬러 바꾸기
-                if (selectionIdx == i) {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                }
-
-                Print(row++, content);
-                Console.ForegroundColor = ConsoleColor.Yellow;
-            }
-            return row;
-        }
-
-        public static string GetInventoryElementString(int maxLength, string data, bool isTitle = false) {
+        
+        public static string GetTableElementString(int maxLength, string data, bool isTitle = false) {
             int dataLength = GetPrintingLength(data);
             if (data == "=") return new string('=', maxLength);
             StringBuilder builder = new();
@@ -370,7 +297,6 @@ namespace TeamProject {
             return builder.ToString();
         }
 
-        #endregion
 
         #region Border
 
@@ -408,44 +334,5 @@ namespace TeamProject {
         private static bool IsKorean(char c) => '가' <= c && c <= '힣';
 
         #endregion
-    }
-
-    public class ItemTableFormatter {
-        public string key;
-        public string description;
-        public int length;
-        public Func<Item, string>? dataSelector;
-
-        public ItemTableFormatter(string key, string description, int length, Func<Item, string>? dataSelector) {
-            this.key = key;
-            this.description = description;
-            this.length = length;
-            this.dataSelector = dataSelector;
-        }
-
-        public string GetTitle() => Renderer.GetInventoryElementString(length, description, true);
-        public string GetString() => Renderer.GetInventoryElementString(length, "=", false);
-        public string GetString(int index) => Renderer.GetInventoryElementString(length, index.ToString(), false);
-        public string GetString(bool isEquipped) => Renderer.GetInventoryElementString(length, isEquipped ? "[E]" : "", false);
-        public string GetString(Item item) => Renderer.GetInventoryElementString(length, dataSelector(item), false);
-    }
-
-    public class JobTableFormatter {
-        public string key;
-        public string description;
-        public int length;
-        public Func<Character, string>? dataSelector;
-
-        public JobTableFormatter(string key, string description, int length, Func<Character, string>? dataSelector) {
-            this.key = key;
-            this.description = description;
-            this.length = length;
-            this.dataSelector = dataSelector;
-        }
-
-        public string GetTitle() => Renderer.GetInventoryElementString(length, description, true);
-        public string GetString() => Renderer.GetInventoryElementString(length, "=", false);
-        public string GetString(int index) => Renderer.GetInventoryElementString(length, index.ToString(), false);
-        public string GetString(Character character) => Renderer.GetInventoryElementString(length, dataSelector(character), false);
     }
 }
