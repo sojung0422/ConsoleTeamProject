@@ -211,11 +211,11 @@ namespace TeamProject
         public static void PrintSelectAction(int line, List<string> actionText, bool fromZero = true, int selectionLine = 0)
         {
             int printWidthPos = 30;
+            line++;
             for (int i = 0; i < height - 10; i++)
             {
                 Print(line + i, new string(' ', printWidthPos));
             }
-            Print(line++, $"원하는 행동을 선택해주세요.");
             Print(line++, "---------------------------");
             PrintPlayerState(line);
             line++;
@@ -250,7 +250,7 @@ namespace TeamProject
         /// 선택한 줄의 그려진 메시지를 지웁니다. DrawBorder()로 그려진 테두리는 지워지지 않습니다.
         /// </summary>
         /// <param name="line">지울 줄의 번호입니다.</param>
-        public static void ClearLine(int line) => Print(line, "".PadLeft(width - 3, ' '));
+        public static void ClearLine(int line, int exclusionLength = 0, int margin = 2) => Print(line, "".PadLeft(width - 3 - exclusionLength, ' '), false, 0, margin);
 
         /// <summary>
         /// 키 조작 설명문 고정 위치의 출력
