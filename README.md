@@ -28,11 +28,20 @@ https://www.youtube.com/watch?v=qbiHyyafG_A
 "불러오기" 기능으로 세이브 데이터를 불러올 수 있습니다.
 ***
 #### 2. 캐릭터 생성
-
+![image](https://github.com/gusrb0296/TeamProject/assets/21351278/9431c287-4718-4bef-a253-a0efcfd91332)
+"새로시작"을 하면 캐릭터 생성이 진행됩니다.<br/>
+인트로가 진행되고, 인트로가 끝나면 캐릭터 닉네임을 받도록 합니다. <br/>
+<br/>
+텍스트가 하나 하나 나오도록 딜레이를 주었으며<br/>
+엔터를 누르면 딜레이를 0으로 만들어서 해당 줄이 바로 나오도록 합니다.
 ***
 #### 3. 직업 선택
+![image](https://github.com/gusrb0296/TeamProject/assets/21351278/ac9d686b-9f95-40c7-b071-d2f8258377a7)
+테이블을 만들어서 보여주는 메서드를 작성해서 저장된 데이터를 리스트로 불러오면서<br/>
+테이블을 UI처럼 보여주는 기능을 만들었습니다.
 ***
 #### 4. 메인화면 
+
 ***
 #### 5. 캐릭터 정보
 ![image](https://github.com/gusrb0296/TeamProject/assets/21351278/91dbae83-2da1-4da8-a6da-4edf5b8d03a0)
