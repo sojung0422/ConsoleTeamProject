@@ -71,6 +71,7 @@ public class BattleScene : Scene
                 break;
             }
         }
+        
         Managers.Scene.GetOption("Back").Execute();
     }
     protected override void DrawScene()
@@ -488,6 +489,7 @@ public class BattleScene : Scene
 
     public void BattleEnd(Creature creature)
     {
+        musicPlayer.Stop();
         // TODO: 전투 종료
         if (creature is Monster)
         {
