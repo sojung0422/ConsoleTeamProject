@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace TeamProject {
     public class TitleScene : Scene {
-        public override void EnterScene() {
+        public override async void EnterScene() {
             Options.Clear();
             Options.Add(Managers.Scene.GetOption("NewGame"));
+            MusicPlayer.Instance.PlayAsync("Start.mp3", 1f); // 음악파일명, 볼륨
             // [우진영] 임시로 예외처리 해두었습니다.
             if (Managers.Game.data.character != null)
                 Options.Add(Managers.Scene.GetOption("LoadGame"));
@@ -17,6 +18,7 @@ namespace TeamProject {
         }
 
         public override void NextScene() {
+
             do {
                 Renderer.PrintOptions(20, Options, true, selectedOptionIndex);
                 GetInput();
