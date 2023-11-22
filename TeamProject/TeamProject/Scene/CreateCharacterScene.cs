@@ -22,7 +22,8 @@ public class CreateCharacterScene : Scene
 
     public override void EnterScene() {
         MusicPlayer.Instance.Stop();
-        MusicPlayer.Instance.PlayAsync("Story.mp3", 0.01f); // 음악파일명, 볼륨
+        MusicPlayer.Instance.music = "Story.mp3";
+        MusicPlayer.Instance.PlayAsync(0.1f); // 음악파일명, 볼륨
         step = CreateStep.Name;
         formatters = Managers.Table.GetFormatters<Character>(new string[] { "Job", "Damage", "Defense", "HpMax", "MpMax", "Critical", "Avoid" });
         DrawScene();
@@ -71,7 +72,7 @@ public class CreateCharacterScene : Scene
                 Renderer.Print(19, "  이곳이 어떤 곳인지");
                 Renderer.Print(20, "  누군가 알려줘야 겠는데!");
 
-                Renderer.Print(22, "  그런데, 너의 본래 직업은 뭐야?");
+                Renderer.Print(22, "  그런데, 너의 직업은 뭐야?");
 
 
                 Renderer.Print(11, "          ░░                   ░░         ", margin: Console.WindowWidth / 2);
@@ -154,9 +155,11 @@ public class CreateCharacterScene : Scene
     private void ReadName()
     {
         Console.CursorVisible = true;
+        Renderer.ClearLine(23);
         Console.SetCursorPosition(2, 23);
         var name = Console.ReadLine();
         OnNameChanged(name);
+        Console.CursorVisible = false;
     }
 
     /// <summary>
@@ -234,6 +237,7 @@ public class CreateCharacterScene : Scene
     /// </summary>
     private void CreateCharacter()
     {
+        MusicPlayer.Instance.Stop();
         Game.Player = new Character
         (
             createName,
@@ -270,9 +274,6 @@ public class CreateCharacterScene : Scene
         Managers.Game.data.character = Game.Player;
         Managers.Game.data.stage = Game.Stage;
         Managers.Game.SaveGame();
-
-
-        Console.CursorVisible = false;
 
         NextStep();
     }
