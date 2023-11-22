@@ -107,13 +107,26 @@ namespace TeamProject {
         /// <param name="line">출력할 줄</param>
         /// <param name="content">출력할 내용</param>
         /// <returns>출력한 후 다음 줄을 리턴합니다.</returns>
-        public static int PrintCenter(int line, string content) {
-            int correctLength = GetPrintingLength(content);
-            int start = (width - correctLength) / 2;
-            if (start < 0) start = 0;
-            Console.SetCursorPosition(start, line++);
-            Console.WriteLine(content);
-            return line;
+        public static int PrintCenter(int line, string content)
+        {
+            int pad = width - 3 - GetPrintingLength(content);
+            if (pad % 2 != 0)
+            {
+                pad /= 2;
+                return Print(line, "".PadLeft(pad) + content + "".PadRight(pad - 1));
+            }
+            else
+            {
+                pad /= 2;
+                return Print(line, "".PadLeft(pad) + content + "".PadRight(pad));
+            }
+
+            //int correctLength = GetPrintingLength(content);
+            //int start = (width - correctLength / 2);
+            //if (start < 0) start = 0;
+            //Console.SetCursorPosition(start, line++);
+            //Console.WriteLine(content);
+            //return line;
         }
 
         public static int PrintOptions(int line, List<ActionOption> options, bool fromZero = true, int selectionLine = 0) {
