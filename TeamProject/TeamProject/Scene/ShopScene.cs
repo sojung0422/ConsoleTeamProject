@@ -49,7 +49,12 @@ namespace TeamProject
         public override void EnterScene() {
             // #1. 씬 설정.
 
-            // #2. 선택지 설정.
+            // #2. 아이템 정보 설정.
+            shopSaleItem = Game.Items.ToList();
+            playerSaleItem = Game.Player.Inventory.Items;
+            shopSaleItem = shopSaleItem.OrderBy(x => { return x is Gear gear ? gear.GearType.String() : x.Type.String(); }).ToList();
+
+            // #3. 선택지 설정.
             Options.Clear();
             UpdateSaleListOptions();    // 판매 리스트 선택지 생성.
             buyModeOptions.Clear();     // 구매 리스트 선택지 생성
@@ -70,10 +75,6 @@ namespace TeamProject
                 }));
             }
 
-            // #3. 아이템 정보 설정.
-            shopSaleItem = Game.Items.ToList();
-            playerSaleItem = Game.Player.Inventory.Items;
-            shopSaleItem = shopSaleItem.OrderBy(x => { return x is Gear gear ? gear.GearType.String() : x.Type.String(); }).ToList();
 
             // #4. 테이블 설정.
             formattersBuy = Managers.Table.GetFormatters<Item>(new string[] { "Index", "Name", "ItemType", "Effect", "Cost", "ShopCount" });
