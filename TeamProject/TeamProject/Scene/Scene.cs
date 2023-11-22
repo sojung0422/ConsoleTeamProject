@@ -71,7 +71,8 @@ namespace TeamProject {
                 
         }
         protected virtual void OnCommandInteract() {
-            Options[selectedOptionIndex].Execute();
+            if (Options.Count > 0)
+                Options[selectedOptionIndex].Execute();
         }
         protected virtual void OnCommandExit() {
             if (Managers.Scene.PrevScene != null)
