@@ -222,17 +222,17 @@ namespace TeamProject {
             int mpPercentage = (int)((double)Game.Player.Mp / Game.Player.MpMax * statusBarLength);
             string MPBar = new string('█', mpPercentage) + new string(' ', statusBarLength - mpPercentage);
 
-            Print(line, "".PadLeft(30, ' '), false, 0, 2); // ClearLine()함수가 잘 안되서 직접 구현
+            Print(line, "".PadLeft(25, ' '), false, 0, 2);
             // HP,MP 상태 바 출력
             Console.SetCursorPosition(printMargin, line);
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"[{HPBar}] {Game.Player.Hp}/{Game.Player.HpMax}");
+            Console.WriteLine($"[{HPBar}] {Game.Player.Hp}/{Game.Player.HpMax}  ");
             line++;
 
-            Print(line, "".PadLeft(30, ' '), false, 0, 2); // ClearLine()함수가 잘 안되서 직접 구현
+            Print(line, "".PadLeft(25, ' '), false, 0, 2);
             Console.SetCursorPosition(printMargin, line);
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine($"[{MPBar}] {Game.Player.Mp}/{Game.Player.MpMax}");
+            Console.WriteLine($"[{MPBar}] {Game.Player.Mp}/{Game.Player.MpMax}  ");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
         }
