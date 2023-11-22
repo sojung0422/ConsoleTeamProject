@@ -56,6 +56,8 @@ public class BattleScene : Scene
 
     public override void NextScene()
     {
+        musicPlayer.Stop();
+
         Renderer.PrintKeyGuide(new string(' ', Console.WindowWidth - 2));
         ClearBuffer();
         for (int count = 9; count > 0; count--)
@@ -195,7 +197,10 @@ public class BattleScene : Scene
                     UsePotion();
                 }
                 else if (selectionIdx == 2)
+                {
+                    musicPlayer.Stop();
                     Managers.Scene.GetOption("Back").Execute();
+                }
                 break;
         }
     }
@@ -482,8 +487,6 @@ public class BattleScene : Scene
 
     public void BattleEnd(Creature creature)
     {
-        musicPlayer.Stop();
-
         // TODO: 전투 종료
         if (creature is Monster)
         {

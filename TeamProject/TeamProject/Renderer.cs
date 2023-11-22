@@ -253,10 +253,10 @@ namespace TeamProject
         public static void PrintPlayerState(int line)
         {
             Print(line, new string(' ', 30));
-            Print(line, $"내 캐릭터 : {Game.Player.Name,-10} [{Game.Player.Job}]");
+            Print(line, $"내 캐릭터 : {Game.Player.Name,-8} [{Game.Player.Job}]");
             line++;
             // 상태바 길이 조절
-            int statusBarLength = 15;
+            int statusBarLength = 20;
 
             // HP, MP 백분율 계산
             int hpPercentage = (int)((double)Game.Player.Hp / Game.Player.HpMax * statusBarLength);
@@ -268,12 +268,12 @@ namespace TeamProject
             // HP,MP 상태 바 출력
             Console.SetCursorPosition(printMargin, line);
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"[{HPBar}], HP : {Game.Player.Hp}/{Game.Player.HpMax}");
+            Console.WriteLine($"[{HPBar}] {Game.Player.Hp}/{Game.Player.HpMax}");
             line++;
 
             Console.SetCursorPosition(printMargin, line);
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine($"[{MPBar}], MP : {Game.Player.Mp}/{Game.Player.MpMax}");
+            Console.WriteLine($"[{MPBar}] {Game.Player.Mp}/{Game.Player.MpMax}");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
         }
