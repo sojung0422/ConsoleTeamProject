@@ -215,7 +215,7 @@ namespace TeamProject {
         //플레이어 상태 출력
         public static void PrintPlayerState(int line) {
             Print(line, new string(' ', 30));
-            Print(line, $"내 캐릭터 : {Game.Player.Name,-8} [{Game.Player.Job}]");
+            Print(line, $"{Game.Player.Name,-8} [{Game.Player.Job}]");
             line++;
             // 상태바 길이 조절
             int statusBarLength = 18;

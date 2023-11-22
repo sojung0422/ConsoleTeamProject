@@ -113,12 +113,6 @@ namespace TeamProject
                 return;
             int printWidthPos = Console.WindowWidth / 2;
 
-            //for (int i = line; i <= 11; i++)
-            //{
-            //    //Renderer.Print(i, new string(' ', printWidthPos - 1), false, 0, printWidthPos);
-            //    Renderer.ClearLine(i, printWidthPos - 3, printWidthPos);
-            //}
-
             int finalDamage = Math.Clamp((int)damage - (int)DefaultDefense / 2, 0, (int)Hp);
 
             string battleText = $"{creature.Name}에게 {finalDamage}의 데미지를 입혔습니다!";
