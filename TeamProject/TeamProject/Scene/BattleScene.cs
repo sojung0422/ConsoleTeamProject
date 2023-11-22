@@ -125,6 +125,7 @@ public class BattleScene : Scene
                 Thread.Sleep(1000);
                 monster.Attack(Game.Player, line++);
             }
+            selectionIdx = 0;
         }
 
         // 전투 종료
@@ -463,7 +464,6 @@ public class BattleScene : Scene
     public void SelectAction()
     {
         idxStack.Clear();
-        selectionIdx = 0;
         Renderer.Print(startTextLine, $"원하는 행동을 선택해주세요.");
         Renderer.PrintKeyGuide("[방향키 ↑ ↓: 이동] [Enter: 선택] [ESC: 뒤로가기]");
         do
