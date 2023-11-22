@@ -57,9 +57,42 @@ public class CreateCharacterScene : Scene
                 Renderer.PrintKeyGuide("[Enter: 결정]");
                 break;
             case CreateStep.Job:
-                Renderer.Print(4, "떨어진 인간의 직업은?");
-                
-                int row = (Console.WindowHeight / 2) - 5;
+                Renderer.Print(11, "  반가워! ");
+                Renderer.Print(12, "  내 이름은 플라위");
+
+                Renderer.Print(11, "  반가워!");
+                Renderer.Print(12, "  내 이름은 플라위");
+                Renderer.Print(13, "  노란 꽃 플라위야!!");
+                Renderer.Print(15, "  흐음..너 이 지하 세계는 처음인가 보구나");
+                Renderer.Print(16, "  그렇지?");
+                Renderer.Print(18, "  이런 정말 정신없겠네");
+                Renderer.Print(19, "  이곳이 어떤 곳인지");
+                Renderer.Print(20, "  누군가 알려줘야 겠는데!");
+
+                Renderer.Print(22, "  그런데, 너의 본래 직업은 뭐야?");
+
+
+                Renderer.Print(11, "          ░░                   ░░         ", margin: Console.WindowWidth / 2);
+                Renderer.Print(12, "         ░░     ░░░░░░░░░░░     ░░         ", margin: Console.WindowWidth / 2);
+                Renderer.Print(13, "    ░░░░      ░░░░░░░░░░░░░░░      ░░░░    ", margin: Console.WindowWidth / 2);
+                Renderer.Print(14, "   ░░░░░░   ░░░░░░██░░░██░░░░░░   ░░░░░░   ", margin: Console.WindowWidth / 2);
+                Renderer.Print(15, " ░░░       ░░░░░░░██░░░██░░░░░░░      ░░░ ", margin: Console.WindowWidth / 2);
+                Renderer.Print(16, "   ░░░░░░  ░░░░▄░░▀▀░░░▀▀░░▄░░░░  ░░░░░░   ", margin: Console.WindowWidth / 2);
+                Renderer.Print(17, "     ░░░░   ░░░░███████████░░░░   ░░░░     ", margin: Console.WindowWidth / 2);
+                Renderer.Print(18, "          ░   ░░░▀███████▀░░░   ░          ", margin: Console.WindowWidth / 2);
+                Renderer.Print(19, "        ░░░      ░░░░░░░░░     ░░░░      ", margin: Console.WindowWidth / 2);
+                Renderer.Print(20, "      ░░░▄▀░░░░░           ░░░░░▀▄░░░      ", margin: Console.WindowWidth / 2);
+                Renderer.Print(21, "      ░░░▀░░░░░░░░       ░░░░░░░░▀░░░      ", margin: Console.WindowWidth / 2);
+                Renderer.Print(22, "       ░░░░░░░░             ░░░░░░░░       ", margin: Console.WindowWidth / 2);
+                Renderer.Print(23, "                   ░░                      ", margin: Console.WindowWidth / 2);
+                Renderer.Print(24, "                 ░░░                      ", margin: Console.WindowWidth / 2);
+                Renderer.Print(25, "                ░░░                       ", margin: Console.WindowWidth / 2);
+                Renderer.Print(26, "                 ░░░                      ", margin: Console.WindowWidth / 2); 
+                Renderer.Print(27, "                    ░░░                   ", margin: Console.WindowWidth / 2);
+                Renderer.Print(28, "                     ░░░                  ", margin: Console.WindowWidth / 2);
+
+                //int row = (Console.WindowHeight / 2) - 5;
+                int row = 3;
                 row = Renderer.DrawTable(row, Game.Characters.ToList(), formatters, selectedOptionIndex) + 1;
                 Renderer.Print(row, errorMessage, clear: true);
                 Renderer.PrintKeyGuide("[Enter: 결정]");

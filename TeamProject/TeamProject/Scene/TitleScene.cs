@@ -18,7 +18,7 @@ namespace TeamProject {
 
         public override void NextScene() {
             do {
-                Renderer.PrintOptions(19, Options, true, selectedOptionIndex);
+                Renderer.PrintOptions(20, Options, true, selectedOptionIndex);
                 GetInput();
             }
             while (lastCommand != Command.Interact);
