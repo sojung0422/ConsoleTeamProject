@@ -49,14 +49,13 @@ public class BattleScene : Scene
         AttackTextList.Add("1. 기본 공격");
         AttackTextList.Add("2. 스킬[미구현]");
 
-        musicPlayer.PlayAsync("C:\\Users\\user.JY-20191120CDZA\\Desktop\\TeamProject\\TeamProject\\TeamProject\\Sounds\\BGM1.mp3");
+        musicPlayer.PlayAsync("BGM1.mp3");
 
         DrawScene();
     }
 
     public override void NextScene()
     {
-        musicPlayer.Stop();
         Renderer.PrintKeyGuide(new string(' ', Console.WindowWidth - 2));
         ClearBuffer();
         for (int count = 9; count > 0; count--)
@@ -89,12 +88,12 @@ public class BattleScene : Scene
         while (!CheckAllMonstersDead() && !Game.Player.IsDead())
         {
             SelectAction();
-
+            /*
             if (CheckAllMonstersDead())
             {
                 OnCreatureDead(Monsters[0]);
             }
-
+            */
             // 몬스터 턴
             line = 15;
             foreach (var monster in Monsters)
@@ -413,7 +412,7 @@ public class BattleScene : Scene
     public void BattleEnd(Creature creature)
     {
         musicPlayer.Stop();
-        //await Task.Delay(5000);
+
         // TODO: 전투 종료
         if (creature is Monster)
         {

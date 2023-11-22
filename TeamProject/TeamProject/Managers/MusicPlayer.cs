@@ -5,26 +5,29 @@ using System.Threading.Tasks;
 
 public class MusicPlayer
 {
-    private WaveOutEvent? waveOutEvent;
-    private AudioFileReader? audioFileReader;
+    private WaveOutEvent waveOutEvent;
+    private AudioFileReader audioFileReader;
 
-    public async Task PlayAsync(string filePath)
+    public async Task PlayAsync(string fileName)
     {
         Stop(); // 이미 플레이 중인 경우 중지
 
+        string filePath = Path.Combine(GetProjectDirectory(), "Sounds", fileName);
         audioFileReader = new AudioFileReader(filePath);
         waveOutEvent = new WaveOutEvent();
         waveOutEvent.Init(audioFileReader);
+
+        // PlaybackStopped 이벤트를 활용하여 음악이 끝났는지 확인
+        var playbackStoppedTaskCompletionSource = new TaskCompletionSource<bool>();
+        waveOutEvent.PlaybackStopped += (sender, args) =>
+        {
+            playbackStoppedTaskCompletionSource.TrySetResult(true);
+        };
+
         waveOutEvent.Play();
 
         // 비동기로 음악이 끝날 때까지 기다림
-        await Task.Run(() =>
-        {
-            while (waveOutEvent.PlaybackState == PlaybackState.Playing)
-            {
-                Thread.Sleep(500);
-            }
-        });
+        await playbackStoppedTaskCompletionSource.Task;
     }
 
     public void Stop()
@@ -41,5 +44,10 @@ public class MusicPlayer
             audioFileReader.Dispose();
             audioFileReader = null;
         }
+    }
+
+    private string GetProjectDirectory()
+    {
+        return Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
     }
 }
