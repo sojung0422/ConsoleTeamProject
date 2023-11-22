@@ -42,7 +42,7 @@ public class BattleScene : Scene
 
         ActionTextList.Clear();
         ActionTextList.Add("1. 몬스터 공격");
-        ActionTextList.Add("2. 체력 회복[미구현]");
+        ActionTextList.Add("2. 체력 회복");
         ActionTextList.Add("3. 던전 포기");
 
         AttackTextList.Clear();
@@ -122,6 +122,8 @@ public class BattleScene : Scene
     // ================= 키조작 관련 ================= //
 
     private int selectionIdx = 0;
+    private int previousSelectionIdx = 0;
+    private Stack<int> idxStack = new Stack<int>();
 
     public bool ManageInput(BattleAction action)
     {
@@ -153,10 +155,16 @@ public class BattleScene : Scene
                 break;
             case BattleAction.UsePotion:
                 // 포션 사용
-                UsePotionOnCommand(commands);
+                bool isPotionNotUsed = true;
+                UsePotionOnCommand(commands, ref isPotionNotUsed);
+                if (commands == Command.Interact)
+                    return isPotionNotUsed;
                 break;
         }
-        return commands != Command.Interact;
+        // 첫 화면과 몬스터 공격에선 esc기능을 제외
+        if ((action == BattleAction.SelectAction) || (action == BattleAction.Attack))
+            return commands != Command.Interact;
+        return commands != Command.Interact && commands != Command.Exit;
     }
 
     private void ActionOnCommand(Command cmd)
@@ -177,9 +185,15 @@ public class BattleScene : Scene
                 break;
             case Command.Interact:
                 if (selectionIdx == 0)
+                {
+                    IdxStackPush();
                     SelectAttack();
+                }
                 else if (selectionIdx == 1)
+                {
+                    IdxStackPush();
                     UsePotion();
+                }
                 else if (selectionIdx == 2)
                     Managers.Scene.GetOption("Back").Execute();
                 break;
@@ -204,11 +218,18 @@ public class BattleScene : Scene
                 break;
             case Command.Interact:
                 if (selectionIdx == 0)
+                {
+                    IdxStackPush();
                     MonsterAttack();
+                }
                 else
+                {
+                    IdxStackPush();
                     SelectSkill();
+                }
                 break;
             case Command.Exit:
+                IdxStackPop();
                 SelectAction();
                 break;
         }
@@ -291,11 +312,12 @@ public class BattleScene : Scene
                 }
                 break;
             case Command.Exit:
+                IdxStackPop();
                 SelectAttack();
                 break;
         }
     }
-    private void UsePotionOnCommand(Command cmd)
+    private void UsePotionOnCommand(Command cmd, ref bool isPotionNotUsed)
     {
         switch (cmd)
         {
@@ -306,8 +328,7 @@ public class BattleScene : Scene
                 }
                 break;
             case Command.MoveBottom:
-                // TODO: 보유 포션 Count - 1 로 변경
-                if (selectionIdx < ActionTextList.Count - 1)
+                if (selectionIdx < 2)
                 {
                     ++selectionIdx;
                 }
@@ -316,14 +337,53 @@ public class BattleScene : Scene
                 switch (selectionIdx)
                 {
                     case 0:
-                        // 0번 포션 사용
+                        // hp 포션 사용
+                        if (Game.Player.Inventory.HasSameItem(Game.Items[6], out var hpPotion))
+                        {
+                            // 포션이 있을 때
+                            Renderer.ClearLine(startTextLine, 30);
+                            if (Game.Player.Hp >= Game.Player.HpMax)
+                                Renderer.Print(startTextLine, $"이미 체력이 최대입니다!");
+                            else
+                            {
+                                hpPotion.Use(Game.Player);
+                                Renderer.Print(startTextLine, $"HP 포션을 사용했습니다!");
+                                isPotionNotUsed = false;
+                            }
+                        }
+                        else
+                        {
+                            // 포션이 없을 때
+                            Renderer.ClearLine(startTextLine, 30);
+                            Renderer.Print(startTextLine, $"HP 포션이 부족합니다!");
+                        }
                         break;
                     case 1:
-                        // 1번 포션 사용
+                        // mp 포션 사용
+                        if (Game.Player.Inventory.HasSameItem(Game.Items[7], out var mpPotion))
+                        {
+                            // 포션이 있을 때
+                            Renderer.ClearLine(startTextLine, 30);
+                            if (Game.Player.Mp >= Game.Player.MpMax)
+                                Renderer.Print(startTextLine, $"이미 마나가 최대입니다!");
+                            else
+                            {
+                                mpPotion.Use(Game.Player);
+                                Renderer.Print(startTextLine, $"MP 포션을 사용했습니다!");
+                                isPotionNotUsed = false;
+                            }
+                        }
+                        else
+                        {
+                            // 포션이 없을 때
+                            Renderer.ClearLine(startTextLine, 30);
+                            Renderer.Print(startTextLine, $"MP 포션이 부족합니다!");
+                        }
                         break;
                 }
                 break;
             case Command.Exit:
+                IdxStackPop();
                 SelectAction();
                 break;
         }
@@ -334,8 +394,9 @@ public class BattleScene : Scene
 
     public void SelectAction()
     {
-        selectionIdx = 0;
-        Renderer.PrintKeyGuide("[방향키 ↑ ↓: 이동] [Enter: 선택]");
+        idxStack.Clear();
+        Renderer.Print(startTextLine, $"원하는 행동을 선택해주세요.");
+        Renderer.PrintKeyGuide("[방향키 ↑ ↓: 이동] [Enter: 선택] [ESC: 뒤로가기]");
         do
         {
             Renderer.PrintSelectAction(startTextLine, ActionTextList, true, selectionIdx);
@@ -343,6 +404,7 @@ public class BattleScene : Scene
         }
         while (ManageInput(BattleAction.SelectAction));
     }
+
     public void MonsterAttack()
     {
         // 공격
@@ -350,7 +412,9 @@ public class BattleScene : Scene
         while (Monsters[selectionIdx].IsDead())
             selectionIdx++;
 
+        // 선택한 옵션 색 초기화
         Renderer.PrintSelectAction(startTextLine, AttackTextList, true, -1);
+        Renderer.PrintBattleText(startTextLine, Monsters, true, -1);
 
         do
         {
@@ -358,12 +422,11 @@ public class BattleScene : Scene
             ClearBuffer();
         }
         while (ManageInput(BattleAction.Attack));
-        Renderer.PrintBattleText(startTextLine, Monsters, true, -1);
     }
 
     public void SelectAttack()
     {
-
+        Renderer.Print(startTextLine, $"공격할 방법을 선택해주세요.");
         do
         {
             Renderer.PrintSelectAction(startTextLine, AttackTextList, true, selectionIdx);
@@ -374,28 +437,37 @@ public class BattleScene : Scene
 
     public void SelectSkill()
     {
-        // 스킬 구현
-        /* TODO: AttackTextList -> 스킬 리스트로 변경
-         * do
-        {
-            Renderer.PrintChoiceAction(startTextLine, AttackTextList, true, selectionIdx);
-            ClearBuffer();
-        }
-        while (ManageInput(BattleAction.SelectAttack));
-        */
+        // 스킬 구현 후 구현할 예정
     }
 
     public void UsePotion()
     {
-        /*
+        Renderer.Print(startTextLine, $"사용할 포션을 선택해주세요.");
+        int? hpPotionCount;
+        int? mpPotionCount;
+
         do
         {
-            // TODO: AttackTextList -> 포션 리스트로 변경
-            Renderer.PrintChoiceAction(startTextLine, AttackTextList, true, selectionIdx);
+            if (Game.Player.Inventory.HasSameItem(Game.Items[6], out var hpPotion))
+                hpPotionCount = (hpPotion.StackCount == null) ? 0 : hpPotion.StackCount;
+            else
+                hpPotionCount = 0;
+
+            if (Game.Player.Inventory.HasSameItem(Game.Items[7], out var mpPotion))
+                mpPotionCount = (mpPotion.StackCount == null) ? 0 : mpPotion.StackCount;
+            else
+                mpPotionCount = 0;
+
+            List<string> potionStateList = new List<string>
+        {
+            $"1. HP 포션 : {hpPotionCount}개",
+            $"2. MP 포션 : {mpPotionCount}개"
+        };
+            Renderer.PrintSelectAction(startTextLine, potionStateList, true, selectionIdx);
             ClearBuffer();
         }
         while (ManageInput(BattleAction.UsePotion));
-        */
+        Renderer.PrintPlayerState(6);
     }
 
     public bool CheckAllMonstersDead()
@@ -443,6 +515,16 @@ public class BattleScene : Scene
         {
             Console.ReadKey(true); // 입력을 읽고 버퍼를 비움 
         }
+    }
+
+    public void IdxStackPush()
+    {
+        idxStack.Push(selectionIdx);
+        selectionIdx = 0;
+    }
+    public void IdxStackPop()
+    {
+        selectionIdx = idxStack.Pop();
     }
 }
 
