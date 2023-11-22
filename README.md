@@ -16,6 +16,7 @@
 + <b>권오태</b> - 치명타, 회피, HPBar, MPBar, 몬스터 종류 추가, 스킬, 배경음악 <br/>
 
 ## ▶️ [플레이]
+https://www.youtube.com/watch?v=qbiHyyafG_A
 
 ## ⚙ [주요 기능]
 #### 1. 게임 시작 화면
