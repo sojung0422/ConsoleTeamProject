@@ -12,7 +12,6 @@ namespace TeamProject;
 
 public class BattleScene : Scene
 {
-    private MusicPlayer musicPlayer;
     public override string Title { get; protected set; } = $"지하 감옥";
     public List<Creature> Monsters;
     public int MonsterCount;
@@ -36,7 +35,6 @@ public class BattleScene : Scene
 
         OnCreatureDead += BattleEnd;
 
-        musicPlayer = new MusicPlayer();
     }
     public override async void EnterScene()
     {
@@ -53,14 +51,14 @@ public class BattleScene : Scene
         AttackTextList.Add("기본 공격");
         AttackTextList.Add("스킬 사용");
 
-        musicPlayer.PlayAsync("BGM1.mp3", 0.01f); // 음악파일명, 볼륨
+        MusicPlayer.Instance.PlayAsync("Battle.mp3", 0.01f); // 음악파일명, 볼륨
 
         DrawScene();
     }
 
     public override void NextScene()
     {
-        musicPlayer.Stop();
+        MusicPlayer.Instance.Stop();
 
         Renderer.PrintKeyGuide(new string(' ', Console.WindowWidth - 2));
         ClearBuffer();
@@ -220,7 +218,7 @@ public class BattleScene : Scene
                 }
                 else if (selectionIdx == 2)
                 {
-                    musicPlayer.Stop();
+                    MusicPlayer.Instance.Stop();
                     Managers.Scene.GetOption("Back").Execute();
                 }
                 break;
@@ -560,7 +558,7 @@ public class BattleScene : Scene
 
     public void BattleEnd(Creature creature)
     {
-        musicPlayer.Stop();
+        MusicPlayer.Instance.Stop();
         // TODO: 전투 종료
         if (creature is Monster)
         {

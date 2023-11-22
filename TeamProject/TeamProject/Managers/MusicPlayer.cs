@@ -5,8 +5,24 @@ using System.Threading.Tasks;
 
 public class MusicPlayer
 {
+    private static MusicPlayer instance;
+
     private WaveOutEvent waveOutEvent;
     private AudioFileReader audioFileReader;
+
+    private MusicPlayer() { }
+
+    public static MusicPlayer Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new MusicPlayer();
+            }
+            return instance;
+        }
+    }
 
     public async Task PlayAsync(string fileName, float volume = 1.0f)
     {

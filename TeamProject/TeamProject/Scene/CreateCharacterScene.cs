@@ -21,6 +21,8 @@ public class CreateCharacterScene : Scene
     #region Scene
 
     public override void EnterScene() {
+        MusicPlayer.Instance.Stop();
+        MusicPlayer.Instance.PlayAsync("Story.mp3", 0.01f); // 음악파일명, 볼륨
         step = CreateStep.Name;
         formatters = Managers.Table.GetFormatters<Character>(new string[] { "Job", "Damage", "Defense", "HpMax", "MpMax", "Critical", "Avoid" });
         DrawScene();
@@ -36,7 +38,7 @@ public class CreateCharacterScene : Scene
             GetInput();
         }
     }
-    protected override void DrawScene() {
+    protected override async void DrawScene() {
         Renderer.DrawBorder(Title);
         Renderer.Print(3, "오래전, 인간과 괴물, 두 종족이 세상을 다스렸습니다.", delay: 1000);
         Renderer.Print(5, "어느 날, 두 종족간에 전쟁이 발발했습니다.", delay: 1000);
