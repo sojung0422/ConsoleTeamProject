@@ -95,7 +95,7 @@ public class CreateCharacterScene : Scene
                 int row = 3;
                 row = Renderer.DrawTable(row, Game.Characters.ToList(), formatters, selectedOptionIndex) + 1;
                 Renderer.Print(row, errorMessage, clear: true);
-                Renderer.PrintKeyGuide("[Enter: 결정]");
+                Renderer.PrintKeyGuide("[방향키 ↑ ↓: 선택지 이동] [Enter: 결정]");
                 break;
         }
     }
