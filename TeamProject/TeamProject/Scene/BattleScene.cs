@@ -49,7 +49,7 @@ public class BattleScene : Scene
         AttackTextList.Add("1. 기본 공격");
         AttackTextList.Add("2. 스킬[미구현]");
 
-        musicPlayer.PlayAsync("BGM1.mp3");
+        musicPlayer.PlayAsync("BGM1.mp3", 0.2f);
 
         DrawScene();
     }

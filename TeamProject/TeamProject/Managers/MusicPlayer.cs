@@ -8,7 +8,7 @@ public class MusicPlayer
     private WaveOutEvent waveOutEvent;
     private AudioFileReader audioFileReader;
 
-    public async Task PlayAsync(string fileName)
+    public async Task PlayAsync(string fileName, float volume = 1.0f)
     {
         Stop(); // 이미 플레이 중인 경우 중지
 
@@ -23,7 +23,7 @@ public class MusicPlayer
         {
             playbackStoppedTaskCompletionSource.TrySetResult(true);
         };
-
+        waveOutEvent.Volume = volume; // 볼륨 조절
         waveOutEvent.Play();
 
         // 비동기로 음악이 끝날 때까지 기다림

@@ -168,11 +168,12 @@ namespace TeamProject
                 Console.SetCursorPosition(margin, line);
                 Console.Write(new string(' ', printWidthPos));
                 Console.SetCursorPosition(margin, line);
-
+                
                 if (monster.IsDead())
                 {
                     Console.ForegroundColor = ConsoleColor.Gray;
                 }
+                
 
                 if (selectionLine == i)
                 {
@@ -183,29 +184,37 @@ namespace TeamProject
                 Console.Write(". ");
                 if (monster.IsDead())
                 {
-                    Console.Write($"{monster.Name} Dead");
+                    Console.WriteLine($"{monster.Name,-10} : Dead");
+                    Console.SetCursorPosition(margin, ++line);
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    PrintHPBar(monster);
+                    line++;
                 }
                 else
                 {
                     Console.WriteLine($"{monster.Name,-10} : {monster.Hp}/{monster.DefaultHpMax}");
-
                     Console.SetCursorPosition(margin, ++line);
-                    // HP 상태바 길이 조절
-                    int statusBarLength = 15;  
-                    // HP 백분율 계산
-                    int hpPercentage = (int)((double)monster.Hp / monster.DefaultHpMax * statusBarLength);
-                    // HP 상태바
-                    string statusBar = new string('█', hpPercentage) + new string(' ', statusBarLength - hpPercentage);
-                    // HP 상태 바 출력
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"[{statusBar}]");
+                    PrintHPBar(monster);
                     line++;
+                    
                 }
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 line++;
             }
             Print(line++, "-------------------------", false, 0, margin);
+        }
 
+        //몬스터 HP 출력
+        public static void PrintHPBar(Creature monster)
+        {
+            // HP 상태바 길이 조절
+            int statusBarLength = 15;
+            // HP 백분율 계산
+            int hpPercentage = (int)((double)monster.Hp / monster.DefaultHpMax * statusBarLength);
+            string statusBar = new string('█', hpPercentage) + new string(' ', statusBarLength - hpPercentage);
+            // HP 상태 바 출력
+            Console.WriteLine($"[{statusBar}]");
         }
 
         public static void PrintSelectAction(int line, List<string> actionText, bool fromZero = true, int selectionLine = 0)
@@ -218,7 +227,7 @@ namespace TeamProject
             Print(line++, $"원하는 행동을 선택해주세요.");
             Print(line++, "---------------------------");
             PrintPlayerState(line);
-            line++;
+            line += 6;
             Print(line++, "---------------------------");
             for(int i = 0; i < actionText.Count; i++)
             {
@@ -240,10 +249,33 @@ namespace TeamProject
 
         }
 
+        //플레이어 상태 출력
         public static void PrintPlayerState(int line)
         {
             Print(line, new string(' ', 30));
-            Print(line, $"{Game.Player.Name,-10} : {Game.Player.Hp}");
+            Print(line, $"내 캐릭터 : {Game.Player.Name,-10} [{Game.Player.Job}]");
+            line++;
+            // 상태바 길이 조절
+            int statusBarLength = 15;
+
+            // HP, MP 백분율 계산
+            int hpPercentage = (int)((double)Game.Player.Hp / Game.Player.HpMax * statusBarLength);
+            string HPBar = new string('█', hpPercentage) + new string(' ', statusBarLength - hpPercentage);
+            
+            int mpPercentage = (int)((double)Game.Player.Mp / Game.Player.MpMax * statusBarLength);
+            string MPBar = new string('█', mpPercentage) + new string(' ', statusBarLength - mpPercentage);
+
+            // HP,MP 상태 바 출력
+            Console.SetCursorPosition(printMargin, line);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"[{HPBar}], HP : {Game.Player.Hp}/{Game.Player.HpMax}");
+            line++;
+
+            Console.SetCursorPosition(printMargin, line);
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine($"[{MPBar}], MP : {Game.Player.Mp}/{Game.Player.MpMax}");
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
         }
 
         /// <summary>
