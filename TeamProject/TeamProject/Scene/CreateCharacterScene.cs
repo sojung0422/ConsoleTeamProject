@@ -157,6 +157,7 @@ public class CreateCharacterScene : Scene
         Console.SetCursorPosition(2, 23);
         var name = Console.ReadLine();
         OnNameChanged(name);
+        Console.CursorVisible = false;
     }
 
     /// <summary>
@@ -270,9 +271,6 @@ public class CreateCharacterScene : Scene
         Managers.Game.data.character = Game.Player;
         Managers.Game.data.stage = Game.Stage;
         Managers.Game.SaveGame();
-
-
-        Console.CursorVisible = false;
 
         NextStep();
     }
