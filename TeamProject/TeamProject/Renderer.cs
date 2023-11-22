@@ -256,7 +256,7 @@ namespace TeamProject
             Print(line, $"내 캐릭터 : {Game.Player.Name,-8} [{Game.Player.Job}]");
             line++;
             // 상태바 길이 조절
-            int statusBarLength = 20;
+            int statusBarLength = 18;
 
             // HP, MP 백분율 계산
             int hpPercentage = (int)((double)Game.Player.Hp / Game.Player.HpMax * statusBarLength);
