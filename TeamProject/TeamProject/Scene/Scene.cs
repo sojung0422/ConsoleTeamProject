@@ -68,7 +68,7 @@ namespace TeamProject {
 
         }
         protected virtual void OnCommandMoveRight() {
-
+                
         }
         protected virtual void OnCommandInteract() {
             Options[selectedOptionIndex].Execute();
