@@ -219,9 +219,15 @@ public class CreateCharacterScene : Scene
 
         // [우진영] 상점에서 아이템이 잘 구매되는지 확인하기 위해
         // 기본 아이템만 넣어놨습니다.
-        Game.Player.Inventory.Add(Game.Items[0]);
-        Game.Player.Inventory.Add(Game.Items[1]);
-        Game.Player.Inventory.Add(Game.Items[2]);
+        Gear basicWeapon = Game.Items[0].DeepCopy() as Gear;
+        Gear basicShield = Game.Items[1].DeepCopy() as Gear;
+        Gear basicArmor = Game.Items[2].DeepCopy() as Gear;
+        Game.Player.Inventory.Add(basicWeapon);
+        Game.Player.Inventory.Add(basicShield);
+        Game.Player.Inventory.Add(basicArmor);
+        Game.Player.Equipment.Equip((GearSlot)basicWeapon.GearType, basicWeapon);
+        Game.Player.Equipment.Equip((GearSlot)basicShield.GearType, basicShield);
+        Game.Player.Equipment.Equip((GearSlot)basicArmor.GearType, basicArmor);
 
         Managers.Game.data.character = Game.Player;
         Managers.Game.data.stage = Game.Stage;
