@@ -5,11 +5,13 @@ using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using NAudio.Wave;
 
 namespace TeamProject;
 
 public class BattleScene : Scene
 {
+    private MusicPlayer musicPlayer;
     public override string Title { get; protected set; } = $"지하 감옥";
     public List<Creature> Monsters;
     public int MonsterCount;
@@ -29,8 +31,10 @@ public class BattleScene : Scene
         AttackTextList = new List<string>();
 
         OnCreatureDead += BattleEnd;
+
+        musicPlayer = new MusicPlayer();
     }
-    public override void EnterScene()
+    public override async void EnterScene()
     {
         // 몬스터 생성
         Monsters = Game.Stage.MonsterSpawn();
@@ -44,6 +48,8 @@ public class BattleScene : Scene
         AttackTextList.Clear();
         AttackTextList.Add("1. 기본 공격");
         AttackTextList.Add("2. 스킬[미구현]");
+
+        musicPlayer.PlayAsync("BGM1.mp3");
 
         DrawScene();
     }
@@ -84,9 +90,8 @@ public class BattleScene : Scene
             SelectAction();
 
             if (CheckAllMonstersDead())
-            {
-                OnCreatureDead(Monsters[0]);
-            }
+                break;
+
 
             // 몬스터 턴
             line = 15;
@@ -477,6 +482,8 @@ public class BattleScene : Scene
 
     public void BattleEnd(Creature creature)
     {
+        musicPlayer.Stop();
+
         // TODO: 전투 종료
         if (creature is Monster)
         {
@@ -506,7 +513,7 @@ public class BattleScene : Scene
     {
         while (Console.KeyAvailable) // 버퍼에 입력이 있는 경우 처리
         {
-            Console.ReadKey(true); // 입력을 읽고 버퍼를 비움
+            Console.ReadKey(true); // 입력을 읽고 버퍼를 비움 
         }
     }
 

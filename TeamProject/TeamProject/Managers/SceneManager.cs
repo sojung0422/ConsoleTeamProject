@@ -103,6 +103,7 @@ public class SceneManager {
 
     private void LoadGame() {
         Game.Player = Managers.Game.data.character;
+        Game.Stage = Managers.Game.data.stage;
         EnterScene<MainScene>();
     }
 }

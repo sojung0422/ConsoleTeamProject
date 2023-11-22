@@ -120,7 +120,7 @@ namespace TeamProject
         public static int PrintCenter(int line, string content)
         {
             int correctLength = GetPrintingLength(content);
-            int start = (width - correctLength / 2);
+            int start = (width - correctLength) / 2;
             if (start < 0) start = 0;
             Console.SetCursorPosition(start, line++);
             Console.WriteLine(content);
