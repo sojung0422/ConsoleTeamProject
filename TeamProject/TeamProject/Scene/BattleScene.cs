@@ -506,6 +506,7 @@ public class BattleScene : Scene
         }
 
         // [우진영] 여기서 StageRewardScene 으로 연결해주세요.
+        Managers.Scene.EnterScene<StageRewardScene>();
     }
 
     // ============================================ //
