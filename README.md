@@ -29,7 +29,7 @@ https://www.youtube.com/watch?v=qbiHyyafG_A
 ***
 #### 2. 상태 보기
 ![image](https://github.com/gusrb0296/TeamProject/assets/21351278/91dbae83-2da1-4da8-a6da-4edf5b8d03a0)
-
+상태창을 확인하면 자신의 스탯 현황을 확인할 수 있습니다. 
 ***
 #### 3. 전투
    + 공격
