@@ -17,9 +17,11 @@
 
 ## ▶️ [플레이]
 https://www.youtube.com/watch?v=qbiHyyafG_A
+![시작화면](https://github.com/gusrb0296/TeamProject/assets/21351278/0f9ab90b-5cb1-4f34-8348-23e26dab03bc)
 
 ## ⚙ [주요 기능]
 #### 1. 게임 시작 화면
+
 ***
 #### 2. 상태 보기
 ***
