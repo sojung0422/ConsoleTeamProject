@@ -32,7 +32,18 @@ public class Game
         new HealingPotion(7, "체력 포션", "체력을 회복하는 물약", 150, 1, 50),
         new ManaPotion(8, "마나 포션", "마나를 회복하는 물약", 150, 1, 50),
     };
-  
+
+    public struct CurrentStageReward
+    {
+        public bool isClear;
+        public int stageNumber;
+        public List<Item> items;
+        public int exp;
+        public int gold;
+    }
+
+    public static CurrentStageReward currentStageReward = new CurrentStageReward();
+
     /// <summary>
     /// 게임 시작
     /// </summary>

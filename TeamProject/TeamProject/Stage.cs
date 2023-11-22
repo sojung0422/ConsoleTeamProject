@@ -41,22 +41,26 @@ namespace TeamProject
             return Monsters;
         }
 
-        public void ClearReward()
+        public void SetClearReward()
         {
+            Game.currentStageReward.isClear = true;
+            Game.currentStageReward.stageNumber = StageLevel;
             // 스테이지 보상
             //아이템
 
             //경험치 : 스테이지*20
-            int expReward = StageLevel * 20;
-            Game.Player.ChangeExp(expReward);
+            Game.currentStageReward.exp = StageLevel * 20;
+            Game.currentStageReward.gold = 500;
 
             // 스테이지 1 증가
             StageLevel++;
         }
-        public void FailReward()
+        public void SetFailReward()
         {
             // 던전 클리어 실패 시
-
+            Game.currentStageReward.isClear = false;
+            Game.currentStageReward.stageNumber = StageLevel;
+            Game.currentStageReward.gold = 100;
         }
     }
 }
