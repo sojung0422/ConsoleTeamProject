@@ -18,13 +18,16 @@ namespace TeamProject {
         }
 
         public override void NextScene() {
-            while (true)
-            {
-                var key = Console.ReadKey(true);
-                if (key.Key != ConsoleKey.Escape) continue;
-                Options[0].Execute();
-                break;
-            }
+            //while (true)
+            //{
+            //    var key = Console.ReadKey(true);
+            //    if (key.Key != ConsoleKey.Escape) continue;
+            //    Options[0].Execute();
+            //    break;
+            //}
+            do {
+                GetInput();
+            } while (Managers.Scene.CurrentScene is InventoryInfoScene);
         }
 
         protected override void DrawScene() {
@@ -39,9 +42,8 @@ namespace TeamProject {
                 Renderer.ItemTableFormatters["Desc"],
                 Renderer.ItemTableFormatters["StackCount"],
             };
-            row = Renderer.DrawItemList(++row, Game.Player.Inventory.Items, formatters);
+            Renderer.DrawItemList(++row, Game.Player.Inventory.Items, formatters);
 
-            Renderer.PrintOptions(++row, Options, true);
             Renderer.PrintKeyGuide("[ESC : 뒤로가기]");
         }
     }

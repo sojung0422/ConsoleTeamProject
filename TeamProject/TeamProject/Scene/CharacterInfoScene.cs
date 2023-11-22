@@ -12,14 +12,17 @@ public class CharacterInfoScene : Scene
 
     public override void NextScene()
     {
-        while (true) 
-        {
-            // Esc 누를 시 메인 화면으로
-            var key = Console.ReadKey(true);
-            if (key.Key != ConsoleKey.Escape) continue;
-            Options[0].Execute();
-            break;
-        }
+        //while (true) 
+        //{
+        //    // Esc 누를 시 메인 화면으로
+        //    var key = Console.ReadKey(true);
+        //    if (key.Key != ConsoleKey.Escape) continue;
+        //    Options[0].Execute();
+        //    break;
+        //}
+        do {
+            GetInput();
+        } while (Managers.Scene.CurrentScene is CharacterInfoScene);
     }
     protected override void DrawScene() 
     {
@@ -38,7 +41,6 @@ public class CharacterInfoScene : Scene
         Renderer.Print(11, $"회피율 :{Game.Player.Avoid * 100:00}%");
         Renderer.Print(12, $"Gold : {Game.Player.Gold} G");
 
-        Renderer.PrintOptions(14, Options, true);
         Renderer.PrintKeyGuide("[ESC : 뒤로가기]");
     }
 }

@@ -306,7 +306,7 @@ namespace TeamProject
             return row;
         }
 
-        public static int DrawJobList(int startRow, Character[] characters, List<JobTableFormatter> formatterList)
+        public static int DrawJobList(int startRow, Character[] characters, List<JobTableFormatter> formatterList, int selectionIdx = -1)
         {
             // #1. 그리기 준비.
             int row = startRow;
@@ -335,7 +335,13 @@ namespace TeamProject
 
                     else content += $"{formatter.GetString(character)}|";                                    // 아이템 정보 출력.
                 }
+                // 선택 부분 아이템 글씨 컬러 바꾸기
+                if (selectionIdx == i) {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+
                 Print(row++, content);
+                Console.ForegroundColor = ConsoleColor.Yellow;
             }
             return row;
         }

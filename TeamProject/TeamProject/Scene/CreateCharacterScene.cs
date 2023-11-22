@@ -9,6 +9,7 @@ public class CreateCharacterScene : Scene
     {
         Name,
         Job,
+        CreateCharacter,
         Exit
     }
 
@@ -20,18 +21,29 @@ public class CreateCharacterScene : Scene
 
     #region Scene
 
-    public override void EnterScene()
-    {
-        do
-        {
-            DrawStep();
-        }
-        while (ManageInput());
+    public override void EnterScene() {
+        step = CreateStep.Name;
     }
 
-    public override void NextScene()
-    {
-        Managers.Scene.EnterScene<MainScene>();
+    public override void NextScene() {
+        while (step == CreateStep.Name) {
+            DrawStep();
+            ReadName();
+        }
+        while (step == CreateStep.Job) {
+            DrawStep();
+            GetInput();
+        }
+        
+
+
+
+        //do {
+        //    DrawStep();
+        //    GetInput();
+        //}
+        //while (ManageInput());
+        //Managers.Scene.EnterScene<MainScene>();
     }
 
     #endregion
@@ -48,6 +60,7 @@ public class CreateCharacterScene : Scene
             case CreateStep.Name:
                 Renderer.Print(4, "당신의 이름은 무엇인가요?");
                 Renderer.Print(6, errorMessage);
+                Renderer.PrintKeyGuide("[Enter: 결정]");
                 break;
             case CreateStep.Job:
                 Renderer.Print(4, "직업이 어떻게 되십니까?");
@@ -61,28 +74,15 @@ public class CreateCharacterScene : Scene
                 Renderer.JobTableFormatters["Critical"],
                 Renderer.JobTableFormatters["Avoid"],
             };
-                row = Renderer.DrawJobList(++row, Game.Characters, formatters);
+                row = Renderer.DrawJobList(++row, Game.Characters, formatters, selectedOptionIndex);
 
-                Renderer.Print(14, "1 > 전사");
-                Renderer.Print(15, "2 > 마법사");
-                Renderer.Print(16, "3 > 도적");
-                
-                Renderer.Print(20, errorMessage);
-                Renderer.PrintOptions(++row, Options, true);
-
-                //Renderer.Print(4, "원하시는 직업을 선택해 주세요");
-                //Renderer.Print(6, "                  |전사          |마법사          |도적");
-                //Renderer.Print(7, "================================================================");
-                //Renderer.Print(8, $"공격력            |{Game.Characters[0].DefaultDamage}            |{Game.Characters[1].DefaultDamage}               |{Game.Characters[2].DefaultDamage}");
-                //Renderer.Print(9, $"방어력            |{Game.Characters[0].DefaultDefense}             |{Game.Characters[1].DefaultDefense}               |{Game.Characters[2].DefaultDefense}");
-                //Renderer.Print(10, $"체력              |{Game.Characters[0].DefaultHpMax}           |{Game.Characters[1].DefaultHpMax}              |{Game.Characters[2].DefaultHpMax}");
-                //Renderer.Print(11, $"크리티컬 확률     |{Game.Characters[0].DefaultCritical * 100:0}%           |{Game.Characters[1].DefaultCritical * 100:0}%             |{Game.Characters[2].DefaultCritical * 100:0}%");
-                //Renderer.Print(12, $"회피율            |{Game.Characters[0].DefaultAvoid * 100:0}%           |{Game.Characters[1].DefaultAvoid * 100:0}%             |{Game.Characters[2].DefaultAvoid * 100:0}%");
                 //Renderer.Print(14, "1 > 전사");
                 //Renderer.Print(15, "2 > 마법사");
                 //Renderer.Print(16, "3 > 도적");
-                //Renderer.Print(20, errorMessage);
-                //Renderer.PrintKeyGuide("[원하는 직업의 번호를 입력해주세요]");
+                
+                Renderer.Print(20, errorMessage);
+                Renderer.PrintKeyGuide("[방향키 ↑ ↓: 선택지 이동] [Enter: 결정]");
+                //Renderer.PrintOptions(++row, Options, true);
                 break;
         }
     }
@@ -92,10 +92,34 @@ public class CreateCharacterScene : Scene
         errorMessage = string.Empty;
         step += 1;
 
-        if (step == CreateStep.Exit)
+        if (step == CreateStep.CreateCharacter)
         {
             CreateCharacter();
         }
+        else if (step == CreateStep.Exit) {
+            Managers.Scene.EnterScene<MainScene>();
+        }
+    }
+
+    #endregion
+
+    #region Input
+
+    protected override void OnCommandMoveTop() {
+        if (step == CreateStep.Job && selectedOptionIndex > 0)
+            selectedOptionIndex--;
+    }
+    protected override void OnCommandMoveBottom() {
+        if (step == CreateStep.Job && selectedOptionIndex < Game.Characters.Length - 1)
+            selectedOptionIndex++;
+    }
+    protected override void OnCommandInteract() {
+        if (step == CreateStep.Job) {
+            ReadJob();
+        }
+    }
+    protected override void OnCommandExit() {
+        
     }
 
     #endregion
@@ -117,9 +141,13 @@ public class CreateCharacterScene : Scene
     /// </summary>
     private void ReadJob()
     {
-        Console.SetCursorPosition(2, 18);
-        var job = Console.ReadLine();
-        OnJobChanged(job);
+        //Console.SetCursorPosition(2, 18);
+        //var job = Console.ReadLine();
+
+        //OnJobChanged(job);
+
+        selectPlayer = Game.Characters[selectedOptionIndex];
+        NextStep();
     }
 
     #endregion
@@ -214,23 +242,25 @@ public class CreateCharacterScene : Scene
 
         Managers.Game.data.character = Game.Player;
         Managers.Game.SaveGame();
+
+        NextStep();
     }
 
-    private bool ManageInput()
-    {
-        switch (step)
-        {
-            case CreateStep.Name:
-                ReadName();
-                break;
-            case CreateStep.Job:
-                ReadJob();
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+    //private bool ManageInput()
+    //{
+    //    switch (step)
+    //    {
+    //        case CreateStep.Name:
+    //            ReadName();
+    //            break;
+    //        case CreateStep.Job:
+    //            ReadJob();
+    //            break;
+    //        default:
+    //            throw new ArgumentOutOfRangeException();
+    //    }
 
-        bool isExit = (step != CreateStep.Exit);
-        return isExit;
-    }
+    //    bool isExit = (step != CreateStep.Exit);
+    //    return isExit;
+    //}
 }

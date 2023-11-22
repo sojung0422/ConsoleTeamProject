@@ -21,9 +21,10 @@ public class RestScene : Scene {
     {
         do
         {
-            Renderer.PrintOptions(13, Options, true, selectionIdx);
+            Renderer.PrintOptions(13, Options, true, selectedOptionIndex);
+            GetInput();
         }
-        while (ManageInput());
+        while (Managers.Scene.CurrentScene is RestScene);
     }
     protected override void DrawScene()
     {
@@ -37,70 +38,70 @@ public class RestScene : Scene {
         Renderer.PrintKeyGuide("[ESC : 뒤로가기]");
     }
 
-    private int selectionIdx = 0;
+    //private int selectionIdx = 0;
 
-    public bool ManageInput()
-    {
-        var key = Console.ReadKey(true);
+    //public bool ManageInput()
+    //{
+    //    var key = Console.ReadKey(true);
 
-        var commands = key.Key switch
-        {
-            ConsoleKey.UpArrow => Command.MoveTop,
-            ConsoleKey.DownArrow => Command.MoveBottom,
-            ConsoleKey.Enter => Command.Interact,
-            ConsoleKey.Escape => Command.Exit,
-            _ => Command.Nothing
-        };
+    //    var commands = key.Key switch
+    //    {
+    //        ConsoleKey.UpArrow => Command.MoveTop,
+    //        ConsoleKey.DownArrow => Command.MoveBottom,
+    //        ConsoleKey.Enter => Command.Interact,
+    //        ConsoleKey.Escape => Command.Exit,
+    //        _ => Command.Nothing
+    //    };
 
-        OnCommand(commands);
+    //    OnCommand(commands);
 
-        if (commands == Command.Exit)
-        {
-            Options[1].Execute();
+    //    if (commands == Command.Exit)
+    //    {
+    //        Options[1].Execute();
 
-            return true;
-        }
+    //        return true;
+    //    }
 
-        //if (commands == Command.Interact)
-        //{
-        //    if (Game.Player.Hp == Game.Player.HpMax)
-        //    {
-        //        Renderer.Print(10, "이미 체력이 최대입니다.");
-        //        return true;
-        //    }
+    //    //if (commands == Command.Interact)
+    //    //{
+    //    //    if (Game.Player.Hp == Game.Player.HpMax)
+    //    //    {
+    //    //        Renderer.Print(10, "이미 체력이 최대입니다.");
+    //    //        return true;
+    //    //    }
 
-        //    else if (Game.Player.Gold <= 100)
-        //    {
-        //        Renderer.Print(10, "돈이 부족합니다.");
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        Game.Player.Hp = Game.Player.HpMax;
-        //        Game.Player.ChangeGold(-100);
-        //        Options[selectionIdx].Execute();
-        //        return true;
-        //    }
-        //}
+    //    //    else if (Game.Player.Gold <= 100)
+    //    //    {
+    //    //        Renderer.Print(10, "돈이 부족합니다.");
+    //    //        return true;
+    //    //    }
+    //    //    else
+    //    //    {
+    //    //        Game.Player.Hp = Game.Player.HpMax;
+    //    //        Game.Player.ChangeGold(-100);
+    //    //        Options[selectionIdx].Execute();
+    //    //        return true;
+    //    //    }
+    //    //}
 
-        return true;
-    }
-    private void OnCommand(Command cmd)
-    {
-        switch (cmd)
-        {
-            case Command.MoveTop:
-                if (selectionIdx > 0)
-                    selectionIdx--;
-                break;
-            case Command.MoveBottom:
-                if (selectionIdx < Options.Count - 1)
-                    selectionIdx++;
-                break;
-            case Command.Interact:
-                Options[selectionIdx].Execute();
-                break;
-        }
-    }
+    //    return true;
+    //}
+    //private void OnCommand(Command cmd)
+    //{
+    //    switch (cmd)
+    //    {
+    //        case Command.MoveTop:
+    //            if (selectionIdx > 0)
+    //                selectionIdx--;
+    //            break;
+    //        case Command.MoveBottom:
+    //            if (selectionIdx < Options.Count - 1)
+    //                selectionIdx++;
+    //            break;
+    //        case Command.Interact:
+    //            Options[selectionIdx].Execute();
+    //            break;
+    //    }
+    //}
 }
 
