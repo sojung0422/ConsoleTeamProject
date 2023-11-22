@@ -410,6 +410,7 @@ public class BattleScene : Scene
         while (ManageInput(BattleAction.SelectAction));
     }
 
+
     public void MonsterAttack()
     {
         // 공격
@@ -420,13 +421,13 @@ public class BattleScene : Scene
         // 선택한 옵션 색 초기화
         Renderer.PrintSelectAction(startTextLine, AttackTextList, true, -1);
         Renderer.PrintBattleText(startTextLine, Monsters, true, -1);
-
         do
         {
             Renderer.PrintBattleText(startTextLine, Monsters, true, selectionIdx);
             ClearBuffer();
         }
         while (ManageInput(BattleAction.Attack));
+        Renderer.PrintBattleText(startTextLine, Monsters, true, -1);
     }
 
     public void SelectAttack()
