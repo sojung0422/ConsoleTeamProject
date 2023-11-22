@@ -21,7 +21,7 @@ public class RestScene : Scene {
     {
         do
         {
-            Renderer.PrintOptions(13, Options, true, selectedOptionIndex);
+            Renderer.PrintOptions(15, Options, true, selectedOptionIndex);
             GetInput();
         }
         while (Managers.Scene.CurrentScene is RestScene);
@@ -32,8 +32,9 @@ public class RestScene : Scene {
         Renderer.Print(3, "여관에서 휴식하시겠습니까?");
                 
         Renderer.Print(5, $"당신의 체력 : {Game.Player.Hp} / {Game.Player.DefaultHpMax}");
-        Renderer.Print(7, $"보유 골드 : {Game.Player.Gold} G");
-        Renderer.Print(8, "이용 골드 : 100 G");
+        Renderer.Print(6, $"당신의 마나 : {Game.Player.Mp} / {Game.Player.DefaultMpMax}");
+        Renderer.Print(8, $"보유 골드 : {Game.Player.Gold} G");
+        Renderer.Print(9, "이용 골드 : 100 G");
 
         Renderer.PrintKeyGuide("[ESC : 뒤로가기]");
     }

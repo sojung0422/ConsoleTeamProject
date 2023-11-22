@@ -37,25 +37,22 @@ public class SceneManager {
 
     private void UseInn()
     {
-        if (Game.Player.Hp == Game.Player.HpMax)
-        {
-            Renderer.ClearLine(10);
-            Renderer.Print(10, "이미 체력이 최대입니다.");
-        }
-        else if (Game.Player.Gold <= 100)
-        {
-            Renderer.ClearLine(10);
-            Renderer.Print(10, "돈이 부족합니다.");
-        }
+        if (Game.Player.Hp == Game.Player.HpMax && Game.Player.Mp == Game.Player.MpMax)
+            Renderer.Print(12, "지금 휴식할 필요는 없을 것 같다.", clear: true);
+
+        else if (Game.Player.Gold <= 100)        
+            Renderer.Print(12, "돈이 부족하다...", clear: true);
+        
         else
         {
-            Renderer.Print(10, "회 복 중 입 니 다 . . . ", false, 2000, 2);
+            Renderer.Print(12, "휴 식 중 . . . ", false, 2500, 2);
             Game.Player.Hp = Game.Player.HpMax;
+            Game.Player.Mp = Game.Player.MpMax;
             Game.Player.ChangeGold(-100);
             Renderer.Print(5, $"당신의 체력 : {Game.Player.Hp} / {Game.Player.DefaultHpMax}");
-            Renderer.Print(7, $"보유 골드 : {Game.Player.Gold} G");
-            Renderer.ClearLine(10);
-            Renderer.Print(10, "체력이 모두 회복되었습니다!");
+            Renderer.Print(6, $"당신의 체력 : {Game.Player.Mp} / {Game.Player.DefaultMpMax}");
+            Renderer.Print(8, $"보유 골드 : {Game.Player.Gold} G");
+            Renderer.Print(12, "휴식을 마치니, 당신의 의지가 차오른다.", clear: true);
         }            
     }
 

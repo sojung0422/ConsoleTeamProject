@@ -46,21 +46,29 @@ public class CreateCharacterScene : Scene
     }
     protected override void DrawScene() {
         Renderer.DrawBorder(Title);
-        Renderer.Print(3, "스파르타 마을에 오신 여러분 환영합니다.");
+        Renderer.Print(3, "오래전, 인간과 괴물, 두 종족이 세상을 다스렸습니다.", delay: 1000);
+        Renderer.Print(5, "어느 날, 두 종족간에 전쟁이 발발했습니다.", delay: 1000);
+        Renderer.Print(7, "길고 긴 싸움 끝에, 인간이 승리했습니다.", delay: 1000);
+        Renderer.Print(9, "그들은 마법의 주문을 이용하여 괴물들을 땅 속에 봉인했습니다.", delay: 1000);
+        Renderer.Print(11, "많은 시간이 흐른 뒤…..", delay: 1000);
+        Renderer.Print(13, "에봇 산, 20XX년", delay: 1000);
+        Renderer.Print(15, "전설에 따르면 산에 오른 이는 절대 돌아오지 못한다고 합니다.", delay: 1000);
+        Renderer.Print(17, "누군가 이 산의 구멍에 떨어졌습니다.", delay: 1000);
+        Renderer.Print(20, "떨어진 인간의 이름은?", delay: 1500);
+
     }
     
     private void DrawStep() {
         switch (step) {
-            case CreateStep.Name:
-                Renderer.ClearLine(4);
-                Renderer.Print(4, "당신의 이름은 무엇인가요?");
-                Renderer.ClearLine(6);
-                Renderer.Print(6, errorMessage);
+            case CreateStep.Name:                
+                Renderer.Print(25, errorMessage);
                 Renderer.PrintKeyGuide("[Enter: 결정]");
                 break;
             case CreateStep.Job:
-                Renderer.Print(4, "직업이 어떻게 되십니까?");
-                int row = 5;
+                Renderer.Print(4, "떨어진 인간의 직업은?");
+                Renderer.Print(5, "떨어진 인간의 직업은?", delay: 1000);
+                Renderer.Print(6, "떨어진 인간의 직업은?");
+                int row = 7;
                 row = Renderer.DrawJobList(row, Game.Characters, formatters, selectedOptionIndex) + 1;
                 Renderer.ClearLine(row);
                 Renderer.Print(row, errorMessage);
@@ -77,8 +85,11 @@ public class CreateCharacterScene : Scene
     {
         errorMessage = string.Empty;
         step += 1;
-
-        if (step == CreateStep.CreateCharacter)
+        if(step == CreateStep.Job)
+        {
+            Renderer.DrawBorder();
+        }
+        else if (step == CreateStep.CreateCharacter)
         {
             CreateCharacter();
         }
@@ -117,7 +128,7 @@ public class CreateCharacterScene : Scene
     /// </summary>
     private void ReadName()
     {
-        Console.SetCursorPosition(2, 7);
+        Console.SetCursorPosition(2, 23);
         var name = Console.ReadLine();
         OnNameChanged(name);
     }

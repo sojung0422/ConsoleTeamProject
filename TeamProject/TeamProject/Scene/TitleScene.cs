@@ -18,16 +18,22 @@ namespace TeamProject {
 
         public override void NextScene() {
             do {
-                Renderer.PrintOptions(7, Options, true, selectedOptionIndex);
+                Renderer.PrintOptions(18, Options, true, selectedOptionIndex);
                 GetInput();
             }
             while (lastCommand != Command.Interact);
         }
 
-        protected override void DrawScene() {
+        protected override void DrawScene()
+        {
             Renderer.DrawBorder();
-            Renderer.Print(5, "와 재미잇는 깨임");
-            Renderer.PrintOptions(7, Options, true, selectedOptionIndex);
+
+            Renderer.PrintCenter(6,   "██    ██ ███    ██ ██████  ███████ ██████      ████████  █████  ██      ███████ ");
+            Renderer.PrintCenter(7,   "██    ██ ████   ██ ██   ██ ██      ██   ██        ██    ██   ██ ██      ██      ");
+            Renderer.PrintCenter(8,   "██    ██ ██ ██  ██ ██   ██ █████   ██████         ██    ███████ ██      █████   ");
+            Renderer.PrintCenter(9,   "██    ██ ██  ██ ██ ██   ██ ██      ██   ██        ██    ██   ██ ██      ██      ");
+            Renderer.PrintCenter(10, "  ██████  ██   ████ ██████  ███████ ██   ██        ██    ██   ██ ███████ ███████  ");
+                                                                              
             Renderer.PrintKeyGuide("[방향키 ↑ ↓: 선택지 이동] [Enter: 선택]");
         }
     }
