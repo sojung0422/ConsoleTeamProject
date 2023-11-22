@@ -16,9 +16,9 @@ public class Game
     // name, hp, damage, defense, mp, critical, avoid
     public static Monster[] Monsters =
     {
-        new Monster("슬라임", 10, 10, 2, 0, 0.2f, 0.2f),
-        new Monster("트롤", 20, 20, 3, 0, 0.3f, 0.3f),
-        new Monster("헬하운드", 30, 30, 5, 0, 0.2f, 0.2f)
+        new Monster("슬라임", 10, 10, 2, 0, 0.1f, 0.1f),
+        new Monster("트롤", 20, 20, 3, 0, 0.1f, 0.1f),
+        new Monster("헬하운드", 30, 30, 5, 0, 0.1f, 0.1f)
     };
     // id, name, description, price, type, stackCount
     public static Item[] Items =
