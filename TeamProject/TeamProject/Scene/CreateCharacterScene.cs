@@ -72,7 +72,7 @@ public class CreateCharacterScene : Scene
                 Renderer.Print(19, "  이곳이 어떤 곳인지");
                 Renderer.Print(20, "  누군가 알려줘야 겠는데!");
 
-                Renderer.Print(22, "  그런데, 너의 본래 직업은 뭐야?");
+                Renderer.Print(22, "  그런데, 너의 직업은 뭐야?");
 
 
                 Renderer.Print(11, "          ░░                   ░░         ", margin: Console.WindowWidth / 2);

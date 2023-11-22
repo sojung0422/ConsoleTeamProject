@@ -50,7 +50,7 @@ namespace TeamProject
             // #1. 씬 설정.
             msg = "";
             MusicPlayer.Instance.music = "Store.mp3";
-            MusicPlayer.Instance.PlayAsync(0.1f); // 음악파일명, 볼륨
+            MusicPlayer.Instance.PlayAsync(0.05f); // 음악파일명, 볼륨
             // #2. 아이템 정보 설정.
             shopSaleItem = Game.Items.ToList();
             playerSaleItem = Game.Player.Inventory.Items;

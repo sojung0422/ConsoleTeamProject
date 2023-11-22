@@ -15,12 +15,12 @@ public class MainScene : Scene {
         if (!MusicPlayer.Instance.IsPlaying)
         {
             MusicPlayer.Instance.music = "Snowy.mp3";
-            MusicPlayer.Instance.PlayAsync(0.1f); // 음악파일명, 볼륨
+            MusicPlayer.Instance.PlayAsync(0.05f); // 음악파일명, 볼륨
         }
         else if (MusicPlayer.Instance.IsPlaying && MusicPlayer.Instance.music != "Snowy.mp3")
         {
             MusicPlayer.Instance.music = "Snowy.mp3";
-            MusicPlayer.Instance.PlayAsync(0.1f); // 음악파일명, 볼륨
+            MusicPlayer.Instance.PlayAsync(0.05f); // 음악파일명, 볼륨
         }
         // #1. 선택지 설정.
         Options.Clear();
