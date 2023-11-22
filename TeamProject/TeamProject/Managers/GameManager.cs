@@ -10,6 +10,7 @@ namespace TeamProject {
     [Serializable]
     public class GameData {
         public Character character;
+        public Stage stage;
     }
     public class GameManager {
 

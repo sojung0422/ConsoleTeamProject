@@ -243,6 +243,7 @@ public class CreateCharacterScene : Scene
         Game.Player.Inventory.Add(Game.Items[2]);
 
         Managers.Game.data.character = Game.Player;
+        Managers.Game.data.stage = Game.Stage;
         Managers.Game.SaveGame();
 
         NextStep();
