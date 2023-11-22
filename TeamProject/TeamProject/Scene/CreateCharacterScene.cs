@@ -153,6 +153,7 @@ public class CreateCharacterScene : Scene
     /// </summary>
     private void ReadName()
     {
+        Console.CursorVisible = true;
         Console.SetCursorPosition(2, 23);
         var name = Console.ReadLine();
         OnNameChanged(name);
@@ -269,6 +270,9 @@ public class CreateCharacterScene : Scene
         Managers.Game.data.character = Game.Player;
         Managers.Game.data.stage = Game.Stage;
         Managers.Game.SaveGame();
+
+
+        Console.CursorVisible = false;
 
         NextStep();
     }
