@@ -27,6 +27,17 @@ namespace TeamProject {
                 else hp = value;
             }
         }
+        protected float mp;
+        public float Mp
+        {
+            get => mp;
+            set
+            {
+                if (value <= 0) mp = 0;
+                else if (value >= MpMax) mp = MpMax;
+                else mp = value;
+            }
+        }
         public Inventory Inventory { get; set; }
         public Equipment Equipment { get; set; }
 
@@ -38,7 +49,7 @@ namespace TeamProject {
         public float avoidModifier;
 
         //public Character() { }
-        public Character(string name, string job, int level, float damage, float defense, float hp, int gold, float critical, float avoid)
+        public Character(string name, string job, int level, float damage, float defense, float hp, float mp, int gold, float critical, float avoid)
         {
             Name = name;
             Job = job;
@@ -46,6 +57,7 @@ namespace TeamProject {
             DefaultDamage = damage;
             DefaultDefense = defense;
             DefaultHpMax = hp;
+            DefaultMpMax = mp;
             DefaultCritical = critical;
             DefaultAvoid = avoid;
             Gold = gold;
@@ -55,6 +67,7 @@ namespace TeamProject {
             NextLevelExp = 100;
             TotalExp = 0;
             Hp = HpMax;
+            Mp = MpMax;
         }
 
         public override void Attack(Creature creature, int line)
@@ -90,6 +103,12 @@ namespace TeamProject {
         public override void OnDamaged(int damage)
         {
             Hp -= damage;
+            Managers.Game.SaveGame();
+        }
+
+        public void ChangeMana(int value)
+        {
+            Mp += value;
             Managers.Game.SaveGame();
         }
 
