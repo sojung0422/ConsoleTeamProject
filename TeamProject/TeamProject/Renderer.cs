@@ -183,12 +183,12 @@ namespace TeamProject {
         public static void PrintSelectAction(int line, List<string> actionText, bool fromZero = true, int selectionLine = 0) {
             int printWidthPos = 30;
             line++;
-            for (int i = 0; i < height - 10; i++) {
+            for (int i = 0; i < height - 21; i++) {
                 Print(line + i, new string(' ', printWidthPos));
             }
             Print(line++, "---------------------------");
             PrintPlayerState(line);
-            line += 6;
+            line += 3;
             Print(line++, "---------------------------");
             for (int i = 0; i < actionText.Count; i++) {
                 // 라인 클리어

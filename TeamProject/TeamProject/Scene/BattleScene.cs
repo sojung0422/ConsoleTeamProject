@@ -90,6 +90,24 @@ public class BattleScene : Scene
         Renderer.Print(14, new string('-', 55), false, 0, Console.WindowWidth / 2);
         Renderer.Print(27, new string('-', 55), false, 0, Console.WindowWidth / 2);
         Renderer.PrintBattleText(startTextLine, Monsters, false, -1);
+
+
+        Renderer.Print(16, "      ▄           ▄       ", margin: 2);
+        Renderer.Print(17, " ▄████ ▀▄       ▄▀ █████▄ ", margin: 2);
+        Renderer.Print(18, "████▀█▀▄█████████▄▀█▀████ ", margin: 2);
+        Renderer.Print(19, "▀▀ ▀▄█████▀▀▀▀▀ ▀███▄▀ ▀▀ ", margin: 2);
+        Renderer.Print(20, "    ████▀▄  ██  ▄ ███     ", margin: 2);
+        Renderer.Print(21, "   ▄███▀▄▀▀ ▀▀ ▀▀▄▀██▄    ", margin: 2);
+        Renderer.Print(22, " ▄▄████ ███▄  ▄███ ███▄▄  ", margin: 2);
+        Renderer.Print(23, "  █████  ▀▀    ▀▀  ████   ", margin: 2);
+        Renderer.Print(24, "   ▀▀███▄ ▀▄▀▀▄▀ ▄██▀▀    ", margin: 2);
+        Renderer.Print(25, "         ▀▄▄  ▄▄█         ", margin: 2);
+        Renderer.Print(26, "        ▄▀▀▄▀▀▄▀▀▄        ", margin: 2);
+        
+
+
+
+
         while (!CheckAllMonstersDead() && !Game.Player.IsDead())
         {
             SelectAction();
@@ -282,10 +300,10 @@ public class BattleScene : Scene
             case Command.Interact:
                 int playerline = 7;
                 Renderer.ClearPlayerLine();
-                // 단일 스킬
-                Renderer.Print(playerline++, $"{Game.Player.PlayerSkill.Names[0]} 사용!", false, textdelay, Console.WindowWidth / 2);
+                // 단일 스킬                
                 if (isSkill)
                 {
+                    Renderer.Print(playerline++, $"{Game.Player.PlayerSkill.Names[0]} 사용!", false, textdelay, Console.WindowWidth / 2);
                     Game.Player.Skill(Monsters[selectionIdx], ref playerline, Game.Player.PlayerSkill.Damage[0]);
                 }
                 else
@@ -547,7 +565,7 @@ public class BattleScene : Scene
         if (creature is Monster)
         {
             // 던전 클리어
-            Renderer.Print(12 + MonsterCount, "던전 클리어!");
+            Renderer.Print(14, "던전 클리어!");
 
             // 클리어 보상(아이템, 골드, 레벨업 등)
             Game.Stage.SetClearReward();
@@ -555,7 +573,7 @@ public class BattleScene : Scene
         else
         {
             // 던전 클리어 실패
-            Renderer.Print(12 + MonsterCount, "던전 클리어 실패!");
+            Renderer.Print(14, "던전 클리어 실패!");
 
             //실패 보상(아이템, 골드, 레벨업 등)
             Game.Stage.SetFailReward();
