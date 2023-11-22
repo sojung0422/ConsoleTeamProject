@@ -31,7 +31,7 @@ namespace TeamProject {
             Console.BackgroundColor = bgColor;
             Console.Clear();
             Console.OutputEncoding = Encoding.UTF8;
-
+            Console.CursorVisible = false;
         }
 
         #region Print
