@@ -49,7 +49,7 @@ public class BattleScene : Scene
         AttackTextList.Add("1. 기본 공격");
         AttackTextList.Add("2. 스킬[미구현]");
 
-        musicPlayer.PlayAsync("BGM1.mp3", 0.2f);
+        musicPlayer.PlayAsync("BGM1.mp3", 0.2f); // 음악파일명, 볼륨
 
         DrawScene();
     }
@@ -278,8 +278,8 @@ public class BattleScene : Scene
             case Command.Interact:
                 Game.Player.Attack(Monsters[selectionIdx], 7);
                 break;
-                /*    //  던전포기 -> ActionOnCommand로 이동
-                case Command.Exit:
+                /*  // 던전포기 -> ActionOnCommand로 이동
+                    case Command.Exit:
                     // 던전 포기 패널티
                     Game.Player.Hp -= 20;
                     Managers.Scene.GetOption("Back").Execute();
