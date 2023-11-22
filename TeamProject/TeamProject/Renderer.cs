@@ -177,14 +177,14 @@ namespace TeamProject {
                 Console.Write(fromZero ? i : i + 1);
                 Console.Write(". ");
                 if (monster.IsDead()) {
-                    Console.WriteLine($"{monster.Name,-10} : Dead");
+                    Console.WriteLine($"{monster.Name,-8} : Dead");
                     Console.SetCursorPosition(margin, ++line);
                     Console.ForegroundColor = ConsoleColor.Gray;
                     PrintHPBar(monster);
                     line++;
                 }
                 else {
-                    Console.WriteLine($"{monster.Name,-10} : {monster.Hp}/{monster.DefaultHpMax}");
+                    Console.WriteLine($"{monster.Name,-8} : {monster.Hp}/{monster.DefaultHpMax}");
                     Console.SetCursorPosition(margin, ++line);
                     Console.ForegroundColor = ConsoleColor.Red;
                     PrintHPBar(monster);
@@ -219,9 +219,13 @@ namespace TeamProject {
             line += 6;
             Print(line++, "---------------------------");
             for (int i = 0; i < actionText.Count; i++) {
+                // 라인 클리어
                 Console.SetCursorPosition(printMargin, line);
                 Console.Write(new string(' ', printWidthPos));
                 Console.SetCursorPosition(printMargin, line);
+
+                Console.Write(fromZero ? i : i + 1);
+                Console.Write(". ");
 
                 if (selectionLine == i) {
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -262,6 +266,15 @@ namespace TeamProject {
             Console.WriteLine($"[{MPBar}] {Game.Player.Mp}/{Game.Player.MpMax}");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
+        }
+
+        public static void ClearPlayerLine()
+        {
+            for (int line = 7; line <= 11; line++)
+            {
+                int printWidthPos = Console.WindowWidth / 2;
+                Renderer.ClearLine(line, printWidthPos - 3, printWidthPos);
+            }
         }
 
         /// <summary>

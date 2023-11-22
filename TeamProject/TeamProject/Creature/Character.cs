@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace TeamProject {
-    public class Character : Creature{
+namespace TeamProject
+{
+    public class Character : Creature
+    {
         public string Job { get; set; }
         public float HpMax => DefaultHpMax + hpMaxModifier;
         public float Damage => DefaultDamage + damageModifier;
@@ -18,10 +20,14 @@ namespace TeamProject {
         public int NextLevelExp;
         public int TotalExp;
 
+        public Skill PlayerSkill;
+
         public int Gold { get; set; }
-        public override float Hp {
+        public override float Hp
+        {
             get => hp;
-            set {
+            set
+            {
                 if (value <= 0) hp = 0;
                 else if (value >= HpMax) hp = HpMax;
                 else hp = value;
@@ -49,7 +55,7 @@ namespace TeamProject {
         public float avoidModifier;
 
         //public Character() { }
-        public Character(string name, string job, int level, float damage, float defense, float hp, float mp, int gold, float critical, float avoid)
+        public Character(string name, string job, int level, float damage, float defense, float hp, float mp, int gold, float critical, float avoid, Skill playerSkill)
         {
             Name = name;
             Job = job;
@@ -61,13 +67,14 @@ namespace TeamProject {
             DefaultCritical = critical;
             DefaultAvoid = avoid;
             Gold = gold;
-            
+
             Inventory = new Inventory(this);
             Equipment = new Equipment();
             NextLevelExp = 100;
             TotalExp = 0;
             Hp = HpMax;
             Mp = MpMax;
+            PlayerSkill = playerSkill;
         }
 
         public override void Attack(Creature creature, int line)
@@ -98,6 +105,26 @@ namespace TeamProject {
                 Renderer.Print(line++, battleText, false, textdelay, printWidthPos);
                 creature.OnDamaged(finalDamage);
             }
+        }
+
+        public void Skill(Creature creature, ref int line, float damage)
+        {
+            if (creature.IsDead())
+                return;
+            int printWidthPos = Console.WindowWidth / 2;
+
+            //for (int i = line; i <= 11; i++)
+            //{
+            //    //Renderer.Print(i, new string(' ', printWidthPos - 1), false, 0, printWidthPos);
+            //    Renderer.ClearLine(i, printWidthPos - 3, printWidthPos);
+            //}
+
+            int finalDamage = Math.Clamp((int)damage - (int)DefaultDefense / 2, 0, (int)Hp);
+
+            string battleText = $"{creature.Name}에게 {finalDamage}의 데미지를 입혔습니다!";
+            Renderer.Print(line++, battleText, false, textdelay, printWidthPos);
+            creature.OnDamaged(finalDamage);
+
         }
 
         public override void OnDamaged(int damage)
@@ -137,7 +164,7 @@ namespace TeamProject {
         {
             int levelsToAdvance = 0;
             TotalExp += expAmount;
-            while(TotalExp >= NextLevelExp)
+            while (TotalExp >= NextLevelExp)
             {
                 TotalExp -= NextLevelExp;
                 levelsToAdvance++;
@@ -157,7 +184,7 @@ namespace TeamProject {
             DefaultDefense += 0.5f * levelsToAdvance;
 
             // 출력
-            Renderer.Print(Console.WindowHeight - 7, $"레벨 {Level- levelsToAdvance} -> {Level}");
+            Renderer.Print(Console.WindowHeight - 7, $"레벨 {Level - levelsToAdvance} -> {Level}");
             Renderer.Print(Console.WindowHeight - 6, $"공격력 {Damage - 1.0f * levelsToAdvance} -> {Damage}");
             Renderer.Print(Console.WindowHeight - 5, $"방어력 {Defense - 0.5f * levelsToAdvance} -> {Defense}");
             Managers.Game.SaveGame();
