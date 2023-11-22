@@ -12,8 +12,11 @@ public class MainScene : Scene {
     #region Scene
 
     public override void EnterScene() {
-        MusicPlayer.Instance.Stop();
-        MusicPlayer.Instance.PlayAsync("Snowy.mp3", 0.01f); // 음악파일명, 볼륨
+        if (!MusicPlayer.Instance.IsPlaying)
+        {
+            MusicPlayer.Instance.PlayAsync("Snowy.mp3", 0.01f); // 음악파일명, 볼륨
+        }
+
         // #1. 선택지 설정.
         Options.Clear();
         Options.Add(Managers.Scene.GetOption("ShowInfo"));

@@ -233,6 +233,7 @@ public class CreateCharacterScene : Scene
     /// </summary>
     private void CreateCharacter()
     {
+        MusicPlayer.Instance.Stop();
         Game.Player = new Character
         (
             createName,

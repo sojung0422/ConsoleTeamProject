@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeamProject {
     public class TitleScene : Scene {
-        public override async void EnterScene() {
+        public override void EnterScene() {
             Options.Clear();
             Options.Add(Managers.Scene.GetOption("NewGame"));
             MusicPlayer.Instance.PlayAsync("Start.mp3", 1f); // 음악파일명, 볼륨

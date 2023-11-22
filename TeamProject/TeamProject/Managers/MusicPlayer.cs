@@ -23,6 +23,10 @@ public class MusicPlayer
             return instance;
         }
     }
+    public bool IsPlaying
+    {
+        get { return waveOutEvent != null && waveOutEvent.PlaybackState == PlaybackState.Playing; }
+    }
 
     public async Task PlayAsync(string fileName, float volume = 1.0f)
     {
