@@ -78,4 +78,32 @@ namespace TeamProject
 
         public override Item DeepCopy() => new HealingPotion(this);
     }
+
+    public class ManaPotion : ConsumeItem
+    {
+        private int healValue;
+        public int HealValue { get => healValue; set { healValue = value; EffectDesc = $"마나 {healValue} 회복"; } }
+
+        public ManaPotion() : base()
+        {
+        }
+
+        public ManaPotion(int id, string name, string description, int price, int stackCount, int healValue, ItemType itemType = ItemType.ConsumeItem, string effectDesc = null) : base(id, name, description, price, stackCount, itemType, effectDesc)
+        {
+            HealValue = healValue;
+        }
+
+        public ManaPotion(ManaPotion reference) : base(reference)
+        {
+            HealValue = reference.HealValue;
+        }
+
+        public override void UseEffect(Character owner)
+        {
+            base.UseEffect(owner);
+            owner.ChangeMana(healValue);
+        }
+
+        public override Item DeepCopy() => new ManaPotion(this);
+    }
 }
