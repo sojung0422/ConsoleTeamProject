@@ -117,10 +117,6 @@ namespace TeamProject
                 shopModeToggle ? shopSaleItem : playerSaleItem,
                 shopModeToggle ? formattersBuy : formattersSale,
                 selectedOptionIndex);
-            //if (shopModeToggle)
-            //    row = Renderer.DrawItemList(++row, shopSaleItem, buyModeFormatters, selectedOptionIndex);
-            //else
-            //    row = Renderer.DrawItemList(++row, playerSaleItem, saleModeFormatters, selectedOptionIndex);
             Renderer.Print(row + 1, msg);
             Renderer.PrintKeyGuide("[방향키 ↑ ↓ : 선택지 이동] [방향키 ← → : 구매/판매 모드 변경] [Enter : 선택] [ESC : 뒤로가기]");
         }

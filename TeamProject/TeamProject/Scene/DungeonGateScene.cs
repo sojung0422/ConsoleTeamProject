@@ -28,15 +28,6 @@ public class DungeonGateScene : Scene
             if (key.Key == ConsoleKey.Escape)
                 Managers.Scene.GetOption("Main").Execute();
         }
-
-        //while (true)
-        //{
-        //    DrawScene();
-        //    if (!int.TryParse(Console.ReadLine(), out int index)) continue;
-        //    if (index < 0 || Options.Count < index) continue;
-        //    Options[index].Execute();
-        //    break;
-        //}
     }
     protected override void DrawScene()
     {

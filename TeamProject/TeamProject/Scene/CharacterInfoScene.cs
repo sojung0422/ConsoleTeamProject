@@ -12,14 +12,6 @@ public class CharacterInfoScene : Scene
 
     public override void NextScene()
     {
-        //while (true) 
-        //{
-        //    // Esc 누를 시 메인 화면으로
-        //    var key = Console.ReadKey(true);
-        //    if (key.Key != ConsoleKey.Escape) continue;
-        //    Options[0].Execute();
-        //    break;
-        //}
         do {
             GetInput();
         } while (Managers.Scene.CurrentScene is CharacterInfoScene);
