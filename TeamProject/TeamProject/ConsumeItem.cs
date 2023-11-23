@@ -46,7 +46,7 @@ namespace TeamProject
             if (StackCount > 1)
                 StackCount--;
             else
-                Game.Player.Inventory.Remove(this);
+                owner.Inventory.Remove(this);
         }
         public override Item DeepCopy() => new ConsumeItem(this);
     }
