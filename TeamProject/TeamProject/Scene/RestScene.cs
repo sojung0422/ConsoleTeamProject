@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace TeamProject;
 public class RestScene : Scene {
-    public override string Title { get; protected set; } = "마 을 여 관";
+    public override string Title { get; protected set; } = "토리엘의 집";
 
     public override void EnterScene()
     {
         MusicPlayer.Instance.music = "Home.mp3";
-        MusicPlayer.Instance.PlayAsync(0.1f); // 음악파일명, 볼륨
+        MusicPlayer.Instance.PlayAsync(0.05f); // 음악파일명, 볼륨
         // #1. 선택지 설정.
         Options.Clear();
         Options.Add(Managers.Scene.GetOption("UseInn"));
@@ -31,7 +31,7 @@ public class RestScene : Scene {
     protected override void DrawScene()
     {
         Renderer.DrawBorder(Title);
-        Renderer.Print(3, "여관에서 휴식하시겠습니까?");
+        Renderer.Print(3, "집에서 휴식하시겠습니까?");
                 
         Renderer.Print(5, $"당신의 체력 : {Game.Player.Hp} / {Game.Player.DefaultHpMax}");
         Renderer.Print(6, $"당신의 마나 : {Game.Player.Mp} / {Game.Player.DefaultMpMax}");

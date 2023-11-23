@@ -55,8 +55,8 @@ public class TableManager {
         jobs["Defense"] = new("DefaultDefense", "방어력", 10, c => c.DefaultDefense.ToString());
         jobs["HpMax"] = new("DefalutHpMax", "체 력", 10, c => c.DefaultHpMax.ToString());
         jobs["MpMax"] = new("DefalutMpMax", "마 나", 10, c => c.DefaultMpMax.ToString());
-        jobs["Critical"] = new("Critical", "크리율", 20, c => c.Critical.ToString("0%"));
-        jobs["Avoid"] = new("Avoid", "회피율", 20, c => c.Critical.ToString("0%"));
+        jobs["Critical"] = new("Critical", "크리율", 10, c => c.Critical.ToString("0%"));
+        jobs["Avoid"] = new("Avoid", "회피율", 10, c => c.Critical.ToString("0%"));
     }
 }
 
