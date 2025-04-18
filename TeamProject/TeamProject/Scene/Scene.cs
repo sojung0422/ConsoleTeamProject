@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace TeamProject {
     public class Scene {
-        public virtual string Title { get; protected set; }
+        public virtual string Title { get; protected set; } //virtual → 자식 클래스에서 재정의(override) 가능 / protected set → 자식 클래스에서만 값을 변경할 수 있어
 
-        protected List<ActionOption> Options { get; set; } = new();
-
+        protected List<ActionOption> Options { get; set; } = new(); //화면에 출력되는 선택지 목록 -> 메뉴 옵션들을 저장함
+        //얘가 화면에 출력되는 선택지들임(씬의 모음인 거지 - 리스트로 저장한)
         protected int selectedOptionIndex = 0;
         protected Command lastCommand = Command.Nothing;
 

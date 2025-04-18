@@ -17,7 +17,22 @@ namespace TeamProject {
 
             DrawScene();
         }
-
+        #region
+        /*
+         Renderer.PrintOptions(20, Options, true, selectedOptionIndex);
+         옵션 선택지를 출력하는 함수
+         
+         Renderer는 콘솔에 메뉴, 텍스트 등 그려주는 도우미 클래스
+         
+         (20, Options, true, selectedOptionIndex) 뜻은:
+         
+         인자	                 의미
+         20	                     출력 시작 y좌표 (화면 세로 줄 위치)
+         Options	             선택지 목록 (List<ActionOption>)
+         true	                 현재 선택된 항목을 하이라이트 처리할지 여부
+         selectedOptionIndex	 현재 선택된 항목의 인덱스 (0부터 시작)
+         */
+        #endregion
         public override void NextScene() {
 
             do {
