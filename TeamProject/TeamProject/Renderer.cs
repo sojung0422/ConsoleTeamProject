@@ -25,13 +25,13 @@ namespace TeamProject {
 
         #endregion
 
-        public static void Initialize() {
-            Console.Title = "GameName";
-            Console.ForegroundColor = textColor;
-            Console.BackgroundColor = bgColor;
-            Console.Clear();
-            Console.OutputEncoding = Encoding.UTF8;
-            Console.CursorVisible = false;
+        public static void Initialize() { //콘솔 게임 시작 시 기본 환경 설정
+            Console.Title = "GameName"; //콘솔 창 제목 지정
+            Console.ForegroundColor = textColor; //글자색
+            Console.BackgroundColor = bgColor; //배경색
+            Console.Clear(); //전체 화면 지우기
+            Console.OutputEncoding = Encoding.UTF8; //한글이나 특수문자 깨지지 않게 함
+            Console.CursorVisible = false; //깜빡이는 커서 안 보이게
         }
 
         #region Print
@@ -79,15 +79,63 @@ namespace TeamProject {
         /// <param name="line">출력할 줄</param>
         /// <param name="content">출력할 내용</param>
         /// <returns>출력한 후 다음 줄을 리턴합니다.</returns>
-        public static int PrintCenter(int line, string content)
+        public static int PrintCenter(int line, string content) //가운데 정렬을 위한 함수
         {
-            int pad = width - 3 - GetPrintingLength(content);
-            if (pad % 2 != 0)
+            #region
+            /*
+             int pad = width - 3 - GetPrintingLength(content);
+             ㄴ width: 콘솔 전체 가로 너비
+             ㄴ GetPrintingLength(content): 문자열의 실제 길이를 계산하는 함수
+             ㄴ 예: "Hello" → 5, "안녕" → 4 (한글은 보통 2칸 차지하니까)
+             ㄴ - 3: 양쪽 테두리나 여백 때문에 조금 빼주는 거야
+             
+             **  결과적으로: pad는 글자 앞뒤로 넣을 수 있는 전체 여백을 뜻해
+             
+            -------------------------------------------------------------------------------------------------------
+
+            [ return Print(line, "".PadLeft(pad) + content + "".PadRight(pad - 1)); ]
+
+            Print(...): 실제로 콘솔에 글자를 출력해주는 함수
+            line: 몇 번째 줄에 출력할지 (예: 7번째 줄)
+            내용: 왼쪽 공백 + content + 오른쪽 공백
+            → 이걸 하나의 문자열로 만든 다음 출력
+
+            "" → 빈 문자열
+            아무 문자도 없는 상태. 그냥 빈 공간.
+            → 이 빈 문자열에 .PadLeft()나 .PadRight()를 써서 공백을 만든다는 뜻
+
+            [ PadLeft(pad) ]
+            왼쪽에 공백을 pad만큼 추가해주는 함수
+            예: pad = 5이면 → " " (공백 5개짜리 문자열)
+            이건 출력하려는 글자 앞에 공백을 추가해서, 왼쪽으로 띄워주는 역할
+
+            content
+            실제로 출력하고 싶은 글자 내용
+
+            ""​.PadRight(pad - 1)
+            오른쪽에 공백을 pad - 1만큼 추가하는 부분
+            예: pad = 5면 → " " (공백 4개)
+            왜 pad - 1이냐면?
+            ➜ 전체 공백 수가 홀수일 때 균형 맞추기 위해임
+
+
+            [ 이처럼 코드를 작성해야 하는 이유 ]
+            가운데 정렬은 글자 길이, 화면 너비에 따라 공백을 정확히 계산해서 넣어야 함
+            그걸 자동으로 해주는 함수가 없기 때문에, 이렇게 PadLeft, PadRight로 직접 만들어준 거임
+
+            return Print(...)는:
+            이 문자열을 출력하고,
+            그 다음 줄 번호 (line + 1)를 반환해주는 역할
+
+             */
+            #endregion
+            int pad = width - 3 - GetPrintingLength(content); //pad는 글자 앞 뒤로 넣을 수 있는 전체 여백
+            if (pad % 2 != 0) //만약 여백 수가 홀수일 때
             {
                 pad /= 2;
                 return Print(line, "".PadLeft(pad) + content + "".PadRight(pad - 1));
             }
-            else
+            else //짝수일 경우
             {
                 pad /= 2;
                 return Print(line, "".PadLeft(pad) + content + "".PadRight(pad));
